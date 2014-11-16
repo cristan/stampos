@@ -1,0 +1,171 @@
+button{
+	background-color: #C01A1A;
+	color:white;
+	border: none;
+	height: 30pt;
+}
+
+input[type=password], input[type=text]{
+	height: 30pt;
+	width:100%;
+}
+
+.blockedUserSelectButton{
+	width: 100%;
+	/*margin: 5pt 0;*/ 
+}
+
+#passwordField{
+	border:2px solid white;
+	margin-top:5pt;
+	
+	animation-duration: 0.8s;
+    -webkit-animation-duration: 0.8s;
+}
+
+.incorrectAnimation{
+	animation-name: incorrect;
+    -webkit-animation-name: incorrect;
+}
+
+
+@-webkit-keyframes incorrect {
+     from {
+       border-color: white;
+     }
+     
+     50% {
+       border-color: red;
+     }
+     
+     to {
+       border-color: white;
+     }
+   }
+   
+   @keyframes incorrect {
+     from {
+       border-color: white;
+     }
+     
+     50% {
+       border-color: red;
+     }
+     
+     to {
+       border-color: white;
+     }
+   }
+
+.fadeoutAnimation{
+	animation-duration: 0.8s;
+    -webkit-animation-duration: 0.8s;
+	animation-name: goAway;
+    -webkit-animation-name: goAway;
+}
+
+@-webkit-keyframes goAway {
+     from {
+       opacity: 1;
+     }
+     
+     to {
+       opacity: 0;
+     }
+   }
+   
+   @keyframes goAway {
+     from {
+       opacity: 1;
+     }
+     
+     to {
+       opacity: 0;
+     }
+   }
+   
+   .fadeinAnimation{
+	animation-duration: 0.4s;
+    -webkit-animation-duration: 0.4s;
+	animation-name: comeHere;
+    -webkit-animation-name: comeHere;
+}
+
+@-webkit-keyframes comeHere {
+     from {
+       opacity: 0;
+     }
+     
+     to {
+       opacity: 1;
+     }
+   }
+   
+   @keyframes comeHere {
+     from {
+       opacity: 0;
+     }
+     
+     to {
+       opacity: 1;
+     }
+   }
+   
+   /*************** flip ***************/ 
+   /* entire container, keeps perspective */
+.flip-container {
+	-webkit-perspective: 1000;
+	perspective: 1000;
+	margin: 5pt 0; 
+}
+
+/* flip the pane when hovered */
+.flip {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	/*position: absolute;
+	top: 0;
+	left: 0;*/
+}
+
+.back{
+	margin-top: -30pt;
+	background-color:white;
+	color:black;
+	text-align:center;
+	height:30pt;
+	line-height:30pt;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+}
+
+#pageContainer{
+	margin: auto;
+    position: relative;
+    max-width: 1016px;
+}

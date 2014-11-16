@@ -1,0 +1,17 @@
+#orderActionsArea {
+	right: 117pt !important;
+}
+
+.orderActionsCover {
+	width: 117pt !important;
+}
+
+#right {
+	width: 478pt !important; /* 4 columns of buttons + 10 pt margin*/
+	padding-right: 117pt; /* width + margin of 1 button */
+}
+
+#userButtonsArea {
+	margin-right: 478pt !important;
+	/* 4 columns of buttons + 10 pt margin */
+}

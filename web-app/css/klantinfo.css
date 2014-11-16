@@ -1,0 +1,100 @@
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body{
+	margin:0;
+	background-color: black;
+	font-family: Sans-Serif;
+	color:white;
+}
+
+#pageContainer{
+	margin: auto;
+    position: relative;
+    max-width: 1016px;
+}
+
+.bestelling,.betaling{
+	margin: 5pt 5pt 10pt 5pt; 
+	font-size: 15pt;
+}
+
+.bestellingHeader,.betalingHeader{
+	padding: 7.5pt; 
+}
+
+.bestellingHeader{
+	background-color: #C01A1A;
+}
+
+.betalingHeader{
+	background-color: #008000;
+}
+
+.headerType{
+	float:left;
+}
+
+.headerDate{
+	float:right;
+}
+
+.bestellingContent, .betalingContent{
+	padding: 7.5pt; 
+}
+
+.bestellingContent{
+	background-color: #330707;
+}
+
+.betalingContent{
+	background-color: #003300;
+}
+
+.clear{
+	clear:both;
+}
+
+.aantal{
+	float:right;
+	width: 30pt;
+	text-align: right;
+	margin-right:5pt;
+}
+
+.product{
+	float:right;
+	width: 90pt;
+}
+
+.bedrag{
+	float:right;
+	width: 55pt;
+	text-align:right;
+}
+
+.totalLine{
+	height: 2px;
+	width: 50pt;
+	background-color:white;
+	margin: 7.5pt 0 2pt 0;
+	float:right;
+}
+
+.totalOrder{
+	float:right;
+	text-align:right;
+	width: 55pt;
+}
+
+#noDataNotice, #end{
+	text-align:center;
+	margin: 10pt 0;
+}
+
+#noDataNotice{
+	font-size: 15pt
+}
+
+#end{
+	font-size: 10pt
+}

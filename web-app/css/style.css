@@ -1,0 +1,236 @@
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body{
+	margin:0;
+	background-color: black;
+	font-family: Sans-Serif;
+	color:white;
+}
+
+html, body{
+	height:100%;
+	/* Disables zooming on Windows 8 */
+	touch-action: manipulation;
+    /*
+    When this doesn't work, try this:
+    touch-action: none;
+    -ms-content-zooming: none;
+    */
+}
+
+button{
+	font-size: 11pt;
+}
+
+button:disabled {
+	background-color: #BDBDBD;
+}
+
+#userButtonsArea{
+	position:absolute;
+	margin-right:361pt;/* 4 columns of buttons + 10 pt margin */
+	opacity: 0;
+}
+
+.userButtonsAreaShown{
+	opacity: 1 !important;
+}
+
+#right{
+	width:361pt;/* 3 columns of buttons + 10 pt margin*/
+	float:right;
+}
+
+#orderActionsArea
+{
+	position:absolute;
+	bottom: 0;
+	right: 10pt;
+	margin-bottom: 10pt;
+	padding-left: 10pt;
+	opacity: 0;
+	width:361pt;/* 3 columns of buttons + 10 pt margin*/
+}
+
+.orderActionsCover{
+	z-index: 10;
+	position:absolute;
+	bottom: 0;
+	right:0;
+	width: 10pt;
+	height: 100%;
+	background-color:black;
+	
+}
+
+.orderActionsAreaShown{
+	opacity: 1 !important;
+}
+
+.clearOrder{
+	height: 45pt;
+	width: 100%;
+	color:white;
+}
+
+#clearOrderDiv{
+	width:50%;
+	padding-right:5pt;
+	float:left;
+}
+
+.completeClearOrderDiv{
+	width: 25% !important;
+}
+
+#confirmOrder{
+	background-color: green;
+	/*border-radius: 5px;
+	border: 1px solid black;*/
+	border: none;
+	height: 45pt;
+	width: 100%;
+	color:white;
+}
+
+.userSelectButton{
+	/*
+	background-color: #618029;
+	background-image: linear-gradient(bottom, rgb(72,92,33) 0%, rgb(98,128,41) 49%);
+background-image: -o-linear-gradient(bottom, rgb(72,92,33) 0%, rgb(98,128,41) 49%);
+background-image: -moz-linear-gradient(bottom, rgb(72,92,33) 0%, rgb(98,128,41) 49%);
+background-image: -webkit-linear-gradient(bottom, rgb(72,92,33) 0%, rgb(98,128,41) 49%);
+background-image: -ms-linear-gradient(bottom, rgb(72,92,33) 0%, rgb(98,128,41) 49%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(72,92,33)),
+	color-stop(0.49, rgb(98,128,41))
+);*/
+background-color:#C01A1A;
+
+	/*
+	colorwizard.com op C5DE98
+	*/
+}
+
+#productButtonsArea{
+	display: none;/* with just opacity: 0, the buttons are still clickable*/
+	opacity: 0; /* Also opacity: 0 in order to be able to use a css transition */
+}
+
+.productButtonsAreaShown{
+	opacity: 1 !important;
+}
+
+.productSelectButton{
+	background-color: #0047AB;
+	/*
+	background-color: #97C4DE;
+	background-image: linear-gradient(bottom, rgb(118,148,164) 0%, rgb(131,176,202) 50%);
+	background-image: -o-linear-gradient(bottom, rgb(118,148,164) 0%, rgb(131,176,202) 50%);
+	background-image: -moz-linear-gradient(bottom, rgb(118,148,164) 0%, rgb(131,176,202) 50%);
+	background-image: -webkit-linear-gradient(bottom, rgb(118,148,164) 0%, rgb(131,176,202) 50%);
+	background-image: -ms-linear-gradient(bottom, rgb(118,148,164) 0%, rgb(131,176,202) 50%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(118,148,164)),
+		color-stop(0.5, rgb(131,176,202))
+	);*/
+}
+
+
+.userSelectButton, .productSelectButton{
+	/*border-radius: 5px;*/
+	border:none;
+	color: white;
+	float:left;
+	margin-left: 10pt;
+	margin-top: 10pt;
+	
+	width: 107pt;
+	height: 65pt;
+}
+
+.selected{
+	font-weight: bold;
+	color:yellow;
+}
+
+#order{
+	clear:both;
+	padding-top:35pt;
+	padding-left:10pt;
+}
+
+.orderLine{
+	line-height: 30pt;
+	font-size:25pt;
+}
+
+.orderNumber{
+	display:inline-block;
+	width:30pt;
+}
+
+.orderPrice{
+	float:right;
+	width: 90pt;
+}
+
+.reduceOrder{
+	margin-top:2pt;height: 26pt;width: 26pt;float:right;margin-right:10pt;
+}
+
+.reduceOrder,.clearOrder{
+	/*border-radius: 5px;background-color: #802835;border: 1px solid black;*/
+	background-color:#C01A1A;
+	border:none;
+}
+
+.blockedUser{
+	color: gray;
+}
+
+#userBlockedNotice{
+	display: none;
+	color: orange;
+}
+
+.orderArea{
+	position:absolute;
+	bottom:-65px;
+	padding:10pt;
+	font-size:24pt;
+}
+
+.orderArea, .productSelectButton, .manualTransition, #clearOrderDiv, #orderActionsArea, #loading{
+	-moz-transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+#userButtonsArea, #productButtonsArea{
+	-moz-transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.orderAreaVisible{
+	bottom: 0px !important;
+}
+
+#order{
+	opacity: 1;
+}
+
+.orderComplete{
+	opacity: 0 !important;
+}
