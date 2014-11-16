@@ -1,3 +1,10 @@
 body{
 	overflow:hidden;
+	
+	/* Disables zooming on Windows 8 while still enabling panning (doesn't work very well)*/
+	/*touch-action: manipulation;*/
+	
+	/* Disables every touch action (zooming, panning etc). 
+		This will prevent accidental panning, but will cause problems when the users don't fit*/
+	touch-action: none;
 }
