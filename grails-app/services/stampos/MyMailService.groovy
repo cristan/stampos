@@ -64,7 +64,7 @@ class MyMailService {
 				titel = messageSource.getMessage("mail.insufficientfunds.title", parameters, Locale.default);
 				def rekening = format.format(-tegoed)
 				parameters = [klantNaam, rekening]
-				titel = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
+				bericht = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
 			}
 			else
 			{
