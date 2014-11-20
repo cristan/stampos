@@ -41,6 +41,78 @@ button:disabled {
 	float:right;
 }
 
+@media screen and (max-width: 1024px) {
+	.userSelectButton, .productSelectButton{
+		width: 85pt !important;
+		height: 40pt !important;
+		margin-left: 7.5pt !important;
+		margin-top: 7.5pt !important;
+	}
+	
+	#right{
+		width:192.5pt !important;/* 2 columns of buttons + 3 x 7.5 pt margin*/
+	}
+	
+	#userButtonsArea{
+		margin-right:192.5pt !important;/* see #right */
+	}
+	
+	#orderActionsArea
+	{
+		margin-bottom: 7.5pt !important;
+		padding-left: 7.5pt !important;
+	}
+	
+	.orderArea{
+		padding: 7.5pt !important;
+	}
+	
+	.orderActionsCover{
+		width: 7.5pt !important;
+	}
+	
+	#orderActionsArea{
+		right: 7.5pt !important;
+	}
+	
+	#clearOrderDiv{
+		/* TODO: why is this even not 0 in the first place? */
+		padding-right: 0 !important;
+	}
+	
+	#orderActionsArea{
+		width: 182.5pt !important;
+	}
+	
+	#confirmOrder, .clearOrder{
+		height: 40pt !important;/* The same as .userSelectButton, .productSelectButton */
+	}
+	
+	/* Ordered products */
+	#order{
+		padding-top: 20pt !important;
+	}
+	
+	.orderLine{
+		font-size: 13pt !important;
+	}
+	.reduceOrder{
+		margin-right: 7.5pt !important;
+	}
+	
+	.orderNumber{
+		/* We use a fixed width instead of a margin-right so when the number of products > 10, 
+		it won't push the name of the product to the right */
+		width: 16pt !important;
+	}
+	
+	.orderPrice{
+		/* We use a fixed width for all the prices so they are all nicely aligned to the left */
+		width: 45pt !important;	
+	}
+	
+}
+
 #orderActionsArea
 {
 	position:absolute;
@@ -175,11 +247,14 @@ background-color:#C01A1A;
 
 .orderNumber{
 	display:inline-block;
+	/* We use a fixed width instead of a margin-right so when the number of products > 10, 
+	it won't push the name of the product to the right */
 	width:30pt;
 }
 
 .orderPrice{
 	float:right;
+	/* We use a fixed width for all the prices so they are all nicely aligned to the left */
 	width: 90pt;
 }
 

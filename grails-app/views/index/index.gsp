@@ -65,7 +65,7 @@ $(document).ready(function () {
 		<div id="clearOrderDiv">
 			<button id="clearOrderSmall" class="clearOrder">Verwijder bestelling</button>
 		</div>
-		<div style="width:25%;padding-left:5pt;padding-right:10pt;float:left;">
+		<div style="width:25%;padding-left:5pt;float:left;">
 			<button id="confirmOrder">Bevestig bestelling</button>
 		</div>
 	</div>
