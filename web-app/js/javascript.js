@@ -4,6 +4,10 @@ var order = [];
 var allowedToOrder;
 var environmentName;
 
+// Fancy ECMA-402 number formatting (which uses the default Locale because of the undefined).
+// This is supported by Chrome 24, Fx 29 and IE11 (source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString)
+var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+
 function startStamPOS(allowedToOrder)
 {
 	var productenLoaded = false;
@@ -150,7 +154,7 @@ function showInfoSelectedKlantPart2(timeout)
 
 function showLoadedKlantData(data)
 {
-	$("#credit").html(data.tegoed.toFixed(2));
+	$("#credit").html(formatter.format(data.tegoed));
 	$("#creditInfo").show();
 	
 	if(data.geblokkeerd)
@@ -201,7 +205,8 @@ function redrawOrder()
 		var productNaam = order[i][0].naam;
 		var count = order[i][1];
 		var productPrijs = (count * order[i][0].prijs).toFixed(2);
-		var orderLine = $('<div class="orderLine"><span class="orderNumber">'+count+'</span>'+productNaam +' <div id="reduce'+ productId +'" class="reduceOrder"></div><span class="orderPrice">&euro;'+ productPrijs +'</span></div>');
+		var formattedProductPrijs = formatter.format(productPrijs);
+		var orderLine = $('<div class="orderLine"><span class="orderNumber">'+count+'</span>'+productNaam +' <div id="reduce'+ productId +'" class="reduceOrder"></div><span class="orderPrice">&euro;'+ formattedProductPrijs +'</span></div>');
 		$('#order').append(orderLine);
 		
 		$("#reduce"+ productId).click({productId: productId}, reduce);
