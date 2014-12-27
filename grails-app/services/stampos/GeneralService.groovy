@@ -3,24 +3,40 @@ package stampos
 import grails.util.Environment
 
 class GeneralService {
-	def starts = ["127.0.0.1", "0:0:0:0:0:0:0:1"]
+	def localhost_starts = ["127.0.0.1", "0:0:0:0:0:0:0:1"]
+	def internal_network_starts = ["192.168", "10.", "fd"]
+	def settingsService
 
     def isAllowedToOrder(theRequest) {
 		String environmentName = Environment.current.name
-		
 		if(environmentName != "production")
 		{
 			return true;
 		}
-		
-		def remoteAddress = theRequest.getRemoteAddr()
-		for(def start : starts)
+		else if(settingsService.allRequestsAllowed())
 		{
-			if(remoteAddress.startsWith(start))
-			{
-				return true;
-			}
+			return true
 		}
-		return false;
+		else
+		{
+			def starts;
+			if(settingsService.onlyLocalNetworkAllowed())
+			{
+				starts = internal_network_starts
+			}
+			else
+			{
+				starts = localhost_starts
+			}
+			def remoteAddress = theRequest.getRemoteAddr()
+			for(def start : starts)
+			{
+				if(remoteAddress.startsWith(start))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
     }
 }

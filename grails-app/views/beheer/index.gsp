@@ -105,9 +105,10 @@
 		<div id="page-body" role="main">
 			<h1>StamPOS beheer</h1>
 			<g:link controller="upload" action="upload">Upload dump internetbankieren</g:link><br/>
-			<g:link controller="myMail" action="maillijst">Maillijst</g:link><br/>
+			<g:link controller="instelling" action="overzicht"><g:message code="settings" /></g:link><br/>
 			<g:link controller="myMail" action="versturen">Verstuur e-mails</g:link><br/>
 			<br/>
+			<g:link controller="myMail" action="maillijst">Maillijst</g:link><br/>
 			<g:link controller="inkoop" action="registreerInkopen">Registreer inkopen</g:link><br/>
 			<g:link controller="telling" action="registreerTelling">Tel de inhoud van de bar</g:link><br/>
 			<g:link url="${createLink(uri: '/deblokkeer')}">Deblokkeer klanten</g:link><br/>
