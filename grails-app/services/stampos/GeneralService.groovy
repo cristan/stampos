@@ -36,6 +36,7 @@ class GeneralService {
 					return true;
 				}
 			}
+			log.info("A request is done by the with remote address: "+ remoteAddress +". This address isn't allowed to make orders.")
 			return false;
 		}
     }

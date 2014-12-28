@@ -62,6 +62,7 @@ class DeblokkeerController {
 		int klantId = params.klantId as int
 		Klant klant = Klant.get(klantId)
 		klant.uitstelTot = klantService.komendeMaandag()
+		klant.save(true)
 		render "${params.callback}()"
 	}
 }
