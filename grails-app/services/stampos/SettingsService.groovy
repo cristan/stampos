@@ -1,6 +1,7 @@
 package stampos
 
 import grails.transaction.Transactional
+import grails.util.Environment
 
 @Transactional
 class SettingsService {
@@ -25,15 +26,21 @@ class SettingsService {
 	{
 		Instelling automailInstelling = Instelling.findOrCreateByNaam(name);
 		automailInstelling.waarde = value;
-		println name
-		println value
-		println automailInstelling
 		automailInstelling.save()
 	}
 	
 	def String getAllowRequests()
 	{
-		return getSetting(ALLOW_REQUESTS, LOCAL_NETWORK)
+		String defaultValue
+		if(Environment.current == Environment.TEST)
+		{
+			defaultValue = EVERYWHERE
+		}
+		else
+		{
+			defaultValue = LOCAL_NETWORK
+		}
+		return getSetting(ALLOW_REQUESTS, defaultValue)
 	}
 	
 	def setAllowRequests(String allowRequests)
@@ -48,6 +55,6 @@ class SettingsService {
 	
 	def boolean onlyLocalNetworkAllowed()
 	{
-		return getAllowRequests() == EVERYWHERE
+		return getAllowRequests() == LOCAL_NETWORK
 	}
 }
