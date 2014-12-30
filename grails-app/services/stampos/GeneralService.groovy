@@ -1,8 +1,8 @@
 package stampos
 
 class GeneralService {
-	def localhost_starts = ["127.0.0.1", "0:0:0:0:0:0:0:1"]
-	def internal_network_starts = ["192.168", "10.", "fd", "fe"]
+	List<String> localhost_starts = ["127.0.0.1", "0:0:0:0:0:0:0:1"]
+	List<String> internal_network_starts = ["192.168", "10.", "fd", "fe"]
 	def settingsService
 
     def isAllowedToOrder(theRequest) {
@@ -17,6 +17,7 @@ class GeneralService {
 			if(settingsService.onlyLocalNetworkAllowed())
 			{
 				starts = internal_network_starts
+				starts.addAll(localhost_starts)
 			}
 			else
 			{
