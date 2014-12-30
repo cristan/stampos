@@ -84,7 +84,7 @@ function loadData()
 		if(eindeDatum == null)
 		{
 			endOfTheLine = true;
-			if(!firstTimeLoaded)
+			if(!firstTimeLoaded && data.items.length == 0)
 			{
 				$("#pageContainer").append("<div id='noDataNotice'>Geen betalingen of bestellingen gevonden</div>");
 			}
