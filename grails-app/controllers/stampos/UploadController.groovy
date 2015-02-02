@@ -144,7 +144,7 @@ class UploadController {
 		{
 			return null
 		}
-		def weirdPostbankStart = "Naam: "+naamOmschrijving+descriptionIdentifier
+		def weirdPostbankStart = "Naam: "+naamOmschrijving +" "+ descriptionIdentifier
 		if(mededelingen.startsWith(weirdPostbankStart))
 		{
 			mededelingen = mededelingen.substring(weirdPostbankStart.length())

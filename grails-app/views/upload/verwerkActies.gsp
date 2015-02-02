@@ -17,7 +17,7 @@
 	</g:each>
 	</table>
 	<div style="margin-top:5pt;">
-		<g:link controller="mail" action="maillijst">Door naar de maillijst</g:link><br/>
+		<g:link controller="myMail" action="maillijst">Door naar de maillijst</g:link><br/>
 		<g:link controller="beheer">Terug naar het beheer</g:link>
 	</div>
 </body>
