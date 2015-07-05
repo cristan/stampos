@@ -21,4 +21,14 @@ class ExampleController {
 		render "Sent via service"
 	}
 	
+	def pushService
+	def test2()
+	{
+		Klant klant1 = Klant.get(1);
+		Betaling b = new Betaling(klant: klant1, bedrag: 1.25)
+		b.save(true);
+		pushService.userUpdated(klant1)
+		render klant1.toString() +" updated"
+	}
+	
 }

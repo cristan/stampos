@@ -14,12 +14,26 @@
 	<link type="text/css" href="${resource(dir: 'css', file: 'extra_space_to_the_right.css')}" media="(min-width: 1920px)" rel="stylesheet" />
 </g:if>
 <g:javascript library="jquery" plugin="jquery"/>
+<asset:javascript src="spring-websocket" />
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'javascript.js')}"></script>
 <script>
 $(document).ready(function () {
 	startStamPOS(${allowedToOrder});
 });
+</script>
+
+<script type="text/javascript">
+    $(function() { 
+        var socket = new SockJS("${createLink(uri: '/stomp')}");
+        var client = Stomp.over(socket);
+
+        client.connect({}, function() {
+            client.subscribe("/topic/user", function(message) {
+                customerUpdated(message.body);
+            });
+        });
+    });
 </script>
 
 </head>
