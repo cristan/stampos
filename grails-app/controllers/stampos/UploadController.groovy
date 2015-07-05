@@ -10,6 +10,8 @@ class UploadController {
 
 	public static final String INITIAL_DATE = "eersteDatum"
 	private static final String AMOUNT_FIRST_DATE = "hoeveelheidEersteDatum"
+	
+	def pushService
 
     def upload() { }
 	
@@ -216,7 +218,7 @@ class UploadController {
 						println it
 					}
 				}
-				
+				pushService.userUpdated(klant)
 				toReturn.add(b)
 				
 				// Remember the link between the accountnumber and the customer for the next time
