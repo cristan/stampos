@@ -165,6 +165,7 @@ function showLoadedKlantData(data)
 	else
 	{
 		$(".productSelectButton").removeAttr('disabled');
+		$('#userBlockedNotice').hide();
 	}
 	
 	selectedKlantGeblokkeerd = data.geblokkeerd
