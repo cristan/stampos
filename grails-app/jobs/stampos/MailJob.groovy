@@ -7,6 +7,7 @@ import org.springframework.context.MessageSource
 
 class MailJob {
 	def myMailService
+	def settingsService
 	MessageSource messageSource
 	
     static triggers = {
@@ -16,8 +17,7 @@ class MailJob {
 	}
 		
 	def execute(context) {
-		Instelling automailInstelling = Instelling.findByNaam("automail");
-		if(automailInstelling && automailInstelling.waarde.toBoolean())
+		if(settingsService.isAutomailEnabled())
 		{
 			log.info "Automatisch e-mails versturen.."
 			def returned = myMailService.sendEmails(false);

@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta name="layout" content="beheer">
-	<title>Verstuur e-mails</title>
+	<title><g:message code="sending.mails.automatically" /></title>
 	<style type="text/css">
 		.warnings
 		{

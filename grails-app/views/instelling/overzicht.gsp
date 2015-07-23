@@ -13,5 +13,8 @@
 		          valueMessagePrefix="settings.allow_requests_from" value="${allowRequests}"/><br/>
 		<g:submitButton name="submitButton" value="${g.message(code:'submit')}"/>
 	</g:form>
+	<br/>
+	Automatisch versturen persoonlijke e-mails: <g:link controller="myMail" action="versturen"><g:message code="sending.mails.automatically" /></g:link><br/>
+	Automatisch versturen maillijst: <g:link controller="myMail" action="maillijst"><g:message code="maillijst" /></g:link>
 </body>
 </html>
