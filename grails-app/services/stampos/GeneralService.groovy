@@ -7,14 +7,14 @@ class GeneralService {
 
     def isAllowedToOrder(theRequest) {
 		boolean isAllowed = false
-		if(settingsService.allRequestsAllowed())
+		if(settingsService.isAllRequestsAllowed())
 		{
 			isAllowed = true
 		}
 		else
 		{
 			def starts;
-			if(settingsService.onlyLocalNetworkAllowed())
+			if(settingsService.isOnlyLocalNetworkAllowed())
 			{
 				starts = internal_network_starts
 				starts.addAll(localhost_starts)

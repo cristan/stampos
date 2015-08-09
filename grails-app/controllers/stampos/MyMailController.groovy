@@ -1,46 +1,28 @@
 package stampos
 
-import grails.util.GrailsUtil;
-
-import java.text.DateFormat;
-import java.text.DecimalFormat;
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 //import org.quartz.Trigger
 
 class MyMailController {
 
 	def klantService
-	def grailsApplication
 	def myMailService
-	
-	static DateFormat format = new SimpleDateFormat("dd-MM-yyyy")
-	
-    def maillijst() {
-		def klanten = Klant.list()
-		def toReturn = []
-		
-		for(Klant klant : klanten)
-		{
-			String klantNaam = klant.naam
-			BigDecimal tegoed = klantService.tegoed(klant)
-			if(klant.zichtbaar || tegoed < 0)
-			{
-				toReturn.add([naam: klantNaam, tegoed:tegoed])
-			}
-		}
-		
-		def to = grailsApplication.config.mail.to
-		def subject = grailsApplication.config.mail.subject
-		def appendDate = grailsApplication.config.mail.appendDate
-		
-		if(appendDate)
-		{
-			subject = subject +" "+ format.format(new Date())
-		}
-		
-		return [klantLijst:toReturn, to:to, subject:subject]
+	def settingsService
+
+	def maillijst() {
+		def klantLijst = myMailService.getMaillist();
+		return [klantLijst:klantLijst, automailListEnabled : settingsService.isAutomailListEnabled(), recipient : settingsService.automailListRecipient]
 	}
-	
+
+	def submitSettings()
+	{
+		settingsService.setAutomailListEnabled(params.automail != null)
+		settingsService.setAutomailListRecipient(params.recipient)
+
+		redirect (action:"maillijst")
+	}
+
 	def versturen()
 	{
 		def klantenMetEmail = Klant.findAllByZichtbaarAndEmailIsNotNull(true, [sort:"naam"]);
@@ -49,12 +31,12 @@ class MyMailController {
 		def automailEnabled = automailInstelling && automailInstelling.waarde.toBoolean();
 		return [metMail : klantenMetEmail, zonderMail: klantenZonderEmail, automailEnabled: automailEnabled]
 	}
-	
+
 	def doVerstuur()
 	{
 		return myMailService.sendEmails(true)
 	}
-	
+
 	def enableAutomail()
 	{
 		Instelling automailInstelling = Instelling.findOrCreateByNaam("automail");
@@ -62,7 +44,7 @@ class MyMailController {
 		automailInstelling.save()
 		redirect(action:"versturen")
 	}
-	
+
 	def disableAutomail()
 	{
 		Instelling automailInstelling = Instelling.findOrCreateByNaam("automail");

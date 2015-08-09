@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta name="layout" content="beheer">
-	<title>Maillijst</title>
+	<title><g:message code="maillijst" /></title>
 	<style type="text/css">
 		/* Undo grails table CSS */
 		table{
@@ -19,6 +19,9 @@
 			background: none;
 		}
 	</style>
+	
+	<link rel='stylesheet' type="text/css" href="${resource(dir: 'css', file: 'warnings.css')}" />
+	<g:javascript library="jquery" plugin="jquery"/>
 	<script type="text/javascript">
 	function selectElementText(el, win) {
 	    win = win || window;
@@ -37,24 +40,31 @@
 	}
 
 	</script>
+	
+	<script>
+		function automailChanged(checkbox)
+		{
+			alert(checkbox.is(':checked'))
+		}
+
+		$(document).ready(function () {
+			$('#automail').on("change", function(){
+				$("#recipient").prop('disabled', !this.checked);
+			});
+		});
+	</script>
 </head>
 <body>
-	<a href="mailto:${to}?subject=${subject}" target="_blank">Mail de maillijst</a><br/>
-	<button onclick="selectElementText(document.getElementById('theTable'));">Selecteer de maillijst</button>
-
-	<!-- Please note that text colors etc have to be inline styles, or else the mail client won't pick it up -->
-	<table id="theTable">
-	<g:each in="${klantLijst}" var="item">
-            <tr>
-            	<td>${item.naam}</td>
-            	<g:if test="${item.tegoed < 0}">
-            		<td style="color:#770000;">&euro;${item.tegoed}</td>
-            	</g:if>
-            	<g:if test="${item.tegoed >= 0}">
-            		<td>&euro;${item.tegoed}</td>
-            	</g:if>
-            </tr>
-     </g:each>
-     </table>
+	<g:render template="/templates/emailsettingsNotice" />
+	
+	<g:form action="submitSettings">
+		<g:checkBox name="automail" checked="${automailListEnabled}" />
+		<label for="automail"><g:if test="${klantLijst}">E-mail dit wekelijks naar</g:if><g:if test="${!klantLijst}">E-mail een lijst met klanten en hun rekeningen wekelijks naar</g:if></label> <g:field type="email" name="recipient" value="${recipient}" placeholder="ontvanger" required="true" disabled="${!automailListEnabled}"/>
+		<g:submitButton name="submit" value="Verstuur"/>
+	</g:form>
+	<br/>
+	
+	<g:render template="/templates/klantLijst" />
+	
 </body>
 </html>

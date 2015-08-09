@@ -149,7 +149,6 @@ environments {
 }
 
 
-mail.to="stam@scoutingmoordrecht.nl"
 mail.subject="Stambar rekeningen"
 mail.appendDate=true
 mail.sendername="Stambar Scouting Moordrecht"

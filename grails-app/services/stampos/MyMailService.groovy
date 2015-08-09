@@ -1,6 +1,9 @@
 package stampos
 
+import grails.gsp.PageRenderer
+import java.text.DateFormat;
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 
 import org.springframework.context.MessageSource
 
@@ -9,6 +12,7 @@ class MyMailService {
 	def klantService
 	def mailService
 	def grailsApplication
+	def settingsService
 	
 	MessageSource messageSource
 	
@@ -142,5 +146,58 @@ class MyMailService {
 		}
 		
 		return [financesWerentUpdated: false, klantenMetRekening: klantenMetRekening, klantenMetTegoedGemaild: klantenMetTegoedGemaild, klantenMetTegoedNietGemaild : klantenMetTegoedNietGemaild]
+	}
+	
+	def getMaillist()
+	{
+		def klanten = Klant.list()
+		def toReturn = []
+
+		for(Klant klant : klanten)
+		{
+			String klantNaam = klant.naam
+			BigDecimal tegoed = klantService.tegoed(klant)
+			if(klant.zichtbaar || tegoed < 0)
+			{
+				toReturn.add([naam: klantNaam, tegoed:tegoed])
+			}
+		}
+
+		return toReturn;
+	}
+	
+	def getMaillistSubject()
+	{
+		def subject = grailsApplication.config.mail.subject
+		def appendDate = grailsApplication.config.mail.appendDate
+
+		if(appendDate)
+		{
+			DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
+			subject = subject +" "+ df.format(new Date())
+		}
+		return subject
+	}
+	
+	
+	PageRenderer groovyPageRenderer
+	def sendEmailList()
+	{
+		def maillist = getMaillist();
+		//String html = render(template: "/templates/klantLijst", klantLijst: maillist)
+		String renderedMaillist = groovyPageRenderer.render template: '/templates/klantLijst', model: [klantLijst:maillist]
+		String htmlMessage="<!DOCTYPE HTML>\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n</head>\n<body>";
+		htmlMessage += renderedMaillist
+		htmlMessage += "</body>\n</html>"
+		
+		String recipient = settingsService.automailListRecipient
+		mailService.sendMail {
+			to recipient
+			from grailsApplication.config.mail.sendername +" <"+ grailsApplication.config.mail.senderaddress +">"
+			subject getMaillistSubject()
+			html htmlMessage
+		}
+		
+		return recipient
 	}
 }
