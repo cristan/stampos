@@ -5,18 +5,21 @@ import org.springframework.context.MessageSource
 
 
 
-class MailJob {
+class MailJob
+{
 	def myMailService
 	def settingsService
 	MessageSource messageSource
-	
-    static triggers = {
-//		cron name:'MailJobTrigger', cronExpression:"0,10,20,30,40,50 * * * * ?"// Every 10 seconds
-		cron name:'MailJobTrigger', cronExpression:"0 0 12 ? * SUN *"// Every sunday at 12 o'clock according to cronmaker.com
-//		cron name:'MailJobTrigger', cronExpression:"0 12 * * 0 ?"//Every sunday at 12 o'clock according to www.csgnetwork.com/crongen.html
+
+	static triggers =
+	{
+		// cron name:'MailJobTrigger', cronExpression:"0,10,20,30,40,50 * * * * ?"// Every 10 seconds
+		cron name:'MailJobTrigger', cronExpression:"0 0 12 ? * SUN *"// Every sunday at 12 o'clock according to cronmaker.com (working)
+		//		cron name:'MailJobTrigger', cronExpression:"0 12 * * 0 ?"//Every sunday at 12 o'clock according to www.csgnetwork.com/crongen.html
 	}
-		
-	def execute(context) {
+
+	def execute(context)
+	{
 		if(settingsService.isAutomailEnabled())
 		{
 			log.info "Automatisch e-mails versturen.."
@@ -28,7 +31,6 @@ class MailJob {
 				{
 					log.info klant.naam
 				}
-				
 			}
 			if(returned.klantenMetTegoedGemaild)
 			{
@@ -37,7 +39,6 @@ class MailJob {
 				{
 					log.info klant.naam
 				}
-				
 			}
 			if(returned.klantenMetTegoedNietGemaild)
 			{
@@ -50,15 +51,22 @@ class MailJob {
 		}
 		else
 		{
-			log.info "Automatisch e-mails versturen staat uit: geen e-mails worden verstuurd"
+			log.info "Automatisch e-mails versturen naar klanten niet uitgevoerd omdat dit uit staat"
 		}
-	  }
-	
+		if(settingsService.isAutomailListEnabled())
+		{
+			String recipient = myMailService.sendEmailList()
+			log.info "Maillijst verstuurd naar "+ recipient
+		}
+		else
+		{
+			log.info "Automatisch de maillijst versturen niet uitgevoerd omdat dit uit staat"
+		}
+	}
+
 	def message(Map[] arguments)
 	{
 		Object[] emptyArgs= []
 		return messageSource.getMessage(arguments.code[0], emptyArgs, Locale.default)
 	}
-	
-	
 }

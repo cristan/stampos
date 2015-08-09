@@ -7,36 +7,12 @@ import java.text.SimpleDateFormat
 class MyMailController {
 
 	def klantService
-	def grailsApplication
 	def myMailService
 	def settingsService
 
-	static DateFormat format = new SimpleDateFormat("dd-MM-yyyy")
-
 	def maillijst() {
-		def klanten = Klant.list()
-		def toReturn = []
-
-		for(Klant klant : klanten)
-		{
-			String klantNaam = klant.naam
-			BigDecimal tegoed = klantService.tegoed(klant)
-			if(klant.zichtbaar || tegoed < 0)
-			{
-				toReturn.add([naam: klantNaam, tegoed:tegoed])
-			}
-		}
-
-		def to = grailsApplication.config.mail.to
-		def subject = grailsApplication.config.mail.subject
-		def appendDate = grailsApplication.config.mail.appendDate
-
-		if(appendDate)
-		{
-			subject = subject +" "+ format.format(new Date())
-		}
-
-		return [klantLijst:toReturn, to:to, subject:subject, automailListEnabled : settingsService.isAutomailListEnabled(), recipient : settingsService.automailListRecipient]
+		def klantLijst = myMailService.getMaillist();
+		return [klantLijst:klantLijst, automailListEnabled : settingsService.isAutomailListEnabled(), recipient : settingsService.automailListRecipient]
 	}
 
 	def submitSettings()
