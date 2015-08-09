@@ -7,4 +7,7 @@ body{
 	/* Disables every touch action (zooming, panning etc). 
 		This will prevent accidental panning, but will cause problems when the users don't fit*/
 	touch-action: none;
+	-ms-touch-action: none;
+	content-zooming: none;
+	-ms-content-zooming: none; 
 }
