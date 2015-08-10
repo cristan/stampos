@@ -35,6 +35,7 @@ class KlantController {
 	{
 		int klantId = params.klantId as int
 		Klant klant = Klant.get(klantId)
+		klant.laatsteToegang = new Date()
 		
 		def tegoed = klantService.tegoed(klant)
 		def geblokkeerd = klantService.geblokkeerd(klant, tegoed)

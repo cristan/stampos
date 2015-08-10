@@ -165,6 +165,7 @@ function showLoadedKlantData(data)
 	else
 	{
 		$(".productSelectButton").removeAttr('disabled');
+		$('#userBlockedNotice').hide();
 	}
 	
 	selectedKlantGeblokkeerd = data.geblokkeerd
@@ -344,3 +345,12 @@ function confirmOrder()
 	}
 
 }
+
+function customerUpdated(updatedCustomerId)
+{
+	if(selectedKlant != null && updatedCustomerId == selectedKlant.id)
+	{
+		showInfoSelectedKlantPart2(0);
+	}
+}
+

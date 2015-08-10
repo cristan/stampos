@@ -8,6 +8,7 @@ class Klant {
 	String email;
 	String wachtwoord;
 	Date uitstelTot;
+	Date laatsteToegang;
 	boolean zichtbaar;
 	static hasMany = [betalingen: Betaling, bestellingen: Bestelling]
 	
@@ -22,6 +23,7 @@ class Klant {
 		email nullable:true 
 		wachtwoord nullable:true 
 		uitstelTot nullable:true 
+		laatsteToegang nullable:true 
     }
 	
 	@Override

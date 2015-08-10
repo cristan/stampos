@@ -1,0 +1,18 @@
+.warnings
+{
+	background: none repeat scroll 0 0 #FFF9F3;
+    border: 1px solid #FFD4AA;
+    box-shadow: 0 0 0.25em #FFC388;
+    color: #CC6600;
+    
+    
+    font-size: 0.8em;
+    line-height: 2;
+    margin: 1em 2em;
+    padding: 0.25em;
+}
+
+#pageContent
+{
+	padding-top: 0.5em !important;
+}

@@ -6,6 +6,7 @@ import java.security.MessageDigest
 class DeblokkeerController {
 	
 	def klantService
+	def pushService
 
     def deblokkeer() { }
 	
@@ -63,6 +64,7 @@ class DeblokkeerController {
 		Klant klant = Klant.get(klantId)
 		klant.uitstelTot = klantService.komendeMaandag()
 		klant.save(true)
+		pushService.userUpdated(klant)
 		render "${params.callback}()"
 	}
 }
