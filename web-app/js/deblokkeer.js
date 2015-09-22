@@ -65,7 +65,7 @@ function tekenKlanten()
 
 function deblokkeerKlant(clickedButton, klant)
 {
-	$.getJSON('deblokkeer/doDeblokkeer?klantId='+ klant.id +'&callback=?', function(data) {
+	$.getJSON('doDeblokkeer?klantId='+ klant.id +'&callback=?', function(data) {
 		$("#back"+klant.id).html(klant.naam +" is gedeblokkeerd");
 		$("#flipper"+klant.id).addClass("flip");
 		

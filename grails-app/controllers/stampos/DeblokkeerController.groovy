@@ -52,7 +52,7 @@ class DeblokkeerController {
 			def geblokkeerd = klantService.geblokkeerd(klant)
 			if(geblokkeerd)
 			{
-				geblokkeerdeKlanten.add(klant);
+				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam]);
 			}
 		}
 		render geblokkeerdeKlanten as JSON
