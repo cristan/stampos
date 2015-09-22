@@ -39,10 +39,10 @@ class DeblokkeerController {
 		}
 		
 		def result = [loggedIn: loggedIn]
-		render "${params.callback}(${result as JSON})"
+		render result as JSON
 	}
 	
-	def getBlockedUsers()
+	def blockedUsers()
 	{
 		def geblokkeerdeKlanten = []
 		def klanten = Klant.findAllWhere(zichtbaar: true)
@@ -55,7 +55,7 @@ class DeblokkeerController {
 				geblokkeerdeKlanten.add(klant);
 			}
 		}
-		render "${params.callback}(${geblokkeerdeKlanten as JSON})"
+		render geblokkeerdeKlanten as JSON
 	}
 	
 	def doDeblokkeer()

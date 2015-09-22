@@ -7,7 +7,7 @@ function logIn(password)
 	$("#passwordField").css("border", "2px solid white");
 
 	
-	$.getJSON('deblokkeer/logIn?password='+ password +'&callback=?', function(data) {
+	$.getJSON('logIn?password='+ password, function(data) {
 		if(!data.loggedIn)
 		{
 			$("#passwordField").addClass("incorrectAnimation");
@@ -23,7 +23,7 @@ function logIn(password)
 		}
 	});
 
-	$.getJSON('deblokkeer/getBlockedUsers?callback=?', function(data) {
+	$.getJSON('blockedUsers', function(data) {
 		klanten = data;
 		tekenKlanten();
 		dataLoaded = true;
