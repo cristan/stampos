@@ -54,7 +54,7 @@ class DeblokkeerController {
 			if(geblokkeerd)
 			{
 				Date laatstBetaald = klantService.laatstBetaald(klant)
-				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam, "tegoed": tegoed, "laatstBetaald": laatstBetaald]);
+				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam, "tegoed": tegoed, "laatstBetaald": laatstBetaald, "laatsteToegang": klant.laatsteToegang]);
 			}
 		}
 		render geblokkeerdeKlanten as JSON
