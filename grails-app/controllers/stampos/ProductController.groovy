@@ -36,7 +36,7 @@ class ProductController {
 			def pps = ProductPrijs.findAllWhere(actiefTot: null, product: product)
 			if(pps.size() == 0)
 			{
-				throw new Exception("Geen actieve ProductPrijs gevonden van product: "+ product +". "
+				log.error("Geen actieve ProductPrijs gevonden van product: "+ product +". "
 					+"Voeg een ProductPrijs toe, maak het product onzichtbaar of verwijder het product")
 			}
 			else if (pps.size() > 1)

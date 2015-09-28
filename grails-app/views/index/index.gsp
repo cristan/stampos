@@ -64,11 +64,11 @@ $(document).ready(function () {
 	
 </div>
 <div id="noUsersNotice">
-	Geen klanten gevonden. Maak deze aan in <g:link controller="klant">het beheer</g:link>.
+	Geen klanten gevonden. Maak <g:link controller="klant">deze</g:link> aan in <g:link controller="beheer">het beheer</g:link>.
 </div>
 <div id="right">
 	<div id="productButtonsArea"></div>
-	<div id="noProductsNotice">Geen producten gevonden. Maak deze aan in <g:link controller="product">het beheer</g:link>.</div>
+	<div id="noProductsNotice">Geen producten met prijs gevonden. Maak <g:link controller="product">producten</g:link> aan en koppel hier <g:link controller="productPrijs">productPrijzen</g:link> aan.</div>
 	<div id="order">
 	</div>
 </div>
