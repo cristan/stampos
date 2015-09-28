@@ -49,10 +49,12 @@ class DeblokkeerController {
 		klanten.sort{it.naam}
 		for(Klant klant : klanten)
 		{
-			def geblokkeerd = klantService.geblokkeerd(klant)
+			BigDecimal tegoed = klantService.tegoed(klant)
+			def geblokkeerd = klantService.geblokkeerd(klant, tegoed)
 			if(geblokkeerd)
 			{
-				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam]);
+				Date laatstBetaald = klantService.laatstBetaald(klant)
+				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam, "tegoed": tegoed, "laatstBetaald": laatstBetaald]);
 			}
 		}
 		render geblokkeerdeKlanten as JSON

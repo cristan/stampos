@@ -25,6 +25,20 @@ class KlantService {
 		return geblokkeerd(klant, null);
 	}
 	
+	def laatstBetaald(Klant klant)
+	{
+		def betalingen = Betaling.where{klant == klant}.list(sort: 'datum', order: 'desc', max: 1)
+		if(!betalingen)
+		{
+			return null
+		}
+		else
+		{
+			println "datum: "+ betalingen[0].datum
+			return betalingen[0].datum
+		}
+	}
+	
 	def geblokkeerd(Klant klant, BigDecimal tegoedKlant)
 	{
 		if(klant.uitstelTot)
