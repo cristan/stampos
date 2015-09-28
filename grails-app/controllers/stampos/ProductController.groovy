@@ -1,6 +1,7 @@
 package stampos
 
 import grails.converters.JSON
+import grails.util.Environment
 
 class ProductController {
 
@@ -22,7 +23,7 @@ class ProductController {
 	def private getAllProductPrijzen()
 	{
 		List<Product> allProducts = Product.findAllWhere(zichtbaar: true);
-		if(allProducts.isEmpty())
+		if(allProducts.isEmpty() && Environment.current != Environment.PRODUCTION)
 		{
 			allProducts = testDataService.getTestProducten()
 		}

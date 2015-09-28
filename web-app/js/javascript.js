@@ -11,7 +11,9 @@ var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, max
 function startStamPOS(allowedToOrder)
 {
 	var productenLoaded = false;
+	var productedPresent = false;
 	var klantenLoaded = false;
+	var klantenPresent = false;
 	this.environmentName = environmentName;
 	this.allowedToOrder = allowedToOrder;
 	
@@ -28,10 +30,11 @@ function startStamPOS(allowedToOrder)
 			$("#productButtonsArea").append(test);
 		});
 		productenLoaded = true;
+		productenPresent = data.length != 0;
 
 		if(klantenLoaded)
 		{
-			getThisShowOnTheRoad();
+			getThisShowOnTheRoad(productenPresent, klantenPresent);
 		}
 	});
 	
@@ -48,10 +51,11 @@ function startStamPOS(allowedToOrder)
 			$("#userButtonsArea").append(zeButton);
 		});
 		klantenLoaded = true;
+		klantenPresent = data.length != 0;
 
 		if(productenLoaded)
 		{
-			getThisShowOnTheRoad();
+			getThisShowOnTheRoad(productenPresent, klantenPresent);
 		}
 	});
 	
@@ -72,15 +76,41 @@ function startStamPOS(allowedToOrder)
 
 var klantWeerTerugTimeout;
 
-function getThisShowOnTheRoad()
+function getThisShowOnTheRoad(productenPresent, klantenPresent)
 {
 	$("#loading").addClass("loadingDone");
 	if(allowedToOrder)
 	{
-		$("#productButtonsArea").show();
-		$("#productButtonsArea").addClass("productButtonsAreaShown");
+		if(productenPresent)
+		{
+			$("#noProductsNotice").hide();
+			$("#productButtonsArea").show();
+			$("#productButtonsArea").addClass("opaque");
+		}
+		else
+		{
+			$("#noProductsNotice").show();
+			$("#noProductsNotice").addClass("opaque");
+		}
 	}
-	$("#userButtonsArea").addClass("userButtonsAreaShown");
+	else
+	{
+		// They all have opacity 0, but properly hide them to be sure.
+		$("#noProductsNotice").hide();
+		$("#productButtonsArea").hide();
+	}
+	
+	if(klantenPresent)
+	{
+		$("#noUsersNotice").hide();
+		$("#userButtonsArea").addClass("opaque");
+	}
+	else
+	{
+		$("#noUsersNotice").addClass("opaque");
+	}
+	
+	
 	setTimeout(function(){
 		$("#loading").remove();// The opacity should already be 0 by now, but remove it just in case, maybe it'll help performance 
 	}, 2000);
@@ -248,7 +278,7 @@ function showOrderButtons(ranASecondTime)
 		// No order
 		if(!ranASecondTime)
 		{
-			$("#orderActionsArea").removeClass("orderActionsAreaShown");
+			$("#orderActionsArea").removeClass("opaque");
 			setTimeout(function(){
 				showOrderButtons(true);
 			}, 200);
@@ -265,13 +295,13 @@ function showOrderButtons(ranASecondTime)
 	else if(selectedKlantGeblokkeerd == true || selectedKlant == null && order.length != 0 || selectedKlant != 0 && order.length == 0)
 	{
 		// incomplete order
-		$("#orderActionsArea").addClass("orderActionsAreaShown");
+		$("#orderActionsArea").addClass("opaque");
 		$("#clearOrderDiv").removeClass("completeClearOrderDiv");
 	}
 	else
 	{
 		// complete order
-		$("#orderActionsArea").addClass("orderActionsAreaShown");
+		$("#orderActionsArea").addClass("opaque");
 		$("#clearOrderDiv").addClass("completeClearOrderDiv");
 	}
 }
