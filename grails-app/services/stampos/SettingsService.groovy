@@ -9,6 +9,8 @@ class SettingsService {
 	private static final String S_AUTOMAIL = "automail";
 	private static final String S_AUTOMAIL_LIST = "automailList";
 	private static final String S_AUTOMAIL_LIST_RECIPIENT = "automailListRecipient"
+	private static final String S_SENDER_NAME = "senderName"
+	private static final String S_SENDER_EMAIL = "senderEmail"
 	
 	public static final String EVERYWHERE = "everywhere";
 	public static final String LOCAL_NETWORK = "local_network";
@@ -96,5 +98,97 @@ class SettingsService {
 	def setAutomailListRecipient(String recipient)
 	{
 		return setValue(S_AUTOMAIL_LIST_RECIPIENT, recipient)
+	}
+	
+	def setSenderName(String senderName)
+	{
+		setValue(S_SENDER_NAME, senderName)
+	}
+	
+	def String getSenderName()
+	{
+		return getSetting(S_SENDER_NAME, "")
+	}
+	
+	def setSenderEmail(String senderEmail)
+	{
+		setValue(S_SENDER_EMAIL, senderEmail)
+	}
+	
+	def String getSenderEmail()
+	{
+		return getSetting(S_SENDER_EMAIL, "")
+	}
+	
+	private static final String S_SMTP_HOST = "smtpHost"
+	
+	def String getSmtpHost()
+	{
+		return getSetting(S_SMTP_HOST, "")
+	}
+	
+	def setSmtpHost(String value)
+	{
+		setValue(S_SMTP_HOST, value)
+	}
+	
+	private static final String S_SMTP_PORT = "smtpPort"
+	
+	def String getSmtpPort()
+	{
+		return getSetting(S_SMTP_PORT, "")
+	}
+	
+	def setSmtpPort(String value)
+	{
+		setValue(S_SMTP_PORT, value)
+	}
+	
+	private static final String S_SMTP_USERNAME = "smtpUsername"
+	
+	def String getSmtpUsername()
+	{
+		return getSetting(S_SMTP_USERNAME, "")
+	}
+	
+	def setSmtpUsername(String value)
+	{
+		setValue(S_SMTP_USERNAME, value)
+	}
+	
+	private static final String S_SMTP_PASSWORD = "smtpPassword"
+	
+	def String getSmtpPassword()
+	{
+		return getSetting(S_SMTP_PASSWORD, "")
+	}
+	
+	def setSmtpPassword(String value)
+	{
+		setValue(S_SMTP_PASSWORD, value)
+	}
+	
+	private static final String S_ACCOUNT_OWNER = "accountOwner"
+	
+	def String getAccountOwner()
+	{
+		return getSetting(S_ACCOUNT_OWNER, "")
+	}
+	
+	def setAccountOwner(String value)
+	{
+		setValue(S_ACCOUNT_OWNER, value)
+	}
+	
+	private static final String S_ACCOUNT_IBAN = "accountIban"
+	
+	def String getAccountIban()
+	{
+		return getSetting(S_ACCOUNT_IBAN, "")
+	}
+	
+	def setAccountIban(String value)
+	{
+		setValue(S_ACCOUNT_IBAN, value)
 	}
 }
