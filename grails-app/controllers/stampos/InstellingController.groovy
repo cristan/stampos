@@ -15,7 +15,8 @@ class InstellingController {
 			"smtpusername": settingsService.getSmtpUsername(),
 			"smtppassword": settingsService.getSmtpPassword(),
 			"accountowner": settingsService.getAccountOwner(),
-			"accountiban": settingsService.getAccountIban() ]
+			"accountiban": settingsService.getAccountIban(),
+			"serverurl": settingsService.getServerUrl() ]
 	}
 	
 	def submit()
@@ -34,6 +35,7 @@ class InstellingController {
 		settingsService.setSmtpPassword(params.smtppassword)
 		settingsService.setAccountOwner(params.accountowner)
 		settingsService.setAccountIban(params.accountiban)
+		settingsService.setServerUrl(params.serverurl)
 		flash.message = g.message(code: "settings.saved")
 		redirect (action:"overzicht")
 	}

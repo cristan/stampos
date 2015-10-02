@@ -55,7 +55,7 @@ class MyMailService {
 			def format = DecimalFormat.getInstance(Locale.FRANCE);
 			format.setMinimumFractionDigits(2)
 			def klantNaam = klant.naam
-			def persoonlijkeUrl = "http://stambar.nl/klantinfo/"+klant.id
+			def persoonlijkeUrl = settingsService.getServerUrl() +"klantinfo/"+klant.id
 			def titel
 			def bericht
 			boolean mail = false
@@ -67,7 +67,7 @@ class MyMailService {
 				Object[] parameters = []
 				titel = messageSource.getMessage("mail.insufficientfunds.title", parameters, Locale.default);
 				def rekening = format.format(-tegoed)
-				parameters = [klantNaam, rekening]
+				parameters = [klantNaam, rekening, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
 				bericht = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
 			}
 			else
@@ -115,7 +115,7 @@ class MyMailService {
 					Object[] parameters = [geformatteerdTegoed]
 					titel = messageSource.getMessage('mail.sufficientfunds.title', parameters, Locale.default);
 					
-					parameters = [klantNaam, geformatteerdTegoed]
+					parameters = [klantNaam, geformatteerdTegoed, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
 					bericht = messageSource.getMessage('mail.sufficientfunds.message', parameters, Locale.default);
 				}
 			}
@@ -152,6 +152,27 @@ class MyMailService {
 		}
 		
 		return [financesWerentUpdated: false, klantenMetRekening: klantenMetRekening, klantenMetTegoedGemaild: klantenMetTegoedGemaild, klantenMetTegoedNietGemaild : klantenMetTegoedNietGemaild]
+	}
+	
+	/**
+	 * Browsers format collections of numbers as a phone number. In order to prevent this,
+	 * put span elements around all words 
+	 */
+	private def getHtmlCompatibleAccountIban()
+	{
+		String accountIban = settingsService.getAccountIban()
+		String[] split = accountIban.split(" ")
+		String toReturn = ""
+		for(int i = 0; i < split.length; i++)
+		{
+			String word = split[i]
+			toReturn += "<span>"+word+"</span>"
+			if(i != split.length - 1)
+			{
+				toReturn += " ";
+			}
+		}
+		return toReturn
 	}
 	
 	def getMaillist()

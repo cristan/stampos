@@ -57,9 +57,10 @@
 			<label for="senderemail"><g:message code="settings.email.senderemail"/></label><g:field type="email" name="senderemail" value="${senderemail}"/><br/>
 			
 			<br/>
-			<h2><g:message code="settings.email.account"/></h2>
+			<h2><g:message code="settings.email.contents"/></h2>
 			<label for="accountiban"><g:message code="settings.email.account.iban"/></label><g:textField name="accountiban" value="${accountiban}"/><br/>
 			<label for="accountowner"><g:message code="settings.email.account.owner"/></label><g:textField name="accountowner" value="${accountowner}"/><br/>
+			<label for="serverurl"><g:message code="settings.email.server.url"/></label><g:textField name="serverurl" value="${serverurl}"/><br/>
 			
 			<br/>
 			<g:submitButton name="submitButton" value="${g.message(code:'save')}" style="clear:both;"/>

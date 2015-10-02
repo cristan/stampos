@@ -184,4 +184,28 @@ class SettingsService {
 	{
 		setValue(S_ACCOUNT_IBAN, value)
 	}
+	
+	private static final String S_SERVER_URL = "serverUrl"
+	
+	def String getServerUrl()
+	{
+		String serverUrl = getSetting(S_SERVER_URL, "")
+		if(serverUrl)
+		{
+			if(!serverUrl.startsWith("http://") && !serverUrl.startsWith("https://"))
+			{
+				serverUrl = "http://"+ serverUrl
+			}
+			if(!serverUrl.endsWith("/"))
+			{
+				serverUrl += "/"
+			}
+		}
+		return serverUrl
+	}
+	
+	def setServerUrl(String value)
+	{
+		setValue(S_SERVER_URL, value)
+	}
 }
