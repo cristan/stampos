@@ -64,7 +64,7 @@ class MailJob
 		}
 	}
 
-	def message(Map[] arguments)
+	private def message(Map[] arguments)
 	{
 		Object[] emptyArgs= []
 		return messageSource.getMessage(arguments.code[0], emptyArgs, Locale.default)

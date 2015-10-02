@@ -19,6 +19,9 @@
 	Elke zondag om 12.00 uur e-mails verzenden staat <strong>uit</strong>
 	<g:actionSubmit value="Zet aan" action="enableAutomail"/>
 </g:else>
+<g:if test="${grailsApplication.config.mail.dont_mail_when_finances_not_uploaded}">
+	Deze mails worden niet verstuurd wanneer de financien niet geupdatet zijn.
+</g:if>
 
 </g:form>
 <br/>

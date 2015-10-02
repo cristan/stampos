@@ -120,6 +120,11 @@ class SettingsService {
 		return getSetting(S_SENDER_EMAIL, "")
 	}
 	
+	def String getSender()
+	{
+		getSenderName() +" <"+ getSenderEmail() +">"
+	}
+	
 	private static final String S_SMTP_HOST = "smtpHost"
 	
 	def String getSmtpHost()
@@ -130,18 +135,6 @@ class SettingsService {
 	def setSmtpHost(String value)
 	{
 		setValue(S_SMTP_HOST, value)
-	}
-	
-	private static final String S_SMTP_PORT = "smtpPort"
-	
-	def String getSmtpPort()
-	{
-		return getSetting(S_SMTP_PORT, "")
-	}
-	
-	def setSmtpPort(String value)
-	{
-		setValue(S_SMTP_PORT, value)
 	}
 	
 	private static final String S_SMTP_USERNAME = "smtpUsername"

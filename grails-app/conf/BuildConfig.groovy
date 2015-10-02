@@ -59,9 +59,8 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
-		compile ':mail:1.0.7', {
-			excludes 'spring-test'
-		}
+		
+		compile ":novamail:0.3.8" 
 		compile ":csv:0.3.1"
 		compile ":quartz:1.0.2"
 		compile ':asset-pipeline:2.3.9'

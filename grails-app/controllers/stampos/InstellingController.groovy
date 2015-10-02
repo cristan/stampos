@@ -12,7 +12,6 @@ class InstellingController {
 			"sendername": settingsService.getSenderName(),
 			"senderemail": settingsService.getSenderEmail(),
 			"smtphost": settingsService.getSmtpHost(),
-			"smtpport": settingsService.getSmtpPort(),
 			"smtpusername": settingsService.getSmtpUsername(),
 			"smtppassword": settingsService.getSmtpPassword(),
 			"accountowner": settingsService.getAccountOwner(),
@@ -31,7 +30,6 @@ class InstellingController {
 		settingsService.setSenderName(params.sendername)
 		settingsService.setSenderEmail(params.senderemail)
 		settingsService.setSmtpHost(params.smtphost)
-		settingsService.setSmtpPort(params.smtpport)
 		settingsService.setSmtpUsername(params.smtpusername)
 		settingsService.setSmtpPassword(params.smtppassword)
 		settingsService.setAccountOwner(params.accountowner)

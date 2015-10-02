@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource
 class MyMailService {
 
 	def klantService
-	def mailService
+	def messagingService
 	def grailsApplication
 	def settingsService
 	
@@ -126,12 +126,18 @@ class MyMailService {
 				bericht += messageSource.getMessage('mail.funds.footer', parameters, Locale.default);
 						
 				// actually mail
-				mailService.sendMail {
-					to klant.naam +" <"+klant.email+">"
-					from grailsApplication.config.mail.sendername +" <"+ grailsApplication.config.mail.senderaddress +">"
-					subject titel
-					html bericht.replace("\n", "<br>")
-				}
+				messagingService.sendEmail(
+					settingsService.getSmtpHost(),
+					settingsService.getSmtpUsername(),
+					settingsService.getSmtpPassword(),
+					settingsService.getSender(),
+					klant.email,
+					titel,
+					bericht.replace("\n", "<br>"),
+					true,
+					null,
+					null
+					)
 			}
 		}
 		
@@ -191,12 +197,18 @@ class MyMailService {
 		htmlMessage += "</body>\n</html>"
 		
 		String recipient = settingsService.automailListRecipient
-		mailService.sendMail {
-			to recipient
-			from grailsApplication.config.mail.sendername +" <"+ grailsApplication.config.mail.senderaddress +">"
-			subject getMaillistSubject()
-			html htmlMessage
-		}
+		messagingService.sendEmail(
+			settingsService.getSmtpHost(),
+			settingsService.getSmtpUsername(),
+			settingsService.getSmtpPassword(),
+			settingsService.getSender(),
+			recipient,
+			getMaillistSubject(),
+			htmlMessage,
+			true,
+			null,
+			null
+			)
 		
 		return recipient
 	}
