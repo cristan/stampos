@@ -9,6 +9,8 @@ import org.springframework.context.MessageSource
 
 class MyMailService {
 
+	private static final String TIME_LAST_MAIL = "TimeLastMail"
+
 	def klantService
 	def messagingService
 	def grailsApplication
@@ -25,13 +27,14 @@ class MyMailService {
 		def klantenMetTegoedNietGemaild = []
 		
 		Date timeLastMail
-		Instelling timeLastMailInstelling = Instelling.findByNaam("TimeLastMail")
+		Instelling timeLastMailInstelling = Instelling.findByNaam(TIME_LAST_MAIL)
+		boolean financesWerentUpdated = false
 		if(timeLastMailInstelling)
 		{
 			Long time = Long.parseLong(timeLastMailInstelling.getWaarde())
 			timeLastMail = new Date(time)
 			
-			if(!alwaysMail && grailsApplication.config.mail.dont_mail_when_finances_not_uploaded)
+			if(!alwaysMail && !settingsService.isAutomailWhenFinancesNotUpdated())
 			{
 				Instelling lastUploadedInstelling = Instelling.findByNaam(UploadController.INITIAL_DATE)
 				if(lastUploadedInstelling)
@@ -39,119 +42,121 @@ class MyMailService {
 					Date lastUploadedDate = UploadController.sensibleDateFormat.parse(lastUploadedInstelling.waarde);
 					if(lastUploadedDate < timeLastMail)
 					{
-						Object[] parameters = []
-						def toLog = messageSource.getMessage("mail.finances_werent_updated", parameters, Locale.default)
-						log.info(toLog)
-						return [financesWerentUpdated: true]
+						financesWerentUpdated = true
 					}
 				}
 			}
 		}
-		
-		
-		for(Klant klant : klantenMetEmail)
+		if(financesWerentUpdated)
 		{
-			def tegoed = klantService.tegoed(klant)
-			def format = DecimalFormat.getInstance(Locale.FRANCE);
-			format.setMinimumFractionDigits(2)
-			def klantNaam = klant.naam
-			def persoonlijkeUrl = settingsService.getServerUrl() +"klantinfo/"+klant.id
-			def titel
-			def bericht
-			boolean mail = false
-			if(tegoed < 0)
+			return [financesWerentUpdated: true]
+		}
+		else
+		{
+			for(Klant klant : klantenMetEmail)
 			{
-				klantenMetRekening.add(klant)
-				
-				mail = true
-				Object[] parameters = []
-				titel = messageSource.getMessage("mail.insufficientfunds.title", parameters, Locale.default);
-				def rekening = format.format(-tegoed)
-				parameters = [klantNaam, rekening, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
-				bericht = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
-			}
-			else
-			{
-				// If the klant is invisible and doesn't have to pay, we assume the customer is no longer relevant
-				if(klant.zichtbaar)
+				def tegoed = klantService.tegoed(klant)
+				def format = DecimalFormat.getInstance(Locale.FRANCE);
+				format.setMinimumFractionDigits(2)
+				def klantNaam = klant.naam
+				def persoonlijkeUrl = settingsService.getServerUrl() +"klantinfo/"+klant.id
+				def titel
+				def bericht
+				boolean mail = false
+				if(tegoed < 0)
 				{
-					// Check for changes since the last time we mailed
-					if(!timeLastMail)
+					klantenMetRekening.add(klant)
+					
+					mail = true
+					Object[] parameters = []
+					titel = messageSource.getMessage("mail.insufficientfunds.title", parameters, Locale.default);
+					def rekening = format.format(-tegoed)
+					parameters = [klantNaam, rekening, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
+					bericht = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
+				}
+				else
+				{
+					// If the klant is invisible and doesn't have to pay, we assume the customer is no longer relevant
+					if(klant.zichtbaar)
 					{
-						mail = true
-					}
-					else
-					{
-						def countBestellingen = Bestelling.countByKlantAndDatumGreaterThan(klant, timeLastMail)
-						if(countBestellingen > 0)
+						// Check for changes since the last time we mailed
+						if(!timeLastMail)
 						{
 							mail = true
 						}
 						else
 						{
-							// When you create a Betaling in the scaffolding, the time portion gets cleared, so it goes back a bit in time.
-							// Therefore, we also include any betalingen today regardless of their time
-							Date timeLastMailWithoutTime = timeLastMail.clone()
-							timeLastMailWithoutTime.clearTime()
-							
-							def countBetalingen = Betaling.countByKlantAndDatumGreaterThanEquals(klant, timeLastMailWithoutTime)
-							if(countBetalingen > 0)
+							def countBestellingen = Bestelling.countByKlantAndDatumGreaterThan(klant, timeLastMail)
+							if(countBestellingen > 0)
 							{
 								mail = true
 							}
+							else
+							{
+								// When you create a Betaling in the scaffolding, the time portion gets cleared, so it goes back a bit in time.
+								// Therefore, we also include any betalingen today regardless of their time
+								Date timeLastMailWithoutTime = timeLastMail.clone()
+								timeLastMailWithoutTime.clearTime()
+								
+								def countBetalingen = Betaling.countByKlantAndDatumGreaterThanEquals(klant, timeLastMailWithoutTime)
+								if(countBetalingen > 0)
+								{
+									mail = true
+								}
+							}
 						}
+					}
+					
+					if(!mail)
+					{
+						klantenMetTegoedNietGemaild.add(klant)
+					}
+					else
+					{
+						klantenMetTegoedGemaild.add(klant)
+						
+						def geformatteerdTegoed = format.format(tegoed)
+						Object[] parameters = [geformatteerdTegoed]
+						titel = messageSource.getMessage('mail.sufficientfunds.title', parameters, Locale.default);
+						
+						parameters = [klantNaam, geformatteerdTegoed, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
+						bericht = messageSource.getMessage('mail.sufficientfunds.message', parameters, Locale.default);
 					}
 				}
 				
-				if(!mail)
+				if(mail)
 				{
-					klantenMetTegoedNietGemaild.add(klant)
-				}
-				else
-				{
-					klantenMetTegoedGemaild.add(klant)
-					
-					def geformatteerdTegoed = format.format(tegoed)
-					Object[] parameters = [geformatteerdTegoed]
-					titel = messageSource.getMessage('mail.sufficientfunds.title', parameters, Locale.default);
-					
-					parameters = [klantNaam, geformatteerdTegoed, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
-					bericht = messageSource.getMessage('mail.sufficientfunds.message', parameters, Locale.default);
+					Object[] parameters = [persoonlijkeUrl]
+					bericht += messageSource.getMessage('mail.funds.footer', parameters, Locale.default);
+							
+					// actually mail
+					messagingService.sendEmail(
+						settingsService.getSmtpHost(),
+						settingsService.getSmtpUsername(),
+						settingsService.getSmtpPassword(),
+						settingsService.getSender(),
+						klant.email,
+						titel,
+						bericht.replace("\n", "<br>"),
+						true,
+						null,
+						null
+						)
 				}
 			}
 			
-			if(mail)
+			if(timeLastMailInstelling)
 			{
-				Object[] parameters = [persoonlijkeUrl]
-				bericht += messageSource.getMessage('mail.funds.footer', parameters, Locale.default);
-						
-				// actually mail
-				messagingService.sendEmail(
-					settingsService.getSmtpHost(),
-					settingsService.getSmtpUsername(),
-					settingsService.getSmtpPassword(),
-					settingsService.getSender(),
-					klant.email,
-					titel,
-					bericht.replace("\n", "<br>"),
-					true,
-					null,
-					null
-					)
+				timeLastMailInstelling.setWaarde(String.valueOf(System.currentTimeMillis()))
 			}
+			else
+			{
+				timeLastMailInstelling = new Instelling(naam: TIME_LAST_MAIL, waarde: String.valueOf(System.currentTimeMillis()))
+				timeLastMailInstelling.save()
+			}
+			
+			return [financesWerentUpdated: false, klantenMetRekening: klantenMetRekening, klantenMetTegoedGemaild: klantenMetTegoedGemaild, klantenMetTegoedNietGemaild : klantenMetTegoedNietGemaild]
 		}
-		
-		if(timeLastMailInstelling)
-		{
-			timeLastMailInstelling.setWaarde(String.valueOf(System.currentTimeMillis()))
-		}
-		else
-		{
-			timeLastMailInstelling = new Instelling(naam: "TimeLastMail", waarde: String.valueOf(System.currentTimeMillis()))
-			timeLastMailInstelling.save()
-		}
-		
-		return [financesWerentUpdated: false, klantenMetRekening: klantenMetRekening, klantenMetTegoedGemaild: klantenMetTegoedGemaild, klantenMetTegoedNietGemaild : klantenMetTegoedNietGemaild]
 	}
 	
 	/**

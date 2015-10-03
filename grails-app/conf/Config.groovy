@@ -149,8 +149,5 @@ environments {
 }
 
 //Settings for sending the list
-mail.subject="Stambar rekeningen"
+mail.subject="Overzicht rekeningen"
 mail.appendDate=true
-
-// Settings for sending individual e-mails
-mail.dont_mail_when_finances_not_uploaded=true

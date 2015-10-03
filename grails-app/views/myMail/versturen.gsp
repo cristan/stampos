@@ -7,23 +7,27 @@
 <body>
 <g:render template="/templates/emailsettingsNotice" />
 
-<g:form>
-<g:actionSubmit value="Verstuur berichten" action="doVerstuur"/>
-<g:if test="${automailEnabled}">
-	<br/>
-	Elke zondag om 12.00 uur e-mails verzenden staat <strong>aan</strong>
-	<g:actionSubmit value="Zet uit" action="disableAutomail"/>
+<g:if test="${emailSettingsSet}">
+	<g:form>
+		<g:actionSubmit value="Verstuur berichten" action="doVerstuur"/>
+		<br/>
+		<g:if test="${automailEnabled}">
+			Elke zondag om 12.00 uur e-mails verzenden staat <strong>aan</strong>
+			<g:actionSubmit value="Zet uit" action="disableAutomail"/>
+			<br/>		
+			<g:if test="${automailWhenFinancesNotUpdated}">
+				Deze mails worden <strong>ook</strong> verstuurd wanneer de financien niet geupdatet zijn. <g:actionSubmit value="Mail dan niet" action="disableAutomailWhenFinancesNotUpdated"/>
+			</g:if>
+			<g:else>
+				Deze mails worden <strong>niet</strong> verstuurd wanneer de financien niet geupdatet zijn. <g:actionSubmit value="Mail dan wel" action="enableAutomailWhenFinancesNotUpdated"/>
+			</g:else>
+		</g:if>
+		<g:else>
+			Elke zondag om 12.00 uur e-mails verzenden staat <strong>uit</strong>
+			<g:actionSubmit value="Zet aan" action="enableAutomail"/>
+		</g:else>
+	</g:form>
 </g:if>
-<g:else>
-	<br/>
-	Elke zondag om 12.00 uur e-mails verzenden staat <strong>uit</strong>
-	<g:actionSubmit value="Zet aan" action="enableAutomail"/>
-</g:else>
-<g:if test="${grailsApplication.config.mail.dont_mail_when_finances_not_uploaded}">
-	Deze mails worden niet verstuurd wanneer de financien niet geupdatet zijn.
-</g:if>
-
-</g:form>
 <br/>
 <g:if test="${metMail.size==1}"><strong>Er is 1 klant met een e-mail adres</strong><br/></g:if>
 <g:if test="${metMail.size!=1}"><strong>Er zijn ${metMail.size} klanten met een e-mail adres</strong><br/></g:if>

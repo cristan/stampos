@@ -8,6 +8,7 @@ class SettingsService {
 	private static final String S_ALLOW_REQUESTS = "allowRequests";
 	private static final String S_AUTOMAIL = "automail";
 	private static final String S_AUTOMAIL_LIST = "automailList";
+	private static final String S_AUTOMAIL_WHEN_FINANCES_NOT_UPDATED = "automailWhenFinancesNotUpdated";
 	private static final String S_AUTOMAIL_LIST_RECIPIENT = "automailListRecipient"
 	private static final String S_SENDER_NAME = "senderName"
 	private static final String S_SENDER_EMAIL = "senderEmail"
@@ -90,6 +91,16 @@ class SettingsService {
 		setValue(S_AUTOMAIL_LIST, String.valueOf(enabled))
 	}
 	
+	def boolean isAutomailWhenFinancesNotUpdated()
+	{
+		return getSetting(S_AUTOMAIL_WHEN_FINANCES_NOT_UPDATED, false)
+	}
+	
+	def setAutomailWhenFinancesNotUpdated(boolean enabled)
+	{
+		setValue(S_AUTOMAIL_WHEN_FINANCES_NOT_UPDATED, String.valueOf(enabled))
+	}
+	
 	def String getAutomailListRecipient()
 	{
 		return getSetting(S_AUTOMAIL_LIST_RECIPIENT, "")
@@ -161,6 +172,11 @@ class SettingsService {
 		setValue(S_SMTP_PASSWORD, value)
 	}
 	
+	def boolean isEmailSettingsSet()
+	{
+		return getSenderName() && getSenderName() && getSmtpHost() && getSmtpPassword() && getSmtpUsername() 
+	}
+	
 	private static final String S_ACCOUNT_OWNER = "accountOwner"
 	
 	def String getAccountOwner()
@@ -207,5 +223,10 @@ class SettingsService {
 	def setServerUrl(String value)
 	{
 		setValue(S_SERVER_URL, value)
+	}
+	
+	def boolean isEmailContentsSettingsSet()
+	{
+		return getAccountOwner() && getAccountIban() && getServerUrl()
 	}
 }
