@@ -148,23 +148,6 @@ environments {
 	}
 }
 
-
-mail.subject="Stambar rekeningen"
+//Settings for sending the list
+mail.subject="Overzicht rekeningen"
 mail.appendDate=true
-mail.sendername="Stambar Scouting Moordrecht"
-mail.senderaddress="barteam@stambar.nl"
-mail.dont_mail_when_finances_not_uploaded=true
-
-grails {
-	mail {
-	  host = "smtp.gmail.com"
-	  port = 465
-	  username = "cristan.meijer@gmail.com"
-	  password = "Undaker;8"
-	  props = ["mail.smtp.auth":"true",
-			   "mail.smtp.socketFactory.port":"465",
-			   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-			   "mail.smtp.socketFactory.fallback":"false"]
- 
- }
-}
