@@ -67,8 +67,8 @@ grails.project.dependency.resolution = {
 		compile ":spring-websocket:1.3.0"
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.3.6.1"
-        runtime ":database-migration:1.4.0"
+        runtime ":hibernate4:4.3.8.1"
+        runtime ":database-migration:1.4.1"
         runtime ":jquery:1.11.1"
         
 		// Uncomment these to enable additional asset-pipeline capabilities
