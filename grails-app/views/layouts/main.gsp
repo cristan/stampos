@@ -19,15 +19,6 @@
 	</head>
 	<body>
 		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
-		<!-- Begin log out code -->
-		<!-- 
-		<g:if test="${session.loggedIn}">
-			<div style="padding: 4px 4px 6px 0;text-align: right;">
-				<g:link controller="authentication" action="logout" params="[nameOfController: controllerName]">Log out</g:link>
-			</div>
-		</g:if>
-		 -->
-		<!-- End log out code -->
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
