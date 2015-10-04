@@ -226,7 +226,7 @@ class MyMailService {
 //										"mail.imap.socketFactory.fallback": "false",
 //										"mail.imaps.partialfetch": "false",
 							"mail.smtp.starttls.enable": String.valueOf(settingsService.isSmtpUseTls()),
-							//"mail.smtp.host": "smtp.gmail.com",
+							"mail.smtp.host": settingsService.getSmtpHost(),
 							"mail.smtp.auth": "true",
 							"mail.smtp.socketFactory.port": settingsService.getSmtpPort(),
 							"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
