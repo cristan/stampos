@@ -12,6 +12,9 @@ class InstellingController {
 			"sendername": settingsService.getSenderName(),
 			"senderemail": settingsService.getSenderEmail(),
 			"smtphost": settingsService.getSmtpHost(),
+			"smtpport": settingsService.getSmtpPort(),
+			"smtp_require_ssl": settingsService.isSmtpEnforceSsl(),
+			"smtp_use_tls": settingsService.isSmtpUseTls(),
 			"smtpusername": settingsService.getSmtpUsername(),
 			"smtppassword": settingsService.getSmtpPassword(),
 			"accountowner": settingsService.getAccountOwner(),
@@ -31,6 +34,9 @@ class InstellingController {
 		settingsService.setSenderName(params.sendername)
 		settingsService.setSenderEmail(params.senderemail)
 		settingsService.setSmtpHost(params.smtphost)
+		settingsService.setSmtpPort(params.smtpport)
+		settingsService.setSmtpEnforceSsl("on".equals(params.smtp_require_ssl))
+		settingsService.setSmtpUseTls("on".equals(params.smtp_use_tls))
 		settingsService.setSmtpUsername(params.smtpusername)
 		settingsService.setSmtpPassword(params.smtppassword)
 		settingsService.setAccountOwner(params.accountowner)

@@ -46,7 +46,10 @@
 	<g:form action="submitEmail">
 		<div id="emailSettings">
 			<h2><g:message code="settings.email.smtp"/></h2>
-			<label for="smtphost"><g:message code="settings.email.smtp.host"/></label><span class="example">bijv. Gmail, Hotmail of Yahoo</span><g:textField name="smtphost" value="${smtphost}"/><br/>
+			<label for="smtphost"><g:message code="settings.email.smtp.host"/></label><span class="example">bijv. smtp.gmail.com</span><g:textField name="smtphost" value="${smtphost}"/><br/>
+			<label for="smtpport"><g:message code="settings.email.smtp.port"/></label><g:field type="number" name="smtpport" value="${smtpport}"/><br/>
+			<label for="smtp_require_ssl"><g:message code="settings.email.smtp.require_ssl"/></label><g:checkBox name="smtp_require_ssl" checked="${smtp_require_ssl}"/><br/>
+			<label for="smtp_use_tls"><g:message code="settings.email.smtp.use_tls"/></label><g:checkBox name="smtp_use_tls" checked="${smtp_use_tls}"/><br/>
 			<label for="smtpusername"><g:message code="settings.email.smtp.username"/></label><g:textField name="smtpusername" value="${smtpusername}"/><br/>
 			<label for="smtppassword"><g:message code="settings.email.smtp.password"/></label><g:passwordField name="smtppassword" value="${smtppassword}"/><br/>
 			

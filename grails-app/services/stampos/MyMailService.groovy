@@ -1,6 +1,7 @@
 package stampos
 
 import grails.gsp.PageRenderer
+
 import java.text.DateFormat;
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -129,19 +130,7 @@ class MyMailService {
 					Object[] parameters = [persoonlijkeUrl]
 					bericht += messageSource.getMessage('mail.funds.footer', parameters, Locale.default);
 							
-					// actually mail
-					messagingService.sendEmail(
-						settingsService.getSmtpHost(),
-						settingsService.getSmtpUsername(),
-						settingsService.getSmtpPassword(),
-						settingsService.getSender(),
-						klant.email,
-						titel,
-						bericht.replace("\n", "<br>"),
-						true,
-						null,
-						null
-						)
+					sendMail(klant.email, titel, bericht.replace("\n", "<br>"))
 				}
 			}
 			
@@ -223,19 +212,37 @@ class MyMailService {
 		htmlMessage += "</body>\n</html>"
 		
 		String recipient = settingsService.automailListRecipient
-		messagingService.sendEmail(
-			settingsService.getSmtpHost(),
-			settingsService.getSmtpUsername(),
-			settingsService.getSmtpPassword(),
-			settingsService.getSender(),
-			recipient,
-			getMaillistSubject(),
-			htmlMessage,
-			true,
-			null,
-			null
-			)
+		sendMail(recipient, getMaillistSubject(), htmlMessage)
 		
 		return recipient
+	}
+	
+	private def sendMail(String to, String subject, String body)
+	{
+		def props = [
+//										"mail.imap.host":"imap.gmail.com",
+//										"mail.store.protocol": "imaps",
+//										"mail.imap.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+//										"mail.imap.socketFactory.fallback": "false",
+//										"mail.imaps.partialfetch": "false",
+							"mail.smtp.starttls.enable": String.valueOf(settingsService.isSmtpUseTls()),
+							//"mail.smtp.host": "smtp.gmail.com",
+							"mail.smtp.auth": "true",
+							"mail.smtp.socketFactory.port": settingsService.getSmtpPort(),
+							"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+							"mail.smtp.socketFactory.fallback": String.valueOf(!settingsService.isSmtpEnforceSsl())
+							]
+		
+		def map = [
+			to: to,
+			subject: subject,
+			body: body,
+			html: true,
+			hostname: settingsService.getSmtpHost(),
+			username: settingsService.getSmtpUsername(),
+			password: settingsService.getSmtpPassword(),
+			from: settingsService.getSender(),
+			hostProps: props]
+		messagingService.sendEmail(map)
 	}
 }

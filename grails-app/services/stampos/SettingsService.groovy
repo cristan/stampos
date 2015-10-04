@@ -47,6 +47,13 @@ class SettingsService {
 		automailInstelling.save()
 	}
 	
+	def setValue(String name, boolean value)
+	{
+		Instelling automailInstelling = Instelling.findOrCreateByNaam(name);
+		automailInstelling.waarde = value;
+		automailInstelling.save()
+	}
+	
 	def String getAllowRequests()
 	{
 		String defaultValue
@@ -148,6 +155,18 @@ class SettingsService {
 		setValue(S_SMTP_HOST, value)
 	}
 	
+	private static final String S_SMTP_PORT = "smtpPort"
+	
+	def String getSmtpPort()
+	{
+		return getSetting(S_SMTP_PORT, "465")
+	}
+	
+	def setSmtpPort(String value)
+	{
+		setValue(S_SMTP_PORT, value)
+	}
+	
 	private static final String S_SMTP_USERNAME = "smtpUsername"
 	
 	def String getSmtpUsername()
@@ -172,9 +191,33 @@ class SettingsService {
 		setValue(S_SMTP_PASSWORD, value)
 	}
 	
+	private static final String S_SMTP_ENFORCE_SSL = "smtpEnforceSsl"
+	
+	def boolean isSmtpEnforceSsl()
+	{
+		return getSetting(S_SMTP_ENFORCE_SSL, true)
+	}
+	
+	def setSmtpEnforceSsl(boolean value)
+	{
+		setValue(S_SMTP_ENFORCE_SSL, value)
+	}
+	
+	private static final String S_SMTP_USE_TLS = "smtpUseTls"
+	
+	def boolean isSmtpUseTls()
+	{
+		return getSetting(S_SMTP_USE_TLS, true)
+	}
+	
+	def setSmtpUseTls(boolean value)
+	{
+		setValue(S_SMTP_USE_TLS, value)
+	}
+	
 	def boolean isEmailSettingsSet()
 	{
-		return getSenderName() && getSenderName() && getSmtpHost() && getSmtpPassword() && getSmtpUsername() 
+		return getSenderName() && getSenderName() && getSmtpHost() && getSmtpPort() && getSmtpPassword() && getSmtpUsername() 
 	}
 	
 	private static final String S_ACCOUNT_OWNER = "accountOwner"
