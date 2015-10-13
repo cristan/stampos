@@ -67,6 +67,7 @@ class DeblokkeerController {
 		klant.uitstelTot = klantService.komendeMaandag()
 		klant.save(true)
 		pushService.userUpdated(klant)
-		render "${params.callback}()"
+		def toReturn = ["id":klant.id, "naam": klant.naam, "laatsteToegang": klant.laatsteToegang]
+		render toReturn as JSON
 	}
 }
