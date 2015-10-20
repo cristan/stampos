@@ -138,6 +138,7 @@ environments {
 		// "test"
 		maintenance.passwordhash = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w=='
 	}
+	amazondb = test;
 	production {
 		geblokkeerdPeriode = 172800000;//2 * 24 * 60 * 60 * 1000, ofwel: 2 dagen
 		initieelUitstel = 0;
