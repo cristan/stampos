@@ -1,53 +1,140 @@
 package stampos
 
-import grails.converters.JSON
 
+
+import grails.util.Environment
+import static org.springframework.http.HttpStatus.*
+import grails.converters.JSON
+import grails.transaction.Transactional
+
+@Transactional(readOnly = true)
 class ProductController {
 
-	static scaffold = true
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    def index(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        respond Product.list(params), model:[productInstanceCount: Product.count()]
+    }
+
+    def show(Product productInstance) {
+        respond productInstance
+    }
+
+    def create() {
+        respond new Product(params)
+    }
+
+    @Transactional
+    def save(Product productInstance) {
+        if (productInstance == null) {
+            notFound()
+            return
+        }
+
+        if (productInstance.hasErrors()) {
+            respond productInstance.errors, view:'create'
+            return
+        }
+
+        productInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'product.label', default: 'Product'), productInstance.id])
+                redirect productInstance
+            }
+            '*' { respond productInstance, [status: CREATED] }
+        }
+    }
+
+    def edit(Product productInstance) {
+        respond productInstance
+    }
+
+    @Transactional
+    def update(Product productInstance) {
+        if (productInstance == null) {
+            notFound()
+            return
+        }
+
+        if (productInstance.hasErrors()) {
+            respond productInstance.errors, view:'edit'
+            return
+        }
+
+        productInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'Product.label', default: 'Product'), productInstance.id])
+                redirect productInstance
+            }
+            '*'{ respond productInstance, [status: OK] }
+        }
+    }
+
+    @Transactional
+    def delete(Product productInstance) {
+
+        if (productInstance == null) {
+            notFound()
+            return
+        }
+
+        productInstance.delete flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Product.label', default: 'Product'), productInstance.id])
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render status: NO_CONTENT }
+        }
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'product.label', default: 'Product'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*'{ render status: NOT_FOUND }
+        }
+    }
+	
+	/**
+	 * End of scaffolding code, start of my own
+	 */
+	
 	def testDataService
+	def productPriceService
 	
 	def all()
 	{
-		def pps = getAllProductPrijzen();
 		def result = [];
-		for(ProductPrijs pp : pps)
+		for(Product product : getAllProducts())
 		{
-			result.add([id: pp.id, naam:pp.product.naam, prijs:pp.prijs])
+			def productPrice = productPriceService.getActiveProductPrice(product)
+			if(productPrice)
+			{
+				result.add([id: productPrice.id, naam:product.naam, prijs:productPrice.prijs])
+			}
 		}
 		
 		render "${params.callback}(${result as JSON})"
 	}
 	
-	def private getAllProductPrijzen()
+	private def getAllProducts()
 	{
 		List<Product> allProducts = Product.findAllWhere(zichtbaar: true);
-		if(allProducts.isEmpty())
+		if(allProducts.isEmpty() && Environment.current != Environment.PRODUCTION)
 		{
 			allProducts = testDataService.getTestProducten()
 		}
-		//Dubbelop sorteren omdat de sort in de mapping van Product wordt genegeerd met findAllWhere
+		//Hier ook sorteren omdat de sort in de mapping van Product wordt genegeerd met findAllWhere
 		allProducts.sort();
-		
-		def result = [];
-		for(Product product : allProducts)
-		{
-			def pps = ProductPrijs.findAllWhere(actiefTot: null, product: product)
-			if(pps.size() == 0)
-			{
-				throw new Exception("Geen actieve ProductPrijs gevonden van product: "+ product +". "
-					+"Voeg een ProductPrijs toe, maak het product onzichtbaar of verwijder het product")
-			}
-			else if (pps.size() > 1)
-			{
-				throw new Exception("Product "+ product.naam +" heeft meer dan 1 actieve ProductPrijs!")
-			}
-			else
-			{
-				result.add(pps.get(0))
-			}
-		}
-		
-		return result;
 	}
+
 }

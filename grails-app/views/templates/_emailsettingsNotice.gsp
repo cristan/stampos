@@ -1,12 +1,5 @@
-<g:if test="${grailsApplication.config.grails.mail.disabled}">
+<g:if test="${!emailSettingsSet}">
 	<div class="warnings">
-	In deze omgeving worden e-mails niet daadwerkelijk gestuurd.
+	Niet alle e-mail instelingen zijn ingesteld. Ga naar <g:link controller="instelling" action="overzicht">de instellingen</g:link> om dit te configureren
 	</div>
 </g:if>
-<g:else>
-	<g:if test="${grailsApplication.config.grails.mail.overrideAddress}">
-		<div class="warnings">
-		In deze omgeving worden alle e-mails verstuurd naar ${grailsApplication.config.grails.mail.overrideAddress}
-		</div>
-	</g:if>
-</g:else>

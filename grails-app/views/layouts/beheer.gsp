@@ -31,6 +31,16 @@
 	</head>
 	<body>
 		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
+		<!-- Navigation bar to home and a log out button -->
+		<div class="nav" role="navigation">
+			<ul>
+				<li><a class="home" href="${createLink(controller: 'beheer')}"><g:message code="default.home.label"/></a></li>
+				<g:if test="${session.loggedIn}">
+					<li style="float:right;"><g:link controller="authentication" action="logout" params="[nameOfController: controllerName]"><g:message code="authentication.logout" args="[nameOfController: controllerName]" /></g:link></li>
+				</g:if>
+			</ul>
+		</div>
+		<!-- End navigation bar -->
 		<div id="pageContent">
 			<g:layoutBody/>
 		</div>

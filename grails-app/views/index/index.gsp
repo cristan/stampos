@@ -61,10 +61,14 @@ $(document).ready(function () {
 </div>
 
 <div id="userButtonsArea">
-
+	
+</div>
+<div id="noUsersNotice">
+	Geen klanten gevonden. Maak <g:link controller="klant">klanten</g:link> aan in <g:link controller="beheer">het beheer</g:link>.
 </div>
 <div id="right">
 	<div id="productButtonsArea"></div>
+	<div id="noProductsNotice">Geen producten met prijs gevonden. Maak <g:link controller="product">producten</g:link> aan en koppel hier <g:link controller="productPrijs">productPrijzen</g:link> aan.</div>
 	<div id="order">
 	</div>
 </div>

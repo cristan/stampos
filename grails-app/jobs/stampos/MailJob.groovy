@@ -24,6 +24,10 @@ class MailJob
 		{
 			log.info "Automatisch e-mails versturen.."
 			def returned = myMailService.sendEmails(false);
+			if(returned.financesWerentUpdated)
+			{
+				log.info message(code: "mail.finances_werent_updated");
+			}
 			if(returned.klantenMetRekening)
 			{
 				log.info message(code: "mail.mailed_to_customers_who_have_to_pay") +":";
@@ -64,7 +68,7 @@ class MailJob
 		}
 	}
 
-	def message(Map[] arguments)
+	private def message(Map[] arguments)
 	{
 		Object[] emptyArgs= []
 		return messageSource.getMessage(arguments.code[0], emptyArgs, Locale.default)

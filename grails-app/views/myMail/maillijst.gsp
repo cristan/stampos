@@ -57,11 +57,13 @@
 <body>
 	<g:render template="/templates/emailsettingsNotice" />
 	
-	<g:form action="submitSettings">
-		<g:checkBox name="automail" checked="${automailListEnabled}" />
-		<label for="automail"><g:if test="${klantLijst}">E-mail dit wekelijks naar</g:if><g:if test="${!klantLijst}">E-mail een lijst met klanten en hun rekeningen wekelijks naar</g:if></label> <g:field type="email" name="recipient" value="${recipient}" placeholder="ontvanger" required="true" disabled="${!automailListEnabled}"/>
-		<g:submitButton name="submit" value="Verstuur"/>
-	</g:form>
+	<g:if test="${emailSettingsSet}">
+		<g:form action="submitSettings">
+			<g:checkBox name="automail" checked="${automailListEnabled}" />
+			<label for="automail"><g:if test="${klantLijst}">E-mail dit wekelijks naar</g:if><g:if test="${!klantLijst}">E-mail een lijst met klanten en hun rekeningen wekelijks naar</g:if></label> <g:field type="email" name="recipient" value="${recipient}" placeholder="ontvanger" required="true" disabled="${!automailListEnabled}"/>
+			<g:submitButton name="submit" value="Verstuur"/>
+		</g:form>
+	</g:if>
 	<br/>
 	
 	<g:render template="/templates/klantLijst" />

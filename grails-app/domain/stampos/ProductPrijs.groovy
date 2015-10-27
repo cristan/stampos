@@ -18,14 +18,22 @@ class ProductPrijs {
 	
 	@Override
 	public String toString() {
-		String toReturn = product.naam +" voor \u20AC"+ prijs
-		if(actiefTot == null)
+		// It's a required field, but can be null when creating a ProductPrijs
+		if(!product)
 		{
-			toReturn += " (actief)"
+			return super.toString()
 		}
 		else
 		{
-			toReturn += " (actief tot "+ format.format(actiefTot) +" )"
+			String toReturn = product.naam +" voor \u20AC"+ prijs
+			if(actiefTot == null)
+			{
+				toReturn += " (actief)"
+			}
+			else
+			{
+				toReturn += " (actief tot "+ format.format(actiefTot) +" )"
+			}
 		}
 	}
 }

@@ -12,7 +12,8 @@ class MyMailController {
 
 	def maillijst() {
 		def klantLijst = myMailService.getMaillist();
-		return [klantLijst:klantLijst, automailListEnabled : settingsService.isAutomailListEnabled(), recipient : settingsService.automailListRecipient]
+		def emailSettingsSet = settingsService.isEmailSettingsSet()
+		return [klantLijst:klantLijst, automailListEnabled : settingsService.isAutomailListEnabled(), recipient : settingsService.automailListRecipient, emailSettingsSet: emailSettingsSet]
 	}
 
 	def submitSettings()
@@ -25,11 +26,13 @@ class MyMailController {
 
 	def versturen()
 	{
-		def klantenMetEmail = Klant.findAllByZichtbaarAndEmailIsNotNull(true, [sort:"naam"]);
-		def klantenZonderEmail = Klant.findAllByZichtbaarAndEmailIsNull(true, [sort:"naam"]);
-		Instelling automailInstelling = Instelling.findByNaam("automail");
-		def automailEnabled = automailInstelling && automailInstelling.waarde.toBoolean();
-		return [metMail : klantenMetEmail, zonderMail: klantenZonderEmail, automailEnabled: automailEnabled]
+		def klantenMetEmail = Klant.findAllByZichtbaarAndEmailIsNotNull(true, [sort:"naam"])
+		def klantenZonderEmail = Klant.findAllByZichtbaarAndEmailIsNull(true, [sort:"naam"])
+		Instelling automailInstelling = Instelling.findByNaam("automail")
+		def automailEnabled = automailInstelling && automailInstelling.waarde.toBoolean()
+		def automailWhenFinancesNotUpdated = settingsService.isAutomailWhenFinancesNotUpdated()
+		def emailSettingsSet = settingsService.isEmailSettingsSet() && settingsService.isEmailContentsSettingsSet()
+		return [metMail : klantenMetEmail, zonderMail: klantenZonderEmail, automailEnabled: automailEnabled, emailSettingsSet: emailSettingsSet, automailWhenFinancesNotUpdated: automailWhenFinancesNotUpdated]
 	}
 
 	def doVerstuur()
@@ -50,6 +53,18 @@ class MyMailController {
 		Instelling automailInstelling = Instelling.findOrCreateByNaam("automail");
 		automailInstelling.waarde = false;
 		automailInstelling.save()
+		redirect(action:"versturen")
+	}
+	
+	def disableAutomailWhenFinancesNotUpdated()
+	{
+		settingsService.setAutomailWhenFinancesNotUpdated(false)
+		redirect(action:"versturen")
+	}
+	
+	def enableAutomailWhenFinancesNotUpdated()
+	{
+		settingsService.setAutomailWhenFinancesNotUpdated(true)
 		redirect(action:"versturen")
 	}
 }

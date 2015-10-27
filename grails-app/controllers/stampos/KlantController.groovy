@@ -1,6 +1,7 @@
 package stampos
 
 import grails.converters.JSON
+import grails.util.Environment
 
 class KlantController {
 
@@ -24,7 +25,7 @@ class KlantController {
 	private List<Klant> getAllKlanten()
 	{ 
 		List<Klant> result = Klant.findAllByZichtbaar(true, [sort:"naam"]);
-		if(!result)
+		if(!result && Environment.current != Environment.PRODUCTION)
 		{
 			result = testDataService.getTestKlanten()
 		}

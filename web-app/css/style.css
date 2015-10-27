@@ -18,6 +18,10 @@ html, body{
     */
 }
 
+a{
+	color: #C01A1A;
+}
+
 button{
 	font-size: 11pt;
 }
@@ -26,15 +30,18 @@ button:disabled {
 	background-color: #BDBDBD;
 }
 
-#userButtonsArea{
+#userButtonsArea, #noUsersNotice{
 	position:absolute;
 	margin-right:361pt;/* 4 columns of buttons + 10 pt margin */
 	opacity: 0;
 }
 
-.userButtonsAreaShown{
-	opacity: 1 !important;
+#noUsersNotice
+{
+	padding-top: 10pt;
+	padding-left: 10pt;
 }
+
 
 #right{
 	width:361pt;/* 3 columns of buttons + 10 pt margin*/
@@ -135,7 +142,7 @@ button:disabled {
 	
 }
 
-.orderActionsAreaShown{
+.opaque{
 	opacity: 1 !important;
 }
 
@@ -188,13 +195,14 @@ background-color:#C01A1A;
 	*/
 }
 
-#productButtonsArea{
-	display: none;/* with just opacity: 0, the buttons are still clickable*/
-	opacity: 0; /* Also opacity: 0 in order to be able to use a css transition */
+#productButtonsArea, #noProductsNotice{
+	opacity: 0;
 }
 
-.productButtonsAreaShown{
-	opacity: 1 !important;
+#noProductsNotice
+{
+	padding-top: 10pt;
+	padding-right: 10pt;
 }
 
 .productSelectButton{
@@ -291,7 +299,7 @@ background-color:#C01A1A;
     transition: all 0.2s ease;
 }
 
-#userButtonsArea, #productButtonsArea{
+#userButtonsArea, #noUsersNotice, #productButtonsArea, #noProductsNotice{
 	-moz-transition: all 1s ease;
     -webkit-transition: all 1s ease;
     -o-transition: all 1s ease;

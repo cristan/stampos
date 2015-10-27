@@ -82,6 +82,12 @@
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<g:if test="${session.loggedIn}">
+            <div style="padding: 4px 4px 6px 0;float: right;">
+                <g:link controller="authentication" action="logout" params="[nameOfController: controllerName]"><g:message code="authentication.logout" /></g:link>
+            </div>
+        </g:if>
+		
 		<div id="status" role="complementary">
 			<h1>Application Status</h1>
 			<ul>

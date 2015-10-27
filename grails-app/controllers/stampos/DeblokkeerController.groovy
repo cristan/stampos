@@ -39,23 +39,25 @@ class DeblokkeerController {
 		}
 		
 		def result = [loggedIn: loggedIn]
-		render "${params.callback}(${result as JSON})"
+		render result as JSON
 	}
 	
-	def getBlockedUsers()
+	def blockedUsers()
 	{
 		def geblokkeerdeKlanten = []
 		def klanten = Klant.findAllWhere(zichtbaar: true)
 		klanten.sort{it.naam}
 		for(Klant klant : klanten)
 		{
-			def geblokkeerd = klantService.geblokkeerd(klant)
+			BigDecimal tegoed = klantService.tegoed(klant)
+			def geblokkeerd = klantService.geblokkeerd(klant, tegoed)
 			if(geblokkeerd)
 			{
-				geblokkeerdeKlanten.add(klant);
+				Date laatstBetaald = klantService.laatstBetaald(klant)
+				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam, "tegoed": tegoed, "laatstBetaald": laatstBetaald, "laatsteToegang": klant.laatsteToegang]);
 			}
 		}
-		render "${params.callback}(${geblokkeerdeKlanten as JSON})"
+		render geblokkeerdeKlanten as JSON
 	}
 	
 	def doDeblokkeer()
@@ -65,6 +67,7 @@ class DeblokkeerController {
 		klant.uitstelTot = klantService.komendeMaandag()
 		klant.save(true)
 		pushService.userUpdated(klant)
-		render "${params.callback}()"
+		def toReturn = ["id":klant.id, "naam": klant.naam, "laatsteToegang": klant.laatsteToegang]
+		render toReturn as JSON
 	}
 }
