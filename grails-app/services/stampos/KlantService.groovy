@@ -27,14 +27,13 @@ class KlantService {
 	
 	def laatstBetaald(Klant klant)
 	{
-		def betalingen = Betaling.where{klant == klant}.list(sort: 'datum', order: 'desc', max: 1)
+		def betalingen = Betaling.where{klant == klant && bedrag > 0}.list(sort: 'datum', order: 'desc', max: 1)
 		if(!betalingen)
 		{
 			return null
 		}
 		else
 		{
-			println "datum: "+ betalingen[0].datum
 			return betalingen[0].datum
 		}
 	}
