@@ -2,6 +2,10 @@ var dataLoaded = false;
 var animationEnded = false;
 var klanten;
 
+//Fancy ECMA-402 number formatting (which uses the default Locale because of the undefined).
+//This is supported by Chrome 24, Fx 29 and IE11 (source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString)
+var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+
 function logIn(password)
 {
 	$("#passwordField").css("border", "2px solid white");
@@ -52,15 +56,16 @@ function tekenKlanten()
 		
 	$.each(klanten, function(i, klant)
 	{
-		var zeButton = $('<button/>',
+		var zeButton = $('<div/>',
 	    {
-	        text: klant.naam,
+	        html: "<strong>"+ klant.naam +"</strong><br/>Rekening: &euro;"+formatter.format(-1 * klant.tegoed)+"<br/>Laatst betaald: <abbr class=\"timeago\" title=\""+klant.laatstBetaald +"\">"+new Date(Date.parse(klant.laatstBetaald)).toLocaleDateString()+"</abbr>",
 	        click: function () { deblokkeerKlant($(this),klant); }
 	    });
 	    zeButton.addClass('blockedUserSelectButton');
 
 		$("#front"+klant.id).append(zeButton);
 	});
+	$("abbr.timeago").timeago();
 }
 
 function deblokkeerKlant(clickedButton, klant)
