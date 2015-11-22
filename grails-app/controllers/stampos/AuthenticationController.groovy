@@ -4,6 +4,8 @@ import java.security.MessageDigest
 
 class AuthenticationController {
 
+	def settingsService
+	
 	def index = {
 		redirect(action:"login")
 	}
@@ -11,14 +13,13 @@ class AuthenticationController {
     def login = {
 		String password = params.password
 		
-		def maintenancePasswordHash = grailsApplication.config.maintenance.passwordhash
-		if(!maintenancePasswordHash)
+		def adminPasswordHash = settingsService.getAdminPasswordHash()
+		if(!adminPasswordHash)
 		{
-			return [error : "maintenance.passwordhash isn't defined in Config.groovy. It has to be set before you can login.",
-				nameOfController: params.nameOfController, nameOfAction: params.nameOfAction]
+			flash.message = g.message(code: "settings.change_password.set_admin_password_now")
+			redirect(controller:"instelling",action:"setPassword")
 		}
-		
-		if(password == null)
+		else if(password == null)
 		{
 			if(session.loggedIn)
 			{
@@ -33,28 +34,22 @@ class AuthenticationController {
 		}
 		else
 		{
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.update(password.getBytes());
-			byte[] hash = md.digest();
-			def passwordHash = hash.encodeBase64().toString()
-			
-			if(passwordHash == maintenancePasswordHash)
+			if(settingsService.passwordMatches(password))
 			{
 				session.loggedIn = true;
-				if(params.nameOfController && "authentiation" != params.nameOfController)
+				if(params.nameOfController && params.nameOfController != "authentication")
 				{
 					flash.message = "Welcome!"
-							redirect(controller: params.nameOfController, action: params.nameOfAction)
+					redirect(controller: params.nameOfController, action: params.nameOfAction)
 				}
 				else
 				{
 					flash.message = "You are now logged in"
-							redirect(uri: "")
+					redirect(uri: "")
 				}
 			}
 			else
 			{
-				log.info("Invalid password hash: "+ passwordHash)
 				return [error : "Invalid password. Please try again.", nameOfController: params.nameOfController, nameOfAction: params.nameOfAction]
 			}
 		}

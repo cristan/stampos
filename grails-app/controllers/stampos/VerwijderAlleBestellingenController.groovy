@@ -9,18 +9,13 @@ class VerwijderAlleBestellingenController {
 		
 	}
 	
+	def settingsService
+	
 	def verwijderd()
 	{
 		String password = params.password
 		
-		def maintenancePasswordHash = grailsApplication.config.maintenance.passwordhash
-		
-		MessageDigest md = MessageDigest.getInstance("SHA-512");
-		md.update(password.getBytes());
-		byte[] hash = md.digest();
-		def passwordHash = hash.encodeBase64().toString()
-			
-		if(passwordHash != maintenancePasswordHash)
+		if(settingsService.passwordMatches(password))
 		{
 			flash.message = "Incorrect wachtwoord!"
 			redirect(action:"index")

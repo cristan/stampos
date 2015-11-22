@@ -110,6 +110,9 @@
 		</div>
 		<div id="page-body" role="main">
 			<h1>StamPOS beheer</h1>
+			<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+			</g:if>
 			<g:link controller="upload" action="upload">Upload dump internetbankieren</g:link><br/>
 			<g:link controller="instelling" action="overzicht"><g:message code="settings" /></g:link><br/>
 			<g:link controller="myMail" action="versturen"><g:message code="sending.mails.automatically" /></g:link><br/>

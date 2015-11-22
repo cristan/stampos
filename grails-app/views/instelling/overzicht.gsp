@@ -36,6 +36,9 @@
 		<div class="message">${flash.message}</div>
 	</g:if>
 	<g:form action="submit">
+		<h1><g:message code="settings.security"/></h1>
+		<g:link action="changePassword"><g:message code="settings.change_admin_password"/></g:link><br/>
+		<br/>
 		<label for="allowRequestsFrom"><g:message code="settings.allow_requests_from"/></label>
 		<g:select name="allowRequestsFrom" from="${['localhost', 'local_network', 'everywhere']}"
 		          valueMessagePrefix="settings.allow_requests_from" value="${allowRequests}"/><br/>

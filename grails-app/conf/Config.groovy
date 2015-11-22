@@ -127,7 +127,7 @@ environments {
 		initieelUitstel = 0;
 		
 		// "test"
-		maintenance.passwordhash = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w=='
+		admin.passwordhash = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w=='
 	}
 	test {
 		grails.mail.overrideAddress="cristan.meijer@gmail.com"
@@ -136,16 +136,15 @@ environments {
 		initieelUitstel = 0;
 		
 		// "test"
-		maintenance.passwordhash = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w=='
+		admin.passwordhash = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w=='
 	}
 	amazondb = test;
 	production {
 		geblokkeerdPeriode = 172800000;//2 * 24 * 60 * 60 * 1000, ofwel: 2 dagen
 		initieelUitstel = 0;
 		
-		// stamp0sWW hashed with SHA-512, converted to text with base 64 (I've used http://hash.online-convert.com/sha512-generator for this)
-		// (The comment above doesn't compromise the security of this project because it won't end up in Config.class)
-		maintenance.passwordhash = 'iASWCN7SDgM4xs5Sthwt6g7I0NORmoS0V0Whwc2L+/a/BGKwwNkOlGLAkIJkBgoRKKVrRPTryPvbeOU8es7ipA=='
+		// Null because you have to manually set the password
+		admin.passwordhash = null
 	}
 }
 
