@@ -118,8 +118,8 @@
 			<g:link controller="myMail" action="versturen"><g:message code="sending.mails.automatically" /></g:link><br/>
 			<g:link controller="myMail" action="maillijst"><g:message code="maillijst" /></g:link><br/>
 			<br/>
-			<g:link url="${createLink(uri: '/deblokkeer')}">Deblokkeer klanten</g:link><br/>
 			<g:link controller="beheer" action="klantoverzicht">Bestellingen en betalingen van klanten</g:link><br/>
+			<g:link url="${createLink(uri: '/deblokkeer')}">Deblokkeer klanten</g:link><br/>
 			<g:link controller="inkoop" action="registreerInkopen">Registreer inkopen</g:link><br/>
 			<g:link controller="telling" action="registreerTelling">Tel de inhoud van de bar</g:link><br/>
 			<br/>
