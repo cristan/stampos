@@ -10,7 +10,7 @@ var firstTimeLoaded = false;
 function loadData()
 {
 	loading = true;
-	var url = '../klantmutaties';
+	var url = baseUrl + 'klantmutaties';
 	if(eindeDatum)
 	{
 		url += '?beginDatum='+eindeDatum+'&klantId='+klantId+'&callback=?';

@@ -116,18 +116,16 @@
 			<g:link controller="upload" action="upload">Upload dump internetbankieren</g:link><br/>
 			<g:link controller="instelling" action="overzicht"><g:message code="settings" /></g:link><br/>
 			<g:link controller="myMail" action="versturen"><g:message code="sending.mails.automatically" /></g:link><br/>
-			<br/>
 			<g:link controller="myMail" action="maillijst"><g:message code="maillijst" /></g:link><br/>
+			<br/>
+			<g:link url="${createLink(uri: '/deblokkeer')}">Deblokkeer klanten</g:link><br/>
+			<g:link controller="beheer" action="klantoverzicht">Bestellingen en betalingen van klanten</g:link><br/>
 			<g:link controller="inkoop" action="registreerInkopen">Registreer inkopen</g:link><br/>
 			<g:link controller="telling" action="registreerTelling">Tel de inhoud van de bar</g:link><br/>
-			<g:link url="${createLink(uri: '/deblokkeer')}">Deblokkeer klanten</g:link><br/>
-			<g:link controller="uitstel" action="uitstel">Geef iedereen uitstel</g:link><br/>
-			<g:link controller="verwijderAlleBestellingen">Verwijder alle bestellingen</g:link><br/>
 			<br/>
 			<g:link controller="rendement" action="schatting">Rendement van de bar (schatting nav inkopen)</g:link><br/>
 			<g:link controller="rendement" action="geteld">Rendement van de bar (nav telling)</g:link><br/>
 			<br/>
-			<g:link controller="beheer" action="klantoverzicht">Bestellingen en betalingen van klanten</g:link><br/>
 			<g:link controller="klant" params="[max: 100]" >Bekijk klanten</g:link><br/>
 			<g:link controller="betaling">Bekijk betalingen</g:link><br/>
 			<g:link controller="product">Bekijk producten</g:link><br/>
@@ -135,6 +133,9 @@
 			<g:link controller="bestelling">Bekijk bestellingen</g:link><br/>
 			<g:link controller="inkoop">Bekijk inkopen</g:link><br/>
 			<g:link controller="telling">Bekijk tellingen</g:link><br/>
+			<br/>
+			<g:link controller="uitstel" action="uitstel">Geef iedereen uitstel</g:link><br/>
+			<g:link controller="verwijderAlleBestellingen">Verwijder alle bestellingen</g:link><br/>
 
 			<!-- 
 			<div id="controller-list" role="navigation">

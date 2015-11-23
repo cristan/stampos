@@ -33,6 +33,9 @@
 <body>
 <div id="pageContainer">
 </div>
+<script type="text/javascript">
+	var baseUrl = "${createLink(uri: '/')}";
+</script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'klantinfo.js')}"></script>
 </body>
 </html>
