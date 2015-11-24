@@ -56,9 +56,20 @@ function tekenKlanten()
 		
 	$.each(klanten, function(i, klant)
 	{
+		var html = "<strong>"+ klant.naam +"</strong><br/>Rekening: &euro;"+formatter.format(-1 * klant.tegoed)+"<br/>\n"+
+			"Laatst betaald: ";
+		if(klant.laatstBetaald)
+		{
+			html += "<abbr class=\"timeago\" title=\""+klant.laatstBetaald +"\">"+new Date(Date.parse(klant.laatstBetaald)).toLocaleDateString()+"</abbr>";
+		}
+		else
+		{
+			html += "nooit";
+		}
+		
 		var zeButton = $('<div/>',
 	    {
-	        html: "<strong>"+ klant.naam +"</strong><br/>Rekening: &euro;"+formatter.format(-1 * klant.tegoed)+"<br/>Laatst betaald: <abbr class=\"timeago\" title=\""+klant.laatstBetaald +"\">"+new Date(Date.parse(klant.laatstBetaald)).toLocaleDateString()+"</abbr>",
+	        html: html,
 	        click: function () { deblokkeerKlant($(this),klant); }
 	    });
 	    zeButton.addClass('blockedUserSelectButton');
