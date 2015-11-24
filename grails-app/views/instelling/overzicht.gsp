@@ -47,14 +47,17 @@
 	<br/>
 	<h1><g:message code="settings.email"/></h1>
 	<g:form action="submitEmail">
+		<h2><g:message code="settings.email.smtp"/></h2>
+		<span style="font-size:10pt;">Note: chakel <a href="https://www.google.com/settings/security/lesssecureapps">toegang voor apps met lagere beveiliging</a> in als je van gmail gebruik wilt maken.<br/>
+		<br/></span>
 		<div id="emailSettings">
-			<h2><g:message code="settings.email.smtp"/></h2>
 			<label for="smtphost"><g:message code="settings.email.smtp.host"/></label><span class="example">bijv. smtp.gmail.com</span><g:textField name="smtphost" value="${smtphost}"/><br/>
 			<label for="smtpport"><g:message code="settings.email.smtp.port"/></label><g:field type="number" name="smtpport" value="${smtpport}"/><br/>
 			<label for="smtp_require_ssl"><g:message code="settings.email.smtp.require_ssl"/></label><g:checkBox name="smtp_require_ssl" checked="${smtp_require_ssl}"/><br/>
 			<label for="smtp_use_tls"><g:message code="settings.email.smtp.use_tls"/></label><g:checkBox name="smtp_use_tls" checked="${smtp_use_tls}"/><br/>
 			<label for="smtpusername"><g:message code="settings.email.smtp.username"/></label><g:textField name="smtpusername" value="${smtpusername}"/><br/>
-			<label for="smtppassword"><g:message code="settings.email.smtp.password"/></label><g:passwordField name="smtppassword" value="${smtppassword}"/><br/>
+			<label for="smtppassword"><g:message code="settings.email.smtp.password"/></label><br/>
+			<span style="font-size:10pt;float:left;margin-right: 2pt;clear:left;">(let op: het is hierna mogelijk voor iedereen met toegang tot dit beheer om je wachtwoord uit te lezen)</span><g:passwordField name="smtppassword" value="${smtppassword}"/><br/>
 			
 			<br/>
 			<h2><g:message code="settings.email.sender"/></h2>

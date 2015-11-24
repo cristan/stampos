@@ -2,25 +2,44 @@ package stampos
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-//import org.quartz.Trigger
 
 class MyMailController {
 
 	def klantService
 	def myMailService
 	def settingsService
+	def grailsApplication
 
 	def maillijst() {
 		def klantLijst = myMailService.getMaillist();
 		def emailSettingsSet = settingsService.isEmailSettingsSet()
-		return [klantLijst:klantLijst, automailListEnabled : settingsService.isAutomailListEnabled(), recipient : settingsService.automailListRecipient, emailSettingsSet: emailSettingsSet]
+		def attachDbBackup = settingsService.isDbBackupAttachedWithMaillist()
+		boolean memoryDatabase = grailsApplication.config.dataSource.url.contains("mem")
+		return [klantLijst:klantLijst, automailListEnabled : settingsService.isAutomailListEnabled(), memoryDatabase: memoryDatabase,  attachDbBackup: attachDbBackup, recipient : settingsService.automailListRecipient, emailSettingsSet: emailSettingsSet]
 	}
 
 	def submitSettings()
 	{
 		settingsService.setAutomailListEnabled(params.automail != null)
 		settingsService.setAutomailListRecipient(params.recipient)
-
+		settingsService.setDbBackupAttachedWithMaillist(params.attachDbBackup != null)
+		flash.message = "De instellingen zijn aangepast"
+		redirect (action:"maillijst")
+	}
+	
+	def mailNow()
+	{
+		if(!params.recipient)
+		{
+			flash.message = "Geen e-mail adres ingevuld!"
+		}
+		else
+		{
+			String recipient = params.recipient
+			boolean attachDbBackup = params.attachDbBackup != null
+			myMailService.sendEmailList(recipient, attachDbBackup)
+			flash.message = "Maillijst verstuurd naar ${recipient} "+ (attachDbBackup ? "met": "zonder") +" een database backup als bijlage."
+		}
 		redirect (action:"maillijst")
 	}
 

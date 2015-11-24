@@ -11,6 +11,7 @@ class SettingsService {
 	private static final String S_ALLOW_REQUESTS = "allowRequests";
 	private static final String S_AUTOMAIL = "automail";
 	private static final String S_AUTOMAIL_LIST = "automailList";
+	private static final String S_DB_BACKUP_ATTACHED_WITH_MAILLIST = "dbBackupAttachedWithMaillist";
 	private static final String S_AUTOMAIL_WHEN_FINANCES_NOT_UPDATED = "automailWhenFinancesNotUpdated";
 	private static final String S_AUTOMAIL_LIST_RECIPIENT = "automailListRecipient"
 	private static final String S_SENDER_NAME = "senderName"
@@ -99,6 +100,16 @@ class SettingsService {
 	def setAutomailListEnabled(boolean enabled)
 	{
 		setValue(S_AUTOMAIL_LIST, String.valueOf(enabled))
+	}
+	
+	def boolean isDbBackupAttachedWithMaillist()
+	{
+		return getSetting(S_DB_BACKUP_ATTACHED_WITH_MAILLIST, true)
+	}
+	
+	def setDbBackupAttachedWithMaillist(boolean enabled)
+	{
+		setValue(S_DB_BACKUP_ATTACHED_WITH_MAILLIST, String.valueOf(enabled))
 	}
 	
 	def boolean isAutomailWhenFinancesNotUpdated()

@@ -57,11 +57,21 @@
 <body>
 	<g:render template="/templates/emailsettingsNotice" />
 	
+	<g:if test="${flash.message}">
+		<div class="message">${flash.message}</div>
+	</g:if>
+	
 	<g:if test="${emailSettingsSet}">
-		<g:form action="submitSettings">
+		<g:form>
 			<g:checkBox name="automail" checked="${automailListEnabled}" />
 			<label for="automail"><g:if test="${klantLijst}">E-mail dit wekelijks naar</g:if><g:if test="${!klantLijst}">E-mail een lijst met klanten en hun rekeningen wekelijks naar</g:if></label> <g:field type="email" name="recipient" value="${recipient}" placeholder="ontvanger" required="true" disabled="${!automailListEnabled}"/>
-			<g:submitButton name="submit" value="Verstuur"/>
+			<br/>
+			<g:if test="${!memoryDatabase}">
+				<g:checkBox name="attachDbBackup" checked="${attachDbBackup}" />
+				<label for="attachDbBackup">Stuur database backup als bijlage</label> <br/>
+			</g:if>
+			<g:actionSubmit action="mailNow" value="${message(code: "maillijst.mail_now")}" />
+			<g:actionSubmit action="submitSettings" value="${message(code: "default.button.update.label")}" />
 		</g:form>
 	</g:if>
 	<br/>
