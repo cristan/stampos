@@ -59,8 +59,10 @@ class MailJob
 		}
 		if(settingsService.isAutomailListEnabled())
 		{
-			String recipient = myMailService.sendEmailList()
-			log.info "Maillijst verstuurd naar "+ recipient
+			String recipient = settingsService.getAutomailListRecipient()
+			boolean memoryDatabase = grailsApplication.config.dataSource.url.contains("mem")
+			myMailService.sendEmailList(recipient, !memoryDatabase && settingsService.isDbBackupAttachedWithMaillist())
+			log.info "Maillijst verstuurd naar ${recipient} "+ (attachDbBackup ? "met": "zonder") +" een database backup als bijlage."
 		}
 		else
 		{

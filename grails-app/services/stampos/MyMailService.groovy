@@ -11,6 +11,8 @@ import java.util.Map;
 
 import org.springframework.context.MessageSource
 
+import com.novadge.novamail.Attachment;
+
 class MyMailService {
 
 	private static final String TIME_LAST_MAIL = "TimeLastMail"
@@ -133,7 +135,7 @@ class MyMailService {
 					Object[] parameters = [persoonlijkeUrl]
 					bericht += messageSource.getMessage('mail.funds.footer', parameters, Locale.default);
 							
-					sendMail(klant.email, titel, bericht.replace("\n", "<br>"))
+					sendMail(klant.email, titel, bericht.replace("\n", "<br>"), null)
 				}
 			}
 			
@@ -205,7 +207,7 @@ class MyMailService {
 	
 	
 	PageRenderer groovyPageRenderer
-	def sendEmailList()
+	def sendEmailList(String recipient, boolean attachDbBackup)
 	{
 		def maillist = getMaillist();
 		//String html = render(template: "/templates/klantLijst", klantLijst: maillist)
@@ -214,13 +216,32 @@ class MyMailService {
 		htmlMessage += renderedMaillist
 		htmlMessage += "</body>\n</html>"
 		
-		String recipient = settingsService.automailListRecipient
-		sendMail(recipient, getMaillistSubject(), htmlMessage)
+		def attachments
+		File tempFile
+		if(attachDbBackup)
+		{
+			def conn = new groovy.sql.Sql((java.sql.Connection) grailsApplication.mainContext.sessionFactory.currentSession.connection())
+			DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+			tempFile = File.createTempFile(df.format(new Date()), ".zip");
+			println "tempFile: "+ tempFile.getAbsolutePath() 
+			conn.execute("BACKUP TO '"+tempFile.getAbsolutePath()+"'")
+			attachments = [tempFile]
+		}
+		else
+		{
+			attachments = null
+		}
 		
+		sendMail(recipient, getMaillistSubject(), htmlMessage, attachments)
+		
+		if(tempFile)
+		{			
+			tempFile.delete()
+		}
 		return recipient
 	}
 	
-	private def sendMail(String to, String subject, String body)
+	private def sendMail(String to, String subject, String body, List<File> attachments)
 	{
 		def hostProps = [	
 							"mail.smtp.starttls.enable": String.valueOf(settingsService.isSmtpUseTls()),
@@ -232,7 +253,9 @@ class MyMailService {
 							]
 		
 		// messagingService.sendEmail(map) is bugged as it ignores the "from" parameter. Use the following instead
-		messagingService.sendEmail(settingsService.getSmtpHost(), settingsService.getSmtpUsername(), settingsService.getSmtpPassword(), settingsService.getSender(), to, subject, body, true, null , hostProps)
+		println "settingsService.getSmtpUsername(): "+settingsService.getSmtpUsername()
+		println "settingsService.getSmtpPassword(): "+ settingsService.getSmtpPassword()
+		messagingService.sendEmail(settingsService.getSmtpHost(), settingsService.getSmtpUsername(), settingsService.getSmtpPassword(), settingsService.getSender(), to, subject, body, true, attachments , hostProps)
 		
 	}
 }

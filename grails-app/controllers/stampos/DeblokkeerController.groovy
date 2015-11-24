@@ -7,6 +7,7 @@ class DeblokkeerController {
 	
 	def klantService
 	def pushService
+	def settingsService
 
     def deblokkeer() { }
 	
@@ -15,19 +16,14 @@ class DeblokkeerController {
 		String password = params.password
 		def loggedIn
 		
-		def maintenancePasswordHash = grailsApplication.config.maintenance.passwordhash
-		if(!maintenancePasswordHash)
+		def adminPasswordHash = settingsService.getAdminPasswordHash()
+		if(!adminPasswordHash)
 		{
 			loggedIn = false
 		}
 		else
 		{
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.update(password.getBytes());
-			byte[] hash = md.digest();
-			def passwordHash = hash.encodeBase64().toString()
-					
-			if(passwordHash == maintenancePasswordHash)
+			if(settingsService.passwordMatches(password))
 			{
 				session.loggedIn = true;
 				loggedIn = true

@@ -1,8 +1,11 @@
 button{
+	height: 30pt;
+}
+
+button, .blockedUserSelectButton{
 	background-color: #C01A1A;
 	color:white;
 	border: none;
-	height: 30pt;
 }
 
 input[type=password], input[type=text]{
@@ -12,6 +15,8 @@ input[type=password], input[type=text]{
 
 .blockedUserSelectButton{
 	width: 100%;
+	text-align: center;
+	padding: 2pt 0;
 	/*margin: 5pt 0;*/ 
 }
 

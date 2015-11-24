@@ -3,7 +3,7 @@ package stampos
 class SecurityFilters {
 
     def filters = {
-        loginCheck(controller: '*',  action: "list|show|edit|delete|create|save|update|registreerInkopen|verwerkInkopen|mail|geteld|schatting|registreerTelling|verwerkTelling|doUpload|upload|verwerkActies|uitstel|geefUitstel|overzicht|maillijst|versturen|doVerstuur|klantoverzicht", invert:false) {
+        loginCheck(controller: '*', action: "list|show|edit|delete|create|save|update|registreerInkopen|verwerkInkopen|mail|geteld|schatting|registreerTelling|verwerkTelling|doUpload|upload|verwerkActies|uitstel|geefUitstel|overzicht|maillijst|versturen|doVerstuur|klantoverzicht|changePassword", invert:false) {
             before = {
 				if (!session.loggedIn)
 				{

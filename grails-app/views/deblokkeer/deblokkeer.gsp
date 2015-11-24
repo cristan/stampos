@@ -17,6 +17,8 @@
 	<link type="text/css" href="${resource(dir: 'css', file: 'deblokkeer.css')}" rel="stylesheet"/>
 	<g:javascript library="jquery" plugin="jquery"/>
 	
+	<script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.timeago.js')}"></script>
+	<script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.timeago.nl.js')}"></script>
 	<script type="text/javascript" src="${resource(dir: 'js', file: 'deblokkeer.js')}"></script>
 </head>
 <body>
