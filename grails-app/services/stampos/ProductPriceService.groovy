@@ -6,18 +6,26 @@ import grails.transaction.Transactional
 class ProductPriceService {
 
     ProductPrijs getActiveProductPrice(Product product) {
-		def pps = ProductPrijs.findAllWhere(actiefTot: null, product: product)
-		if(pps.size() == 0)
+		// The id will be null when saving a new product
+		if(product.id == null)
 		{
 			return null
 		}
-		else if (pps.size() > 1)
-		{
-			throw new Exception("Product "+ product.naam +" heeft meer dan 1 actieve ProductPrijs!")
-		}
 		else
 		{
-			return pps.get(0)
+			def pps = ProductPrijs.findAllWhere(actiefTot: null, product: product)
+			if(pps.size() == 0)
+			{
+				return null
+			}
+			else if (pps.size() > 1)
+			{
+				throw new Exception("Product "+ product.naam +" heeft meer dan 1 actieve ProductPrijs!")
+			}
+			else
+			{
+				return pps.get(0)
+			}
 		}
     }
 	
@@ -27,7 +35,15 @@ class ProductPriceService {
 		if(!pp)
 		{
 			// No ProductPrice exists: create a new one
-			new ProductPrijs(product: product, prijs: price, actiefTot: null).save()
+			
+			// We can't save the ProductPrice without a persisted product, and I don't think there's anything I can do about it
+			if(product.id != null)
+			{
+				// Save the product before we can create the ProductPrijs
+				product.save()
+				
+				new ProductPrijs(product: product, prijs: price, actiefTot: null).save()				
+			}
 		}
 		else
 		{
