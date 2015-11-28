@@ -37,14 +37,13 @@ class AuthenticationController {
 			if(settingsService.passwordMatches(password))
 			{
 				session.loggedIn = true;
+				flash.message = "You are now logged in"
 				if(params.nameOfController && params.nameOfController != "authentication")
 				{
-					flash.message = "Welcome!"
 					redirect(controller: params.nameOfController, action: params.nameOfAction)
 				}
 				else
 				{
-					flash.message = "You are now logged in"
 					redirect(uri: "")
 				}
 			}
