@@ -8,8 +8,8 @@ class Product implements Comparable<Product> {
 	
 	String naam;
 	int sortering;
-	int colliGrootte;
-	boolean zichtbaar;
+	int colliGrootte = 1;
+	boolean zichtbaar = true;
 	
 	static hasMany = [productPrijzen: ProductPrijs]
 	
