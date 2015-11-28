@@ -12,12 +12,14 @@
         	}
         	
         </style>
+        <g:javascript library="jquery" plugin="jquery"/>
         <script type="text/javascript">
-			// TODO: var alleProducten = producten as JSON en loop hierover ipv aantalProducten
-			var alleProducten = ${alleProductenAsJson};
+			<g:applyCodec encodeAs="none">
+				var alleProducten = ${alleProductenAsJson};
+			</g:applyCodec>
 
     		$(document).ready(function() {
-				for(var i = 0; i < ${aantalProducten}; i++)
+				for(var i = 0; i < alleProducten.length; i++)
 				{
 					var product = alleProducten[i];
 					$("#aantalKeerColli"+product.id).on('change', {product: product}, valueChanged);

@@ -9,7 +9,7 @@ class InkoopController {
 	def registreerInkopen()
 	{
 		def producten = Product.list()
-		return [producten: producten, aantalProducten: producten.size(), alleProductenAsJson: producten as JSON]
+		return [producten: producten, alleProductenAsJson: producten as JSON]
 	}
 	
 	def verwerkInkopen()
