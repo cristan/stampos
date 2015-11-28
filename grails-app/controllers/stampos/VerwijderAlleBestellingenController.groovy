@@ -14,8 +14,7 @@ class VerwijderAlleBestellingenController {
 	def verwijderd()
 	{
 		String password = params.password
-		
-		if(settingsService.passwordMatches(password))
+		if(!settingsService.passwordMatches(password))
 		{
 			flash.message = "Incorrect wachtwoord!"
 			redirect(action:"index")

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<meta name="layout" content="main">
+	<meta name="layout" content="beheer">
 	<title>Verwijder alle bestellingen</title>
 </head>
 <body>
