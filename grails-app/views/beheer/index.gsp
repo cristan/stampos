@@ -127,9 +127,9 @@
 			<g:link controller="rendement" action="geteld">Rendement van de bar (nav telling)</g:link><br/>
 			<br/>
 			<g:link controller="klant" params="[max: 100]" >Bekijk klanten</g:link><br/>
+			<g:link controller="product">Bekijk producten</g:link> (De prijs van een produt wordt helaas niet verwerkt bij het het aanmaken. Bewerken van de prijs van een product werkt wel)<br/>
 			<g:link controller="betaling">Bekijk betalingen</g:link><br/>
-			<g:link controller="product">Bekijk producten</g:link><br/>
-			<g:link controller="productPrijs">Bekijk productPrijzen</g:link><br/>
+			<br/>
 			<g:link controller="bestelling">Bekijk bestellingen</g:link><br/>
 			<g:link controller="inkoop">Bekijk inkopen</g:link><br/>
 			<g:link controller="telling">Bekijk tellingen</g:link><br/>
