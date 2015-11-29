@@ -19,6 +19,9 @@
 	
 	<script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.timeago.js')}"></script>
 	<script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.timeago.nl.js')}"></script>
+	<script type="text/javascript">
+		var baseUrl = "${createLink(uri: '/')}";
+	</script>
 	<script type="text/javascript" src="${resource(dir: 'js', file: 'deblokkeer.js')}"></script>
 </head>
 <body>

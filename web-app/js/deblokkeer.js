@@ -2,16 +2,12 @@ var dataLoaded = false;
 var animationEnded = false;
 var klanten;
 
-//Fancy ECMA-402 number formatting (which uses the default Locale because of the undefined).
-//This is supported by Chrome 24, Fx 29 and IE11 (source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString)
-var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
 
 function logIn(password)
 {
 	$("#passwordField").css("border", "2px solid white");
 
-	
-	$.getJSON('deblokkeer/logIn?password='+ password, function(data) {
+	$.getJSON(baseUrl + 'deblokkeer/logIn?password='+ password, function(data) {
 		if(!data.loggedIn)
 		{
 			$("#passwordField").addClass("incorrectAnimation");
@@ -24,18 +20,19 @@ function logIn(password)
 			$("#login").on('webkitAnimationEnd', listener);
 			$("#login").addClass("fadeoutAnimation");
 			
+			$.getJSON(baseUrl + 'deblokkeer/blockedUsers', function(data) {
+				klanten = data;
+				tekenKlanten();
+				dataLoaded = true;
+				if(animationEnded)
+			    {
+				    showContent();
+			    }
+			});
 		}
 	});
 
-	$.getJSON('deblokkeer/blockedUsers', function(data) {
-		klanten = data;
-		tekenKlanten();
-		dataLoaded = true;
-		if(animationEnded)
-	    {
-		    showContent();
-	    }
-	});
+	
 }
 
 function tekenKlanten()
@@ -52,11 +49,11 @@ function tekenKlanten()
 		'</div>'+
 		'</div>';
 	});
-	$("#names").html(html);
-		
+    $("#names").html(html);
+	
 	$.each(klanten, function(i, klant)
 	{
-		var html = "<strong>"+ klant.naam +"</strong><br/>Rekening: &euro;"+formatter.format(-1 * klant.tegoed)+"<br/>\n"+
+		var html = "<strong>"+ klant.naam +"</strong><br/>Rekening: &euro;"+ format(-1 * klant.tegoed) +"<br/>\n"+
 			"Laatst betaald: ";
 		if(klant.laatstBetaald)
 		{
@@ -73,11 +70,29 @@ function tekenKlanten()
 	        click: function () { deblokkeerKlant($(this),klant); }
 	    });
 	    zeButton.addClass('blockedUserSelectButton');
-
+	    
 		$("#front"+klant.id).append(zeButton);
 	});
 	$("abbr.timeago").timeago();
 }
+
+//Fancy ECMA-402 number formatting (which uses the default Locale because of the undefined).
+//This is supported by Chrome 24, Fx 29 and IE11, but not iPhone (source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString)
+var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+function format(value)
+{
+	var formatted
+	if(formatter)
+	{
+		formatted = formatter.format(value)
+	}
+	else
+	{
+		formatted = value;
+	}
+	return formatted
+}
+
 
 function deblokkeerKlant(clickedButton, klant)
 {

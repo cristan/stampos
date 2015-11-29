@@ -9,7 +9,7 @@ class Klant {
 	String wachtwoord;
 	Date uitstelTot;
 	Date laatsteToegang;
-	boolean zichtbaar;
+	boolean zichtbaar = true;
 	static hasMany = [betalingen: Betaling, bestellingen: Bestelling]
 	
 	static mapping = {

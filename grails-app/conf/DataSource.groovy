@@ -5,6 +5,14 @@ dataSource {
     username = "sa"
     password = ""
 }
+
+// A fix for Another unnamed CacheManager already exists in the same VM. See http://stackoverflow.com/a/29317238/389649
+beans {
+	cacheManager {
+	   shared = true
+   }
+ }
+
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
