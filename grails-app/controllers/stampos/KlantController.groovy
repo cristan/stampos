@@ -25,7 +25,7 @@ class KlantController {
 	private List<Klant> getAllKlanten()
 	{ 
 		List<Klant> result = Klant.findAllByZichtbaar(true, [sort:"naam"]);
-		if(!result && Environment.current != Environment.PRODUCTION)
+		if(!result && Environment.current == Environment.DEVELOPMENT)
 		{
 			result = testDataService.getTestKlanten()
 		}

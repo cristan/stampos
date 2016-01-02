@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat
+import grails.util.Environment
 
 import grails.converters.JSON
 
@@ -22,7 +23,10 @@ class KlantinfoController {
 	
 	def mutaties()
 	{
-		testDataService.getTestBestellingen()
+		if(Environment.current == Environment.DEVELOPMENT)
+		{
+			testDataService.getTestBestellingen()
+		}
 		Klant klant = Klant.get(params.klantId)
 		Date beginDatum = params.beginDatum ? new Date(params.beginDatum as long) : null
 		
@@ -67,7 +71,10 @@ class KlantinfoController {
 			items.add([datum:bestelling.datum, bestelling:[bestelregels: bestelregels, totaalBestelling: df.format(totaalBestelling), datumFormatted: bestellingFormat.format(bestelling.datum)]])
 		}
 		
-		testDataService.getTestBetalingen()
+		if(Environment.current == Environment.DEVELOPMENT)
+		{
+			testDataService.getTestBetalingen()
+		}
 		query = "from Betaling b where b.klant = :klant"
 		def queryEnd = " order by b.datum desc"
 		List<Betaling> betaald
