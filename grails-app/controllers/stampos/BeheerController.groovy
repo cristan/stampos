@@ -1,5 +1,7 @@
 package stampos
 
+import grails.util.Environment
+
 class BeheerController {
 
     def index() { }
@@ -9,7 +11,7 @@ class BeheerController {
 	def klantoverzicht()
 	{
 		def klanten = Klant.findAllWhere(zichtbaar: true);
-		if(!klanten)
+		if(!klanten && Environment.current == Environment.DEVELOPMENT)
 		{
 			klanten = testDataService.getTestKlanten()
 		}

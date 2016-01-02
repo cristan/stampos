@@ -129,7 +129,7 @@ class ProductController {
 	private def getAllProducts()
 	{
 		List<Product> allProducts = Product.findAllWhere(zichtbaar: true);
-		if(allProducts.isEmpty() && Environment.current != Environment.PRODUCTION)
+		if(allProducts.isEmpty() && Environment.current == Environment.DEVELOPMENT)
 		{
 			allProducts = testDataService.getTestProducten()
 		}

@@ -40,7 +40,7 @@ class TestDataService {
 	def getTestBestellingen()
 	{
 		getTestKlanten()
-		Klant klant = Klant.findByNaam("Cristan Meijer");
+		Klant klant = Klant.findAllByZichtbaar(true, [sort:"naam"]).get(0);
 
 		List<Bestelling> bestellingen = Bestelling.findAllWhere(klant: klant);
 		if(!bestellingen.empty)
