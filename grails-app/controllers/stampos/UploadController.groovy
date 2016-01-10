@@ -51,7 +51,7 @@ class UploadController {
 				String bedrag = line[6]
 				String echteMededelingen = line[8]
 				
-				String mededelingen = sanitizeDescription(echteMededelingen, echteNaamOmschrijving)
+				String mededelingen = sanitizeDescription(echteMededelingen)
 				
 				String gevondenKlantNaam = null
 				KlantRekeningnummer kr = KlantRekeningnummer.findByRekening(tegenrekening)
@@ -139,29 +139,18 @@ class UploadController {
 		return [eersteDatum: firstDatum, hoeveelheidEersteDatum: datumOccurences, newTransactions: newTransactions, oldTransactions: oldTransactions, klantnamen: customerNamesJSON]
 	}
 	
-	def sanitizeDescription(String mededelingen, String naamOmschrijving)
+	def sanitizeDescription(String mededelingen)
 	{
 		def descriptionIdentifier = "Omschrijving: ";
 		if(!mededelingen.contains(descriptionIdentifier))
 		{
 			return null
 		}
-		def weirdPostbankStart = "Naam: "+naamOmschrijving +" "+ descriptionIdentifier
-		if(mededelingen.startsWith(weirdPostbankStart))
+		else
 		{
-			mededelingen = mededelingen.substring(weirdPostbankStart.length())
-			int endIndex = mededelingen.indexOf("Kenmerk: ")
-			if(endIndex == -1)
-			{
-				endIndex = mededelingen.indexOf("IBAN: ")
-			}
-			if(endIndex != -1)
-			{
-				mededelingen = mededelingen.substring(0, endIndex)
-			}
+			def toReturn = mededelingen.substring(mededelingen.indexOf(descriptionIdentifier) + descriptionIdentifier.size());
+			return toReturn.trim();
 		}
-		
-		return mededelingen.trim()
 	}
 	
 	private def fixCase(String toFix)
