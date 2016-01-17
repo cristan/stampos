@@ -18,7 +18,8 @@ class KlantinfoController {
 	
     def klantInfo() 
 	{ 
-		return [id: params.id]
+		def zeId = params.id == "all" ? "null" : params.id 
+		return [id: zeId]
 	}
 	
 	def mutaties()
@@ -27,14 +28,32 @@ class KlantinfoController {
 		{
 			testDataService.getTestBestellingen()
 		}
-		Klant klant = Klant.get(params.klantId)
+		Klant klant = null
+		if(params.klantId && params.klantId != "null")
+		{
+			klant = Klant.get(params.klantId)
+		}
 		Date beginDatum = params.beginDatum ? new Date(params.beginDatum as long) : null
 		
-		String query = "from Bestelling b where b.klant = :klant"
-		def namedParams = [klant:klant]
+		String query = "from Bestelling b"
+		def namedParams = []
+		if(klant)
+		{
+			query += " where b.klant = :klant"
+			namedParams = [klant:klant] 
+		}
+		 
 		if(beginDatum)
 		{
-			query += " and b.datum < :eersteBestellingDatum"
+			if(!klant)
+			{
+				query += " where"
+			}
+			else
+			{
+				query += " and"
+			}
+			query += " b.datum < :eersteBestellingDatum"
 			namedParams.put("eersteBestellingDatum", beginDatum)
 		}
 		query += " order by b.datum desc"
@@ -75,7 +94,11 @@ class KlantinfoController {
 		{
 			testDataService.getTestBetalingen()
 		}
-		query = "from Betaling b where b.klant = :klant"
+		query = "from Betaling b"
+		if(klant)
+		{
+			query += " where b.klant = :klant"			
+		}
 		def queryEnd = " order by b.datum desc"
 		List<Betaling> betaald
 		
@@ -83,10 +106,23 @@ class KlantinfoController {
 		if(nogOverigeBestellingen)
 		{
 			// De bestellingen zijn genoeg om maxItems te halen. Haal alle bestellingen die tussen de opgehaalde bestellingen vallen
-			query += " and b.datum > :laatsteBestellingDatum" 
-			namedParams = [klant:klant, laatsteBestellingDatum: besteld.get(maxItems -1).datum]
+			if(!klant)
+			{
+				query += " where"
+			}
+			else
+			{
+				query += " and"
+			}
+			query += " b.datum > :laatsteBestellingDatum" 
+			namedParams = [laatsteBestellingDatum: besteld.get(maxItems -1).datum]
+			if(klant)
+			{
+				namedParams.put("klant", klant)
+			}
 			if(beginDatum)
 			{
+				
 				query += " and b.datum < :eersteBestellingDatum"
 				namedParams.put("eersteBestellingDatum", beginDatum)
 			}
@@ -96,10 +132,18 @@ class KlantinfoController {
 		else
 		{
 			// Er zijn niet genoeg bestellingen om maxItems te halen. Daarom geen max aan het einde van de datum
-			namedParams = [klant:klant]
+			namedParams = []
+			if(klant)
+			{
+				namedParams = [klant:klant]
+			}
 			if(beginDatum)
 			{
-				query += " and b.datum < :eersteBestellingDatum"
+				if(klant)
+				{
+					query += " and"
+				}
+				query += " b.datum < :eersteBestellingDatum"
 				namedParams.put("eersteBestellingDatum", beginDatum)
 			}
 			query += queryEnd

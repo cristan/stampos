@@ -57,6 +57,7 @@ grails.project.dependency.resolution = {
 	}
 
     plugins {
+		// TODO: https://grails.org/plugin/locale-configuration
         // plugins for the build system only
 //        build ":tomcat:7.0.52.1"
 		build ":tomcat:8.0.22"
