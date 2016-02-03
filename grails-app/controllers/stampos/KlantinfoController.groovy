@@ -87,7 +87,12 @@ class KlantinfoController {
 				bestelregels.add([aantal: br.aantal, product: br.productPrijs.product.naam, totaalPrijs : df.format(totaal)]);
 			}
 			
-			items.add([datum:bestelling.datum, bestelling:[bestelregels: bestelregels, totaalBestelling: df.format(totaalBestelling), datumFormatted: bestellingFormat.format(bestelling.datum)]])
+			def item = [datum:bestelling.datum, bestelling:[bestelregels: bestelregels, totaalBestelling: df.format(totaalBestelling), datumFormatted: bestellingFormat.format(bestelling.datum)]];
+			if(!klant)
+			{
+				item.put("klantnaam", bestelling.klant.naam)
+			}
+			items.add(item)
 		}
 		
 		if(Environment.current == Environment.DEVELOPMENT)
@@ -159,7 +164,12 @@ class KlantinfoController {
 		}
 		for(Betaling betaling : betaald)
 		{
-			items.add([datum:betaling.datum, betaling:[bedrag: df.format(betaling.bedrag), datumFormatted: betalingFormat.format(betaling.datum)]])
+			def item = [datum:betaling.datum, betaling:[bedrag: df.format(betaling.bedrag), datumFormatted: betalingFormat.format(betaling.datum)]]
+			if(!klant)
+			{
+				item.put("klantnaam", betaling.klant.naam)
+			}
+			items.add(item)
 		}
 		
 		items.sort{-it.datum.getTime()}

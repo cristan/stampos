@@ -26,10 +26,20 @@ function loadData()
 			var bestelling = data.items[i].bestelling;
 			if(bestelling)
 			{
+				var headerContents;
+				var klantnaam = data.items[i].klantnaam;
+				if(klantnaam)
+				{
+					headerContents = "Bestelling "+ klantnaam
+				}
+				else
+				{
+					headerContents = "Besteld"
+				}
 				var content = 
 					"<div class='bestelling'>"+
 							"<div class='bestellingHeader'>"+
-							"<div class='headerType'>Besteld</div>"+
+							"<div class='headerType'>"+headerContents+"</div>"+
 							"<div class='headerDate'>"+bestelling.datumFormatted+"</div>"+
 							"<div class='clear'/>"+
 						"</div>"+
@@ -59,10 +69,20 @@ function loadData()
 			var betaling = data.items[i].betaling;
 			if(betaling)
 			{
+				var headerContents;
+				var klantnaam = data.items[i].klantnaam;
+				if(klantnaam)
+				{
+					headerContents = "Betaling "+ klantnaam;
+				}
+				else
+				{
+					headerContents = "Betaling verwerkt";
+				}
 				var content = 
 					"<div class='betaling'>"+
 							"<div class='betalingHeader'>"+
-							"<div class='headerType'>Betaling verwerkt</div>"+
+							"<div class='headerType'>"+headerContents+"</div>"+
 							"<div class='headerDate'>"+betaling.datumFormatted+"</div>"+
 							"<div class='clear'/>"+
 						"</div>"+
