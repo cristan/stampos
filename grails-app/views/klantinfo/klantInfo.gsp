@@ -28,6 +28,19 @@
 			loadData();
 		});
 	</script>
+	<asset:javascript src="spring-websocket" />
+	<script type="text/javascript">
+    $(function() { 
+        var socket = new SockJS("${createLink(uri: '/stomp')}");
+        var client = Stomp.over(socket);
+
+        client.connect({}, function() {
+            client.subscribe("/topic/order", function(message) {
+                console.log(message);
+            });
+        });
+    });
+</script>
 </head>
 
 <body>

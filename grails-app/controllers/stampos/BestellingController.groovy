@@ -8,6 +8,7 @@ class BestellingController {
 	
 	def klantService
 	def generalService
+	def pushService
 	
 	def bevestigBestelling()
 	{
@@ -30,6 +31,7 @@ class BestellingController {
 				BestelRegel br = new BestelRegel(bestelling: bestelling, aantal: aantal, productPrijs: pp);
 				br.save();
 			}
+			pushService.orderDone(bestelling)
 		}
 		
 		

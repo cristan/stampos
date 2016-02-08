@@ -12,4 +12,10 @@ class PushService {
 	void userUpdated(Klant klant) {
 		brokerMessagingTemplate.convertAndSend "/topic/user", klant.id
 	}
+	
+	void orderDone(Bestelling bestelling)
+	{
+		def item = [datum:bestelling.datum];
+		brokerMessagingTemplate.convertAndSend "/topic/order", item
+	}
 }
