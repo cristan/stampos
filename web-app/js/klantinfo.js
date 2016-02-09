@@ -135,8 +135,5 @@ function loadIfNeeded()
 
 win.scroll(function()
 {
-	if(klantId != null)
-	{
-		loadIfNeeded()
-	}
+	loadIfNeeded()
 });

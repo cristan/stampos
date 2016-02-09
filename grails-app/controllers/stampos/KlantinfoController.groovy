@@ -102,7 +102,7 @@ class KlantinfoController {
 		else
 		{
 			// Er zijn niet genoeg bestellingen om maxItems te halen. Daarom geen max aan het einde van de datum
-			namedParams = []
+			namedParams = [:]
 			if(beginDatum)
 			{
 				query += " b.datum < :eersteBestellingDatum"
