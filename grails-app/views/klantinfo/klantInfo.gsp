@@ -24,31 +24,14 @@
 	
 	<script type="text/javascript">
 		var klantId = ${id};
-		$(document).ready(function() {
-			loadData();
-		});
+		var baseUrl = "${createLink(uri: '/')}";
 	</script>
 	<asset:javascript src="spring-websocket" />
-	<script type="text/javascript">
-    $(function() { 
-        var socket = new SockJS("${createLink(uri: '/stomp')}");
-        var client = Stomp.over(socket);
-
-        client.connect({}, function() {
-            client.subscribe("/topic/order", function(message) {
-                console.log(message);
-            });
-        });
-    });
-</script>
 </head>
 
 <body>
 <div id="pageContainer">
 </div>
-<script type="text/javascript">
-	var baseUrl = "${createLink(uri: '/')}";
-</script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'klantinfo.js')}"></script>
 </body>
 </html>

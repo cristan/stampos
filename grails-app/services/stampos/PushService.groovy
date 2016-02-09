@@ -7,6 +7,7 @@ import grails.transaction.Transactional
 @Transactional
 class PushService {
 
+	def klantInfoService
     SimpMessagingTemplate brokerMessagingTemplate
 	
 	void userUpdated(Klant klant) {
@@ -15,7 +16,7 @@ class PushService {
 	
 	void orderDone(Bestelling bestelling)
 	{
-		def item = [datum:bestelling.datum];
+		def item = klantInfoService.getJsonOrder(bestelling, true)
 		brokerMessagingTemplate.convertAndSend "/topic/order", item
 	}
 }

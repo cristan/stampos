@@ -23,6 +23,7 @@ class BestellingController {
 			def order = JSON.parse(params.order);
 			Bestelling bestelling = new Bestelling(klant: klant)
 			bestelling.save();
+			def bestelRegels = []
 			
 			for(i in order)
 			{
@@ -30,7 +31,9 @@ class BestellingController {
 				def pp = ProductPrijs.get(i[0].id);
 				BestelRegel br = new BestelRegel(bestelling: bestelling, aantal: aantal, productPrijs: pp);
 				br.save();
+				bestelRegels.add(br)
 			}
+			bestelling.bestelRegels = bestelRegels
 			pushService.orderDone(bestelling)
 		}
 		
