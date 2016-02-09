@@ -127,8 +127,6 @@ class KlantinfoController {
 		items.sort{-it.datum.getTime()}
 		
 		Long eindeDatum = null
-		println "nogOverigeBestellingen: "+nogOverigeBestellingen
-		println "nogOverigeBetalingen: "+nogOverigeBetalingen
 		if(nogOverigeBestellingen || nogOverigeBetalingen)
 		{
 			eindeDatum = items.get(items.size() - 1).datum.getTime()
