@@ -208,6 +208,7 @@ class UploadController {
 					}
 				}
 				pushService.userUpdated(klant)
+				pushService.paymentDone(b)
 				toReturn.add(b)
 				
 				// Remember the link between the accountnumber and the customer for the next time
