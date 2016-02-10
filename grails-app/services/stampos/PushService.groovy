@@ -19,4 +19,10 @@ class PushService {
 		def item = klantInfoService.getJsonOrder(bestelling, true)
 		brokerMessagingTemplate.convertAndSend "/topic/order", item
 	}
+	
+	void paymentDone(Betaling betaling)
+	{
+		def item = klantInfoService.getJsonPayment(betaling, true)
+		brokerMessagingTemplate.convertAndSend "/topic/payment", item
+	}
 }

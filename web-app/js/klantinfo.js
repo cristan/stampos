@@ -6,12 +6,14 @@ $(document).ready(function() {
 		var socket = new SockJS(baseUrl + 'stomp');
         var client = Stomp.over(socket);
 
+        // TODO: also do this for when you _are_ viewing a specific user?
         client.connect({}, function() {
-            client.subscribe("/topic/order", function(message) {
-            	$("#pageContainer").prepend(getOrderHtml(JSON.parse(message.body)));
-            });
-            
-            // TODO: also subscribe to payments
+        	client.subscribe("/topic/order", function(message) {
+        		$("#pageContainer").prepend(getOrderHtml(JSON.parse(message.body)));
+        	});
+        	client.subscribe("/topic/payment", function(message) {
+        		$("#pageContainer").prepend(getPaymentHtml(JSON.parse(message.body)));
+        	});
         });
 	}
 });
