@@ -74,10 +74,9 @@ class MyMailService {
 					klantenMetRekening.add(klant)
 					
 					mail = true
-					Object[] parameters = []
-					titel = messageSource.getMessage("mail.insufficientfunds.title", parameters, Locale.default);
+					titel = settingsService.getInsufficientFundsTitle(-tegoed)
 					def rekening = format.format(-tegoed)
-					parameters = [klantNaam, rekening, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
+					Object[] parameters = [klantNaam, rekening, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
 					bericht = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
 				}
 				else
@@ -121,11 +120,10 @@ class MyMailService {
 					{
 						klantenMetTegoedGemaild.add(klant)
 						
-						def geformatteerdTegoed = format.format(tegoed)
-						Object[] parameters = [geformatteerdTegoed]
-						titel = messageSource.getMessage('mail.sufficientfunds.title', parameters, Locale.default);
+						titel = settingsService.getSufficientFundsTitle(tegoed)
 						
-						parameters = [klantNaam, geformatteerdTegoed, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
+						def geformatteerdTegoed = format.format(tegoed)
+						Object[] parameters = [klantNaam, geformatteerdTegoed, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
 						bericht = messageSource.getMessage('mail.sufficientfunds.message', parameters, Locale.default);
 					}
 				}
@@ -253,9 +251,6 @@ class MyMailService {
 							]
 		
 		// messagingService.sendEmail(map) is bugged as it ignores the "from" parameter. Use the following instead
-		println "settingsService.getSmtpUsername(): "+settingsService.getSmtpUsername()
-		println "settingsService.getSmtpPassword(): "+ settingsService.getSmtpPassword()
-		messagingService.sendEmail(settingsService.getSmtpHost(), settingsService.getSmtpUsername(), settingsService.getSmtpPassword(), settingsService.getSender(), to, subject, body, true, attachments , hostProps)
-		
+		messagingService.sendEmail(settingsService.getSmtpHost(), settingsService.getSmtpUsername(), settingsService.getSmtpPassword(), settingsService.getSender(), to, subject, body, true, attachments , hostProps)		
 	}
 }
