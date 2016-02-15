@@ -93,6 +93,13 @@ environments {
     }
 }
 
+// Locales are resolved in the following order (see https://grails.org/plugin/locale-configuration)
+// Language Param in the URL (request), e.g. http://www.example.net?lang=en
+// First match of the locales from the HTTP Accept-Language header
+// Default locale (defaultLocale option in Config.groovy)
+grails.plugins.localeConfiguration.supportedLocales = [Locale.forLanguageTag("nl")]
+grails.plugins.localeConfiguration.defaultLocale = Locale.forLanguageTag("nl")
+
 // log4j configuration
 log4j = {
     // Example of changing the log pattern for the default console appender:
