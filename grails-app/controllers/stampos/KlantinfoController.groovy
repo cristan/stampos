@@ -1,8 +1,6 @@
 package stampos
 
 import java.text.DateFormat;
-import java.text.DecimalFormat
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat
 import grails.util.Environment
 
@@ -13,7 +11,6 @@ class KlantinfoController {
 	private static final maxItems = 15;
 	static DateFormat bestellingFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm")
 	static DateFormat betalingFormat = new SimpleDateFormat("dd-MM-yyyy")
-	static NumberFormat numberFormat = NumberFormat.getInstance(Locale.FRANCE)
 	def testDataService
 	def klantInfoService
 	

@@ -328,14 +328,7 @@ class SettingsService {
 	
 	def getSufficientFundsTitle(def tegoed)
 	{
-		return String.format(getSufficientFundsTitleValue(), formatMoney(tegoed))
-	}
-	
-	private String formatMoney(def value)
-	{
-		def format = DecimalFormat.getInstance(Locale.FRANCE);
-		format.setMinimumFractionDigits(2)
-		return "\u20AC"+format.format(value)
+		return String.format(getSufficientFundsTitleValue(), NumberUtils.formatMoney(tegoed))
 	}
 	
 	def setSufficientFundsTitle(String value)
@@ -351,7 +344,7 @@ class SettingsService {
 	
 	def getInsufficientFundsTitle(def tegoed)
 	{
-		return String.format(getInsufficientFundsTitleValue(), formatMoney(tegoed))
+		return String.format(getInsufficientFundsTitleValue(), NumberUtils.formatMoney(tegoed))
 	}
 	
 	def setInsufficientFundsTitle(String value)

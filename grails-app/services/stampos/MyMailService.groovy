@@ -4,7 +4,6 @@ import grails.gsp.PageRenderer
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.List;
 import java.util.Map;
@@ -62,8 +61,6 @@ class MyMailService {
 			for(Klant klant : klantenMetEmail)
 			{
 				def tegoed = klantService.tegoed(klant)
-				def format = DecimalFormat.getInstance(Locale.FRANCE);
-				format.setMinimumFractionDigits(2)
 				def klantNaam = klant.naam
 				def persoonlijkeUrl = settingsService.getServerUrl() +"klantinfo/"+klant.id
 				def titel
@@ -75,7 +72,7 @@ class MyMailService {
 					
 					mail = true
 					titel = settingsService.getInsufficientFundsTitle(-tegoed)
-					def rekening = format.format(-tegoed)
+					def rekening = NumberUtils.formatNumber(-tegoed)
 					Object[] parameters = [klantNaam, rekening, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
 					bericht = messageSource.getMessage("mail.insufficientfunds.message", parameters, Locale.default);
 				}
@@ -122,7 +119,7 @@ class MyMailService {
 						
 						titel = settingsService.getSufficientFundsTitle(tegoed)
 						
-						def geformatteerdTegoed = format.format(tegoed)
+						def geformatteerdTegoed = NumberUtils.formatNumber(tegoed)
 						Object[] parameters = [klantNaam, geformatteerdTegoed, getHtmlCompatibleAccountIban(), settingsService.getAccountOwner()]
 						bericht = messageSource.getMessage('mail.sufficientfunds.message', parameters, Locale.default);
 					}
