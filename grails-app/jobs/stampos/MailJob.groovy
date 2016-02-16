@@ -9,6 +9,7 @@ class MailJob
 {
 	def myMailService
 	def settingsService
+	def grailsApplication
 	MessageSource messageSource
 
 	static triggers =
