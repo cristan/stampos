@@ -6,7 +6,6 @@ class Klant {
 
 	String naam;
 	String email;
-	String wachtwoord;
 	Date uitstelTot;
 	Date laatsteToegang;
 	boolean zichtbaar = true;
@@ -21,7 +20,6 @@ class Klant {
     static constraints = {
 		naam unique: true;
 		email nullable:true 
-		wachtwoord nullable:true 
 		uitstelTot nullable:true 
 		laatsteToegang nullable:true 
     }

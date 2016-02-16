@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Klant informatie</title>
+	<title>${id != "null"? "Klant informatie" : "Bestellingen en betalingen van alle klanten"}</title>
 	
 	<meta name="format-detection" content="telephone=no" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -24,18 +24,14 @@
 	
 	<script type="text/javascript">
 		var klantId = ${id};
-		$(document).ready(function() {
-			loadData();
-		});
+		var baseUrl = "${createLink(uri: '/')}";
 	</script>
+	<asset:javascript src="spring-websocket" />
 </head>
 
 <body>
 <div id="pageContainer">
 </div>
-<script type="text/javascript">
-	var baseUrl = "${createLink(uri: '/')}";
-</script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'klantinfo.js')}"></script>
 </body>
 </html>

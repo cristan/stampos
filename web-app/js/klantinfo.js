@@ -1,7 +1,26 @@
+$(document).ready(function() {
+	loadData();
+
+	if(!klantId)
+	{
+		var socket = new SockJS(baseUrl + 'stomp');
+        var client = Stomp.over(socket);
+
+        // TODO: also do this for when you _are_ viewing a specific user?
+        client.connect({}, function() {
+        	client.subscribe("/topic/order", function(message) {
+        		$("#pageContainer").prepend(getOrderHtml(JSON.parse(message.body)));
+        	});
+        	client.subscribe("/topic/payment", function(message) {
+        		$("#pageContainer").prepend(getPaymentHtml(JSON.parse(message.body)));
+        	});
+        });
+	}
+});
+
 var eindeDatum;
 
-var win = $(window),
-doc = $(document);
+var win = $(window),doc = $(document);
 var loading = false;
 var shouldLoad = false;
 var endOfTheLine = false;
@@ -23,59 +42,14 @@ function loadData()
 	$.getJSON(url, function(data) {
 		for(var i = 0; i < data.items.length; i++)
 		{
-			var bestelling = data.items[i].bestelling;
-			if(bestelling)
+			var item = data.items[i];
+			if(item.bestelling)
 			{
-				var content = 
-					"<div class='bestelling'>"+
-							"<div class='bestellingHeader'>"+
-							"<div class='headerType'>Besteld</div>"+
-							"<div class='headerDate'>"+bestelling.datumFormatted+"</div>"+
-							"<div class='clear'/>"+
-						"</div>"+
-						"<div class='bestellingContent'>";
-
-				for(var j = 0; j < bestelling.bestelregels.length; j++)
-				{
-					var bestelregel = bestelling.bestelregels[j];
-					content += 
-						"<div class='bedrag'>&euro;"+bestelregel.totaalPrijs+"</div>"+
-						"<div class='product'>"+ bestelregel.product +"</div>"+ 
-						"<div class='aantal'>"+bestelregel.aantal +"</div>"+
-						"<div class='clear'/>";
-				}
-
-				if(bestelling.bestelregels.length > 1)
-				{
-					content += "<div class='totalLine'/><div class='clear'/>";
-					content += "<div class='totalOrder'>&euro;"+ bestelling.totaalBestelling +"</div><div class='clear'/>";
-				}
-
-				content +=					
-						"</div>"+
-					"</div>"
-				$("#pageContainer").append(content);
+				$("#pageContainer").append(getOrderHtml(item));
 			}
-			var betaling = data.items[i].betaling;
-			if(betaling)
-			{
-				var content = 
-					"<div class='betaling'>"+
-							"<div class='betalingHeader'>"+
-							"<div class='headerType'>Betaling verwerkt</div>"+
-							"<div class='headerDate'>"+betaling.datumFormatted+"</div>"+
-							"<div class='clear'/>"+
-						"</div>"+
-						"<div class='betalingContent'>";
-
-				content += 
-					"<div class='bedrag'>&euro;"+betaling.bedrag+"</div>"+
-					"<div class='clear'/>";
-
-				content +=					
-						"</div>"+
-					"</div>"
-				$("#pageContainer").append(content);
+			if(item.betaling)
+			{	
+				$("#pageContainer").append(getPaymentHtml(item));
 			}
 		}
 
@@ -100,6 +74,100 @@ function loadData()
 	});
 }
 
+$(document).ready(function() {
+	loadData();
+
+	if(klantId)
+	{
+		var socket = new SockJS("${createLink(uri: '/stomp')}");
+        var client = Stomp.over(socket);
+
+        client.connect({}, function() {
+            client.subscribe("/topic/order", function(message) {
+            	$("#pageContainer").append(getOrderHtml(message));
+            });
+        });
+	}
+});
+
+function getOrderHtml(item)
+{
+	var klantnaam = item.klantnaam;
+	var bestelling = item.bestelling;
+	var headerContents;
+	if(klantnaam)
+	{
+		headerContents = "Bestelling "+ klantnaam
+	}
+	else
+	{
+		headerContents = "Besteld"
+	}
+	var content = 
+		"<div class='bestelling'>"+
+				"<div class='bestellingHeader'>"+
+				"<div class='headerType'>"+headerContents+"</div>"+
+				"<div class='headerDate'>"+bestelling.datumFormatted+"</div>"+
+				"<div class='clear'/>"+
+			"</div>"+
+			"<div class='bestellingContent'>";
+
+	for(var j = 0; j < bestelling.bestelregels.length; j++)
+	{
+		var bestelregel = bestelling.bestelregels[j];
+		content += 
+			"<div class='bedrag'>&euro;"+bestelregel.totaalPrijs+"</div>"+
+			"<div class='product'>"+ bestelregel.product +"</div>"+ 
+			"<div class='aantal'>"+bestelregel.aantal +"</div>"+
+			"<div class='clear'/>";
+	}
+
+	if(bestelling.bestelregels.length > 1)
+	{
+		content += "<div class='totalLine'/><div class='clear'/>";
+		content += "<div class='totalOrder'>&euro;"+ bestelling.totaalBestelling +"</div><div class='clear'/>";
+	}
+
+	content +=					
+			"</div>"+
+		"</div>"
+	return content;
+}
+
+function getPaymentHtml(item)
+{
+	var headerContents;
+	var klantnaam = item.klantnaam;
+	var betaling = item.betaling;
+	if(klantnaam)
+	{
+		headerContents = "Betaling "+ klantnaam;
+	}
+	else
+	{
+		headerContents = "Betaling verwerkt";
+	}
+	var content = 
+		"<div class='betaling'>"+
+				"<div class='betalingHeader'>"+
+				"<div class='headerType'>"+headerContents+"</div>"+
+				"<div class='headerDate'>"+betaling.datumFormatted+"</div>"+
+				"<div class='clear'/>"+
+			"</div>"+
+			"<div class='betalingContent'>";
+
+	content += 
+		"<div class='bedrag'>&euro;"+betaling.bedrag+"</div>"+
+		"<div class='clear'/>";
+
+	content +=					
+			"</div>"+
+		"</div>"
+			
+	return content;
+}
+
+
 function loadIfNeeded()
 {
 	//console.log(firstTimeLoaded +", "+ (win.scrollTop() > doc.height() - (win.height() * 2)) +", "+ !endOfTheLine)
@@ -115,8 +183,5 @@ function loadIfNeeded()
 
 win.scroll(function()
 {
-	if(klantId != null)
-	{
-		loadIfNeeded()
-	}
+	loadIfNeeded()
 });

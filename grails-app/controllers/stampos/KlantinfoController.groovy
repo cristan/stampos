@@ -1,8 +1,6 @@
 package stampos
 
 import java.text.DateFormat;
-import java.text.DecimalFormat
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat
 import grails.util.Environment
 
@@ -13,12 +11,13 @@ class KlantinfoController {
 	private static final maxItems = 15;
 	static DateFormat bestellingFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm")
 	static DateFormat betalingFormat = new SimpleDateFormat("dd-MM-yyyy")
-	static NumberFormat numberFormat = NumberFormat.getInstance(Locale.FRANCE)
 	def testDataService
+	def klantInfoService
 	
     def klantInfo() 
 	{ 
-		return [id: params.id]
+		def zeId = params.id == "all" ? "null" : params.id 
+		return [id: zeId]
 	}
 	
 	def mutaties()
@@ -27,14 +26,28 @@ class KlantinfoController {
 		{
 			testDataService.getTestBestellingen()
 		}
-		Klant klant = Klant.get(params.klantId)
+		Klant klant = null
+		if(params.klantId && params.klantId != "null")
+		{
+			klant = Klant.get(params.klantId)
+		}
 		Date beginDatum = params.beginDatum ? new Date(params.beginDatum as long) : null
 		
-		String query = "from Bestelling b where b.klant = :klant"
-		def namedParams = [klant:klant]
+		String query = "from Bestelling b"
+		def namedParams = [:]
+		if(klant)
+		{
+			query += " where b.klant = :klant and"
+			namedParams = [klant:klant] 
+		}
+		 
 		if(beginDatum)
 		{
-			query += " and b.datum < :eersteBestellingDatum"
+			if(!klant)
+			{
+				query += " where"
+			}
+			query += " b.datum < :eersteBestellingDatum"
 			namedParams.put("eersteBestellingDatum", beginDatum)
 		}
 		query += " order by b.datum desc"
@@ -47,35 +60,25 @@ class KlantinfoController {
 		}
 		
 		
-		DecimalFormat df = new DecimalFormat();
-		df.setMaximumFractionDigits(2);
-		df.setMinimumFractionDigits(2);
-		
 		def items = [];
 		for(Bestelling bestelling: besteld)
 		{
-			def datumFormatted = bestellingFormat.format(bestelling.datum);
-			def bestelregels = [];
-			
-			List<BestelRegel> sorted = new ArrayList<BestelRegel>()
-			sorted.addAll(bestelling.bestelRegels)
-			sorted.sort{it.productPrijs.product.naam}
-			BigDecimal totaalBestelling = 0
-			for(BestelRegel br : sorted)
-			{
-				BigDecimal totaal = br.aantal * br.productPrijs.prijs
-				totaalBestelling += totaal
-				bestelregels.add([aantal: br.aantal, product: br.productPrijs.product.naam, totaalPrijs : df.format(totaal)]);
-			}
-			
-			items.add([datum:bestelling.datum, bestelling:[bestelregels: bestelregels, totaalBestelling: df.format(totaalBestelling), datumFormatted: bestellingFormat.format(bestelling.datum)]])
+			items.add(klantInfoService.getJsonOrder(bestelling, klant == null))
 		}
 		
+		
+		// Betalingen
 		if(Environment.current == Environment.DEVELOPMENT)
 		{
 			testDataService.getTestBetalingen()
 		}
-		query = "from Betaling b where b.klant = :klant"
+		query = "from Betaling b where"
+		namedParams = [:]
+		if(klant)
+		{
+			query += " b.klant = :klant and"
+			namedParams.put("klant", klant)
+		}
 		def queryEnd = " order by b.datum desc"
 		List<Betaling> betaald
 		
@@ -83,8 +86,8 @@ class KlantinfoController {
 		if(nogOverigeBestellingen)
 		{
 			// De bestellingen zijn genoeg om maxItems te halen. Haal alle bestellingen die tussen de opgehaalde bestellingen vallen
-			query += " and b.datum > :laatsteBestellingDatum" 
-			namedParams = [klant:klant, laatsteBestellingDatum: besteld.get(maxItems -1).datum]
+			query += " b.datum > :laatsteBestellingDatum" 
+			namedParams.put("laatsteBestellingDatum", besteld.get(maxItems -1).datum)
 			if(beginDatum)
 			{
 				query += " and b.datum < :eersteBestellingDatum"
@@ -96,10 +99,10 @@ class KlantinfoController {
 		else
 		{
 			// Er zijn niet genoeg bestellingen om maxItems te halen. Daarom geen max aan het einde van de datum
-			namedParams = [klant:klant]
+			namedParams = [:]
 			if(beginDatum)
 			{
-				query += " and b.datum < :eersteBestellingDatum"
+				query += " b.datum < :eersteBestellingDatum"
 				namedParams.put("eersteBestellingDatum", beginDatum)
 			}
 			query += queryEnd
@@ -115,7 +118,7 @@ class KlantinfoController {
 		}
 		for(Betaling betaling : betaald)
 		{
-			items.add([datum:betaling.datum, betaling:[bedrag: df.format(betaling.bedrag), datumFormatted: betalingFormat.format(betaling.datum)]])
+			items.add(klantInfoService.getJsonPayment(betaling, klant == null))
 		}
 		
 		items.sort{-it.datum.getTime()}

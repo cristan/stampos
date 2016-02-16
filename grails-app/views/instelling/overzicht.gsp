@@ -48,7 +48,7 @@
 	<h1><g:message code="settings.email"/></h1>
 	<g:form action="submitEmail">
 		<h2><g:message code="settings.email.smtp"/></h2>
-		<span style="font-size:10pt;">Note: chakel <a href="https://www.google.com/settings/security/lesssecureapps">toegang voor apps met lagere beveiliging</a> in als je van gmail gebruik wilt maken.<br/>
+		<span style="font-size:10pt;">Note: schakel <a href="https://www.google.com/settings/security/lesssecureapps">toegang voor apps met lagere beveiliging</a> in als je van gmail gebruik wilt maken.<br/>
 		<br/></span>
 		<div id="emailSettings">
 			<label for="smtphost"><g:message code="settings.email.smtp.host"/></label><span class="example">bijv. smtp.gmail.com</span><g:textField name="smtphost" value="${smtphost}"/><br/>
@@ -67,6 +67,8 @@
 			
 			<br/>
 			<h2><g:message code="settings.email.contents"/></h2>
+			<label for="titleInCaseOfCredit"><g:message code="settings.email.title.credit"/></label><g:textField name="titleInCaseOfCredit" value="${titleInCaseOfCredit}"/><br/>
+			<label for="titleInCaseOfDebit"><g:message code="settings.email.title.debit"/></label><g:textField name="titleInCaseOfDebit" value="${titleInCaseOfDebit}"/><br/>
 			<label for="accountiban"><g:message code="settings.email.account.iban"/></label><g:textField name="accountiban" value="${accountiban}"/><br/>
 			<label for="accountowner"><g:message code="settings.email.account.owner"/></label><g:textField name="accountowner" value="${accountowner}"/><br/>
 			<label for="serverurl"><g:message code="settings.email.server.url"/></label><g:textField name="serverurl" value="${serverurl}"/><br/>

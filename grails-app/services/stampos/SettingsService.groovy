@@ -2,12 +2,14 @@ package stampos
 
 import grails.transaction.Transactional
 import grails.util.Environment
+
 import java.security.MessageDigest
+import java.text.DecimalFormat
+
+import org.springframework.context.MessageSource;
 
 @Transactional
 class SettingsService {
-	def grailsApplication
-	
 	private static final String S_ALLOW_REQUESTS = "allowRequests";
 	private static final String S_AUTOMAIL = "automail";
 	private static final String S_AUTOMAIL_LIST = "automailList";
@@ -16,11 +18,15 @@ class SettingsService {
 	private static final String S_AUTOMAIL_LIST_RECIPIENT = "automailListRecipient"
 	private static final String S_SENDER_NAME = "senderName"
 	private static final String S_SENDER_EMAIL = "senderEmail"
+	private static final String S_SUFFICIENT_FUNDS_TITLE = "sufficientFundsTitle"
+	private static final String S_INSUFFICIENT_FUNDS_TITLE = "insufficientFundsTitle"
 	
 	public static final String EVERYWHERE = "everywhere";
 	public static final String LOCAL_NETWORK = "local_network";
 	public static final String LOCALHOST = "localhost"
 
+	def grailsApplication
+	MessageSource messageSource
 
 
     def String getSetting(String name, String defaultValue) {
@@ -312,5 +318,37 @@ class SettingsService {
 	def boolean isEmailContentsSettingsSet()
 	{
 		return getAccountOwner() && getAccountIban() && getServerUrl()
+	}
+	
+	def getSufficientFundsTitleValue()
+	{
+		def defaultMessage = messageSource.getMessage('mail.sufficientfunds.title', null, Locale.default)
+		return getSetting(S_SUFFICIENT_FUNDS_TITLE, defaultMessage)
+	}
+	
+	def getSufficientFundsTitle(def tegoed)
+	{
+		return String.format(getSufficientFundsTitleValue(), NumberUtils.formatMoney(tegoed))
+	}
+	
+	def setSufficientFundsTitle(String value)
+	{
+		setValue(S_SUFFICIENT_FUNDS_TITLE, value)
+	}
+	
+	def getInsufficientFundsTitleValue()
+	{
+		def defaultMessage = messageSource.getMessage('mail.insufficientfunds.title', null, Locale.default)
+		return getSetting(S_INSUFFICIENT_FUNDS_TITLE, defaultMessage)
+	}
+	
+	def getInsufficientFundsTitle(def tegoed)
+	{
+		return String.format(getInsufficientFundsTitleValue(), NumberUtils.formatMoney(tegoed))
+	}
+	
+	def setInsufficientFundsTitle(String value)
+	{
+		setValue(S_INSUFFICIENT_FUNDS_TITLE, value)
 	}
 }

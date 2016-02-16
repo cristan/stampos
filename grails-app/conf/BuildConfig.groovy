@@ -57,6 +57,7 @@ grails.project.dependency.resolution = {
 	}
 
     plugins {
+		// TODO: https://grails.org/plugin/locale-configuration
         // plugins for the build system only
 //        build ":tomcat:7.0.52.1"
 		build ":tomcat:8.0.22"
@@ -70,6 +71,8 @@ grails.project.dependency.resolution = {
 		compile ":quartz:1.0.2"
 		compile ':asset-pipeline:2.3.9'
 		compile ":spring-websocket:1.3.0"
+		// See the settins starting with grails.plugins.localeConfiguration
+		compile "org.grails.plugins:locale-configuration:1.1.1"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.8.1"

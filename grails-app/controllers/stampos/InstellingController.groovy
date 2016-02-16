@@ -18,6 +18,8 @@ class InstellingController {
 			"smtpusername": settingsService.getSmtpUsername(),
 			"smtppassword": settingsService.getSmtpPassword(),
 			"accountowner": settingsService.getAccountOwner(),
+			"titleInCaseOfCredit": settingsService.getSufficientFundsTitleValue(),
+			"titleInCaseOfDebit": settingsService.getInsufficientFundsTitleValue(),
 			"accountiban": settingsService.getAccountIban(),
 			"serverurl": settingsService.getServerUrl() ]
 	}
@@ -105,6 +107,8 @@ class InstellingController {
 		settingsService.setSmtpUseTls("on".equals(params.smtp_use_tls))
 		settingsService.setSmtpUsername(params.smtpusername)
 		settingsService.setSmtpPassword(params.smtppassword)
+		settingsService.setSufficientFundsTitle(params.titleInCaseOfCredit)
+		settingsService.setInsufficientFundsTitle(params.titleInCaseOfDebit)
 		settingsService.setAccountOwner(params.accountowner)
 		settingsService.setAccountIban(params.accountiban)
 		settingsService.setServerUrl(params.serverurl)
