@@ -2,6 +2,7 @@ package stampos
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.lang.reflect.UndeclaredThrowableException
 
 class MyMailController {
 
@@ -56,7 +57,19 @@ class MyMailController {
 
 	def doVerstuur()
 	{
-		return myMailService.sendEmails(true)
+		try {
+			return myMailService.sendEmails(true)			
+		}
+		catch (Exception e) {
+			e.printStackTrace()
+			Exception ex = e
+			while(ex.getClass().getName() == "java.lang.reflect.UndeclaredThrowableException") {
+				ex = ex.getCause()
+			}
+			flash.errorClass = ex.getClass().getName()
+			flash.errorMessage = ex.localizedMessage
+			redirect (action:"versturen")
+		}
 	}
 
 	def enableAutomail()

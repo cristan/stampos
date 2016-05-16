@@ -5,8 +5,13 @@
 	<link rel='stylesheet' type="text/css" href="${resource(dir: 'css', file: 'warnings.css')}" />
 </head>
 <body>
+<g:if test="${flash.errorClass}">
+	<dl class="errors">
+		<strong>Class</strong> ${flash.errorClass}<br/>
+		<strong>Message</strong> ${flash.errorMessage}
+	</dl>
+</g:if>
 <g:render template="/templates/emailsettingsNotice" />
-
 <g:if test="${emailSettingsSet}">
 	<g:form>
 		<g:actionSubmit value="Verstuur berichten" action="doVerstuur"/>
