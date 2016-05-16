@@ -66,10 +66,10 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
 		
-		compile ":novamail:0.3.8" 
+		compile ":novamail:0.4.1" 
 		compile ":csv:0.3.1"
 		compile ":quartz:1.0.2"
-		compile ':asset-pipeline:2.3.9'
+		compile ':asset-pipeline:2.8.0'
 		compile ":spring-websocket:1.3.0"
 		// See the settings starting with grails.plugins.localeConfiguration
 		compile "org.grails.plugins:locale-configuration:1.1.1"
