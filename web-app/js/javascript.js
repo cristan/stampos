@@ -237,7 +237,7 @@ function redrawOrder()
 		var count = order[i][1];
 		var productPrijs = (count * order[i][0].prijs).toFixed(2);
 		var formattedProductPrijs = formatter.format(productPrijs);
-		var orderLine = $('<div class="orderLine"><span class="orderNumber">'+count+'</span>'+productNaam +' <div id="reduce'+ productId +'" class="reduceOrder"></div><span class="orderPrice">&euro;'+ formattedProductPrijs +'</span></div>');
+		var orderLine = $('<div class="orderLine"><span class="orderNumber">'+count+'</span>'+productNaam +' <div id="reduce'+ productId +'" class="reduceOrder">-</div><span class="orderPrice">&euro;'+ formattedProductPrijs +'</span></div>');
 		$('#order').append(orderLine);
 		
 		$("#reduce"+ productId).click({productId: productId}, reduce);

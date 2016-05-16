@@ -71,7 +71,7 @@ grails.project.dependency.resolution = {
 		compile ":quartz:1.0.2"
 		compile ':asset-pipeline:2.3.9'
 		compile ":spring-websocket:1.3.0"
-		// See the settins starting with grails.plugins.localeConfiguration
+		// See the settings starting with grails.plugins.localeConfiguration
 		compile "org.grails.plugins:locale-configuration:1.1.1"
 
         // plugins needed at runtime but not for compilation
