@@ -1,6 +1,5 @@
 package stampos
 
-import java.security.MessageDigest
 
 class AuthenticationController {
 
