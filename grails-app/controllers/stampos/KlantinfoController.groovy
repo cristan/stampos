@@ -33,7 +33,12 @@ class KlantinfoController {
 		{
 			klant = Klant.get(params.klantId)
 		}
+		println params.klantId +"=>"+ klant
 		Date beginDatum = params.beginDatum ? new Date(params.beginDatum as long) : null
+		// TODO: remove printlns or make them proper logs
+		// TODO: 2 calls are made without a beginDatum and "Geen verdere betalingen of bestellingen gevonden" 
+		// is also shown twice
+		println "beginDatum: "+ beginDatum
 		
 		// Bestellingen
 		def besteld = getOrders(klant, beginDatum, maxItems + 1)
@@ -45,10 +50,12 @@ class KlantinfoController {
 			// Daarom hebben we alleen alle betalingen nodig 
 			// die tussen de eerste _maxItems_ bestellingen vallen
 			def laatsteBestellingDatum = besteld.get(maxItems -1).datum
+			println "laatsteBestellingDatum: "+ laatsteBestellingDatum
 			betaald = getPayments(klant, beginDatum, laatsteBestellingDatum, maxItems + 1) 
 		} else {
+			println "no laatsteBestellingDatum"
 			betaald = getPayments(klant, beginDatum, maxItems + 1)
-		} 
+		}
 		
 		// Build the JSON to return
 		def items = [];
@@ -72,7 +79,7 @@ class KlantinfoController {
 	
 	private List<Bestelling> getOrders(Klant klant, Date beginDatum, int maxNumberOfItems) {
 		List<Bestelling> besteld;
-		def queryParams = [max: maxNumberOfItems, sort:"datum"]
+		def queryParams = [max: maxNumberOfItems, sort:"datum", order:"desc"]
 		if(klant)
 		{
 			if(beginDatum)
@@ -105,13 +112,13 @@ class KlantinfoController {
 			if(beginDatum) {
 				betaald = Betaling.findAllByKlantAndDatumBetween(klant, beginDatum, laatsteBestellingDatum, queryParams)
 			} else {
-				betaald = Betaling.findAllByKlantAndDatumLessThan(klant, laatsteBestellingDatum, queryParams)
+				betaald = Betaling.findAllByKlantAndDatumGreaterThan(klant, laatsteBestellingDatum, queryParams)
 			}
 		} else {
 			if(beginDatum) {
 				betaald = Betaling.findAllByDatumBetween(beginDatum, laatsteBestellingDatum, queryParams)
 			} else {
-				betaald = Betaling.findAllByDatumLessThan(laatsteBestellingDatum, queryParams)
+				betaald = Betaling.findAllByDatumGreaterThan(laatsteBestellingDatum, queryParams)
 			}
 		}
 		
@@ -120,7 +127,7 @@ class KlantinfoController {
 	
 	private List<Betaling> getPayments(Klant klant, Date beginDatum, int maxNumberOfItems) {
 		List<Betaling> paid;
-		def queryParams = [max: maxNumberOfItems, sort:"datum"]
+		def queryParams = [max: maxNumberOfItems, sort:"datum", order: "desc"]
 		if(klant)
 		{
 			if(beginDatum)
