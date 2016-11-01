@@ -69,6 +69,33 @@ class KlantinfoController {
 		def toReturn = [eindeDatum: eindeDatum, items:items]
 		render "${params.callback}(${toReturn as JSON})"
 	}
+	
+	private List<Bestelling> getOrders(Klant klant, Date beginDatum, int maxNumberOfItems) {
+		List<Bestelling> besteld;
+		def queryParams = [max: maxNumberOfItems, sort:"datum"]
+		if(klant)
+		{
+			if(beginDatum)
+			{
+				besteld = Bestelling.findAllByKlantAndDatumLessThan(klant, beginDatum, queryParams)
+			}
+			else
+			{
+				besteld = Bestelling.findAllByKlant(klant, queryParams)
+			}
+		}
+		else
+		{
+			if(beginDatum)
+			{
+				besteld = Bestelling.findAllByDatumLessThan(beginDatum, queryParams)
+			}
+			else
+			{
+				besteld = Bestelling.findAll(queryParams){}// TODO: Doesn't work
+			}
+		}
+	}
 
 	private List<Betaling> getPayments(Klant klant, Date beginDatum, Date laatsteBestellingDatum, int numberOfPayments) {
 		List<Betaling> betaald
@@ -119,30 +146,5 @@ class KlantinfoController {
 		}
 	}
 	
-	private List<Bestelling> getOrders(Klant klant, Date beginDatum, int maxNumberOfItems) {
-		List<Bestelling> besteld;
-		def queryParams = [max: maxNumberOfItems, sort:"datum"]
-		if(klant)
-		{
-			if(beginDatum)
-			{
-				besteld = Bestelling.findAllByKlantAndDatumLessThan(klant, beginDatum, queryParams)
-			}
-			else
-			{
-				besteld = Bestelling.findAllByKlant(klant, queryParams)
-			}
-		}
-		else
-		{
-			if(beginDatum)
-			{
-				besteld = Bestelling.findAllByDatumLessThan(beginDatum, queryParams)
-			}
-			else
-			{
-				besteld = Bestelling.findAll(queryParams){}// TODO: Doesn't work
-			}
-		}
-	}
+	
 }
