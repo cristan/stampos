@@ -49,9 +49,9 @@ class KlantinfoController {
 			// De bestellingen zijn genoeg om maxItems te halen. 
 			// Daarom hebben we alleen alle betalingen nodig 
 			// die tussen de eerste _maxItems_ bestellingen vallen
-			def laatsteBestellingDatum = besteld.get(maxItems -1).datum
-			println "laatsteBestellingDatum: "+ laatsteBestellingDatum
-			betaald = getPayments(klant, beginDatum, laatsteBestellingDatum, maxItems + 1) 
+			def datumOndersteBestelling = besteld.get(maxItems -1).datum
+			println "laatsteBestellingDatum: "+ datumOndersteBestelling
+			betaald = getPayments(klant, beginDatum, datumOndersteBestelling, maxItems + 1) 
 		} else {
 			println "no laatsteBestellingDatum"
 			betaald = getPayments(klant, beginDatum, maxItems + 1)
@@ -104,21 +104,21 @@ class KlantinfoController {
 		}
 	}
 
-	private List<Betaling> getPayments(Klant klant, Date beginDatum, Date laatsteBestellingDatum, int numberOfPayments) {
+	private List<Betaling> getPayments(Klant klant, Date beginDatum, Date datumOndersteBestelling, int numberOfPayments) {
 		List<Betaling> betaald
 		def queryParams = [max: numberOfPayments, sort:"datum", order: "desc"]
 		
 		if(klant) {
 			if(beginDatum) {
-				betaald = Betaling.findAllByKlantAndDatumBetween(klant, beginDatum, laatsteBestellingDatum, queryParams)
+				betaald = Betaling.findAllByKlantAndDatumBetween(klant, datumOndersteBestelling, beginDatum, queryParams)
 			} else {
-				betaald = Betaling.findAllByKlantAndDatumGreaterThan(klant, laatsteBestellingDatum, queryParams)
+				betaald = Betaling.findAllByKlantAndDatumGreaterThan(klant, datumOndersteBestelling, queryParams)
 			}
 		} else {
 			if(beginDatum) {
-				betaald = Betaling.findAllByDatumBetween(beginDatum, laatsteBestellingDatum, queryParams)
+				betaald = Betaling.findAllByDatumBetween(datumOndersteBestelling, beginDatum, queryParams)
 			} else {
-				betaald = Betaling.findAllByDatumGreaterThan(laatsteBestellingDatum, queryParams)
+				betaald = Betaling.findAllByDatumGreaterThan(datumOndersteBestelling, queryParams)
 			}
 		}
 		
