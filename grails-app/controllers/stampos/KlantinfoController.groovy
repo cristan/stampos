@@ -66,10 +66,10 @@ class KlantinfoController {
 			items.add(klantInfoService.getJsonPayment(betaling, klant == null))
 		}
 		items.sort{-it.datum.getTime()}
-		int excessItems = maxItems - items.size()
+		int excessItems = items.size() - maxItems 
 		Long eindeDatum = null
 		if(excessItems > 0) {
-			items = items.subList(0, maxItems - 1)
+			items = items.subList(0, maxItems)
 			eindeDatum = items.get(maxItems - 1).datum.getTime()
 		}
 		
