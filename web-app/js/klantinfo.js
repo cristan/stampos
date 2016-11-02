@@ -74,22 +74,6 @@ function loadData()
 	});
 }
 
-$(document).ready(function() {
-	loadData();
-
-	if(klantId)
-	{
-		var socket = new SockJS("${createLink(uri: '/stomp')}");
-        var client = Stomp.over(socket);
-
-        client.connect({}, function() {
-            client.subscribe("/topic/order", function(message) {
-            	$("#pageContainer").append(getOrderHtml(message));
-            });
-        });
-	}
-});
-
 function getOrderHtml(item)
 {
 	var klantnaam = item.klantnaam;
