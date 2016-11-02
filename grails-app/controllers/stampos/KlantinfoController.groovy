@@ -110,13 +110,13 @@ class KlantinfoController {
 		
 		if(klant) {
 			if(beginDatum) {
-				betaald = Betaling.findAllByKlantAndDatumBetween(klant, datumOndersteBestelling, beginDatum, queryParams)
+				betaald = Betaling.findAllByKlantAndDatumGreaterThanAndDatumLessThan(klant, datumOndersteBestelling, beginDatum, queryParams)
 			} else {
 				betaald = Betaling.findAllByKlantAndDatumGreaterThan(klant, datumOndersteBestelling, queryParams)
 			}
 		} else {
 			if(beginDatum) {
-				betaald = Betaling.findAllByDatumBetween(datumOndersteBestelling, beginDatum, queryParams)
+				betaald = Betaling.findAllByDatumGreaterThanAndDatumLessThan(datumOndersteBestelling, beginDatum, queryParams)
 			} else {
 				betaald = Betaling.findAllByDatumGreaterThan(datumOndersteBestelling, queryParams)
 			}
