@@ -32,11 +32,11 @@ function loadData()
 	var url = baseUrl + 'klantmutaties';
 	if(eindeDatum)
 	{
-		url += '?beginDatum='+eindeDatum+'&klantId='+klantId+'&callback=?';
+		url += '?beginDatum='+eindeDatum+'&klantId='+klantId;
 	}
 	else
 	{
-		url += '?klantId='+klantId+'&callback=?';
+		url += '?klantId='+klantId;
 	}
 	
 	$.getJSON(url, function(data) {

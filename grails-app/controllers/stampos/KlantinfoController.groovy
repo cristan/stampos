@@ -74,7 +74,7 @@ class KlantinfoController {
 		}
 		
 		def toReturn = [eindeDatum: eindeDatum, items:items]
-		render "${params.callback}(${toReturn as JSON})"
+		render toReturn as JSON
 	}
 	
 	private List<Bestelling> getOrders(Klant klant, Date beginDatum, int maxNumberOfItems) {
