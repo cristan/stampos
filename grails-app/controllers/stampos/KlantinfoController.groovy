@@ -33,12 +33,7 @@ class KlantinfoController {
 		{
 			klant = Klant.get(params.klantId)
 		}
-		println params.klantId +"=>"+ klant
 		Date beginDatum = params.beginDatum ? new Date(params.beginDatum as long) : null
-		// TODO: remove printlns or make them proper logs
-		// TODO: 2 calls are made without a beginDatum and "Geen verdere betalingen of bestellingen gevonden" 
-		// is also shown twice
-		println "beginDatum: "+ beginDatum
 		
 		// Bestellingen
 		def besteld = getOrders(klant, beginDatum, maxItems + 1)
@@ -50,10 +45,8 @@ class KlantinfoController {
 			// Daarom hebben we alleen alle betalingen nodig 
 			// die tussen de eerste _maxItems_ bestellingen vallen
 			def datumOndersteBestelling = besteld.get(maxItems -1).datum
-			println "laatsteBestellingDatum: "+ datumOndersteBestelling
 			betaald = getPayments(klant, beginDatum, datumOndersteBestelling, maxItems + 1) 
 		} else {
-			println "no laatsteBestellingDatum"
 			betaald = getPayments(klant, beginDatum, maxItems + 1)
 		}
 		
@@ -99,7 +92,7 @@ class KlantinfoController {
 			}
 			else
 			{
-				besteld = Bestelling.findAll(queryParams){}// TODO: Doesn't work
+				besteld = Bestelling.findAll(queryParams){}
 			}
 		}
 	}
@@ -147,7 +140,6 @@ class KlantinfoController {
 			}
 			else
 			{
-				// TODO: Probably doesn't work
 				paid = Betaling.findAll(queryParams)
 			}
 		}
