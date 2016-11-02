@@ -25,7 +25,9 @@ class KlantinfoController {
 		if(Environment.current == Environment.DEVELOPMENT)
 		{
 			testDataService.getTestBestellingen()
+			testDataService.getTestBetalingen()
 		}
+		
 		Klant klant = null
 		if(params.klantId && params.klantId != "null")
 		{
@@ -33,103 +35,115 @@ class KlantinfoController {
 		}
 		Date beginDatum = params.beginDatum ? new Date(params.beginDatum as long) : null
 		
-		String query = "from Bestelling b"
-		def namedParams = [:]
-		if(klant)
-		{
-			query += " where b.klant = :klant and"
-			namedParams = [klant:klant] 
-		}
+		// Bestellingen
+		def besteld = getOrders(klant, beginDatum, maxItems + 1)
 		 
-		if(beginDatum)
-		{
-			if(!klant)
-			{
-				query += " where"
-			}
-			query += " b.datum < :eersteBestellingDatum"
-			namedParams.put("eersteBestellingDatum", beginDatum)
-		}
-		query += " order by b.datum desc"
-		List<Bestelling> besteld = Bestelling.findAll (query, namedParams, [max: maxItems + 1])
-		boolean nogOverigeBestellingen = besteld.size() > maxItems
-		if(nogOverigeBestellingen)
-		{
-			// Deze (en daarop volgenden) worden de volgende keer geladen
-			besteld.remove(besteld.size() - 1)
+		// Betalingen
+		List<Betaling> betaald 
+		if(besteld.size() >= maxItems) {
+			// De bestellingen zijn genoeg om maxItems te halen. 
+			// Daarom hebben we alleen alle betalingen nodig 
+			// die tussen de eerste _maxItems_ bestellingen vallen
+			def datumOndersteBestelling = besteld.get(maxItems -1).datum
+			betaald = getPayments(klant, beginDatum, datumOndersteBestelling, maxItems + 1) 
+		} else {
+			betaald = getPayments(klant, beginDatum, maxItems + 1)
 		}
 		
-		
+		// Build the JSON to return
 		def items = [];
-		for(Bestelling bestelling: besteld)
-		{
+		for(Bestelling bestelling: besteld) {
 			items.add(klantInfoService.getJsonOrder(bestelling, klant == null))
 		}
-		
-		
-		// Betalingen
-		if(Environment.current == Environment.DEVELOPMENT)
-		{
-			testDataService.getTestBetalingen()
-		}
-		query = "from Betaling b where"
-		namedParams = [:]
-		if(klant)
-		{
-			query += " b.klant = :klant and"
-			namedParams.put("klant", klant)
-		}
-		def queryEnd = " order by b.datum desc"
-		List<Betaling> betaald
-		
-		boolean nogOverigeBetalingen = false;
-		if(nogOverigeBestellingen)
-		{
-			// De bestellingen zijn genoeg om maxItems te halen. Haal alle bestellingen die tussen de opgehaalde bestellingen vallen
-			query += " b.datum > :laatsteBestellingDatum" 
-			namedParams.put("laatsteBestellingDatum", besteld.get(maxItems -1).datum)
-			if(beginDatum)
-			{
-				query += " and b.datum < :eersteBestellingDatum"
-				namedParams.put("eersteBestellingDatum", beginDatum)
-			}
-			query += queryEnd
-			betaald = Betaling.findAll (query, namedParams)
-		}
-		else
-		{
-			// Er zijn niet genoeg bestellingen om maxItems te halen. Daarom geen max aan het einde van de datum
-			namedParams = [:]
-			if(beginDatum)
-			{
-				query += " b.datum < :eersteBestellingDatum"
-				namedParams.put("eersteBestellingDatum", beginDatum)
-			}
-			query += queryEnd
-			def maxBestellingen = maxItems - besteld.size() + 1
-			def queryParams = [max: maxBestellingen]
-			betaald = Betaling.findAll (query, namedParams, queryParams)
-			nogOverigeBetalingen = betaald.size() == maxBestellingen
-			if(nogOverigeBetalingen)
-			{
-				// Deze (en daarop volgenden) worden de volgende keer geladen
-				betaald.remove(betaald.size() - 1)
-			}
-		}
-		for(Betaling betaling : betaald)
-		{
+		for(Betaling betaling : betaald) {
 			items.add(klantInfoService.getJsonPayment(betaling, klant == null))
 		}
-		
 		items.sort{-it.datum.getTime()}
-		
+		int excessItems = items.size() - maxItems 
 		Long eindeDatum = null
-		if(nogOverigeBestellingen || nogOverigeBetalingen)
-		{
-			eindeDatum = items.get(items.size() - 1).datum.getTime()
+		if(excessItems > 0) {
+			items = items.subList(0, maxItems)
+			eindeDatum = items.get(maxItems - 1).datum.getTime()
 		}
 		
 		def toReturn = [eindeDatum: eindeDatum, items:items]
-		render "${params.callback}(${toReturn as JSON})"
+		render toReturn as JSON
 	}
+	
+	private List<Bestelling> getOrders(Klant klant, Date beginDatum, int maxNumberOfItems) {
+		List<Bestelling> besteld;
+		def queryParams = [max: maxNumberOfItems, sort:"datum", order:"desc"]
+		if(klant)
+		{
+			if(beginDatum)
+			{
+				besteld = Bestelling.findAllByKlantAndDatumLessThan(klant, beginDatum, queryParams)
+			}
+			else
+			{
+				besteld = Bestelling.findAllByKlant(klant, queryParams)
+			}
+		}
+		else
+		{
+			if(beginDatum)
+			{
+				besteld = Bestelling.findAllByDatumLessThan(beginDatum, queryParams)
+			}
+			else
+			{
+				besteld = Bestelling.findAll(queryParams){}
+			}
+		}
+	}
+
+	private List<Betaling> getPayments(Klant klant, Date beginDatum, Date datumOndersteBestelling, int numberOfPayments) {
+		List<Betaling> betaald
+		def queryParams = [max: numberOfPayments, sort:"datum", order: "desc"]
+		
+		if(klant) {
+			if(beginDatum) {
+				betaald = Betaling.findAllByKlantAndDatumGreaterThanAndDatumLessThan(klant, datumOndersteBestelling, beginDatum, queryParams)
+			} else {
+				betaald = Betaling.findAllByKlantAndDatumGreaterThan(klant, datumOndersteBestelling, queryParams)
+			}
+		} else {
+			if(beginDatum) {
+				betaald = Betaling.findAllByDatumGreaterThanAndDatumLessThan(datumOndersteBestelling, beginDatum, queryParams)
+			} else {
+				betaald = Betaling.findAllByDatumGreaterThan(datumOndersteBestelling, queryParams)
+			}
+		}
+		
+		return betaald
+	}
+	
+	private List<Betaling> getPayments(Klant klant, Date beginDatum, int maxNumberOfItems) {
+		List<Betaling> paid;
+		def queryParams = [max: maxNumberOfItems, sort:"datum", order: "desc"]
+		if(klant)
+		{
+			if(beginDatum)
+			{
+				paid = Betaling.findAllByKlantAndDatumLessThan(klant, beginDatum, queryParams)
+			}
+			else
+			{
+				paid = Betaling.findAllByKlant(klant, queryParams)
+			}
+		}
+		else
+		{
+			if(beginDatum)
+			{
+				paid = Betaling.findAllByDatumLessThan(beginDatum, queryParams)
+			}
+			else
+			{
+				paid = Betaling.findAll(queryParams)
+			}
+		}
+	}
+	
+	
 }
