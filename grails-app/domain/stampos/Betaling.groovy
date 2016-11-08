@@ -11,7 +11,9 @@ class Betaling {
 	Date datum = new Date()
 
     static constraints = {
-		//bedrag(min:0.01)
+		// Having negative payments is a quite handy tool to manually adjust a customer's
+		// balance, so that's why we don't have this rule.
+		//bedrag(min:0.01) 
     }
 	
 	@Override

@@ -32,11 +32,11 @@ function loadData()
 	var url = baseUrl + 'klantmutaties';
 	if(eindeDatum)
 	{
-		url += '?beginDatum='+eindeDatum+'&klantId='+klantId+'&callback=?';
+		url += '?beginDatum='+eindeDatum+'&klantId='+klantId;
 	}
 	else
 	{
-		url += '?klantId='+klantId+'&callback=?';
+		url += '?klantId='+klantId;
 	}
 	
 	$.getJSON(url, function(data) {
@@ -73,22 +73,6 @@ function loadData()
 		loadIfNeeded();
 	});
 }
-
-$(document).ready(function() {
-	loadData();
-
-	if(klantId)
-	{
-		var socket = new SockJS("${createLink(uri: '/stomp')}");
-        var client = Stomp.over(socket);
-
-        client.connect({}, function() {
-            client.subscribe("/topic/order", function(message) {
-            	$("#pageContainer").append(getOrderHtml(message));
-            });
-        });
-	}
-});
 
 function getOrderHtml(item)
 {
