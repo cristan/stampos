@@ -40,30 +40,47 @@ class DeblokkeerController {
 	
 	def blockedUsers()
 	{
-		def geblokkeerdeKlanten = []
-		def klanten = Klant.findAllWhere(zichtbaar: true)
-		klanten.sort{it.naam}
-		for(Klant klant : klanten)
-		{
-			BigDecimal tegoed = klantService.tegoed(klant)
-			def geblokkeerd = klantService.geblokkeerd(klant, tegoed)
-			if(geblokkeerd)
+		if(!isLoggedIn()) {
+			render(status: 401, text: 'Je bent niet ingelogd')
+		} else {
+			def geblokkeerdeKlanten = []
+			def klanten = Klant.findAllWhere(zichtbaar: true)
+			klanten.sort{it.naam}
+			for(Klant klant : klanten)
 			{
-				Date laatstBetaald = klantService.laatstBetaald(klant)
-				geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam, "tegoed": tegoed, "laatstBetaald": laatstBetaald, "laatsteToegang": klant.laatsteToegang]);
+				BigDecimal tegoed = klantService.tegoed(klant)
+				def geblokkeerd = klantService.geblokkeerd(klant, tegoed)
+				if(geblokkeerd)
+				{
+					Date laatstBetaald = klantService.laatstBetaald(klant)
+					geblokkeerdeKlanten.add(["id":klant.id, "naam": klant.naam, "tegoed": tegoed, "laatstBetaald": laatstBetaald, "laatsteToegang": klant.laatsteToegang]);
+				}
 			}
+			render geblokkeerdeKlanten as JSON
 		}
-		render geblokkeerdeKlanten as JSON
 	}
 	
 	def doDeblokkeer()
 	{
-		int klantId = params.klantId as int
-		Klant klant = Klant.get(klantId)
-		klant.uitstelTot = klantService.komendeMaandag()
-		klant.save(true)
-		pushService.userUpdated(klant)
-		def toReturn = ["id":klant.id, "naam": klant.naam, "laatsteToegang": klant.laatsteToegang]
-		render toReturn as JSON
+		if(!isLoggedIn()) {
+			render(status: 401, text: 'Je bent niet ingelogd')
+		} else {
+			int klantId = params.klantId as int
+			Klant klant = Klant.get(klantId)
+			klant.uitstelTot = klantService.komendeMaandag()
+			klant.save(true)
+			pushService.userUpdated(klant)
+			def toReturn = ["id":klant.id, "naam": klant.naam, "laatsteToegang": klant.laatsteToegang]
+			render toReturn as JSON
+		}
+	}
+	
+	def isLoggedIn() {
+		if(session.loggedIn) {
+			return true
+		} else {
+			def passwordHash = request.getHeader("Password-Hash")
+			return passwordHash == settingsService.getAdminPasswordHash()
+		}
 	}
 }
