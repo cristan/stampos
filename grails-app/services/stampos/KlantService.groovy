@@ -63,7 +63,7 @@ class KlantService {
 		else
 		{
 			Date evenGeleden = new Date(System.currentTimeMillis() - grailsApplication.config.geblokkeerdPeriode)
-			BigDecimal besteldAfgelopenTijd = ProductPrijs.executeQuery("select sum(pp.prijs * br.aantal) from ProductPrijs pp, BestelRegel br, Bestelling bes where bes.klant = ? and bes.datum > ?", [klant, evenGeleden])[0]
+			BigDecimal besteldAfgelopenTijd = ProductPrijs.executeQuery("select sum(pp.prijs * br.aantal) from ProductPrijs pp, BestelRegel br, Bestelling bes where br.bestelling = bes and br.productPrijs = pp and bes.klant = ? and bes.datum > ?", [klant, evenGeleden])[0]
 			if(besteldAfgelopenTijd)
 			{
 				return tegoedKlant + besteldAfgelopenTijd < 0
