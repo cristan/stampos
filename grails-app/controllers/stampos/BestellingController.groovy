@@ -12,13 +12,20 @@ class BestellingController {
 	
 	def bevestigBestelling()
 	{
-		def message = "";
+		def message = null;
 		def klant = Klant.get(params.klantId as int);
+		def tegoed = klantService.tegoed(klant)
+		def geblokkeerd = klantService.geblokkeerd(klant, tegoed)
+		
 		if(!generalService.isAllowedToOrder(request))
 		{
-			message = "Bestellen mag niet, dus je bestelling is dan ook niet doorgegaan."
-		}
-		else
+			message = "Bestelling niet verwerkt: bestellen is niet toegestaan"
+		} 
+		else if(geblokkeerd) 
+		{
+			message = "Bestelling niet verwerkt: je bent geblokkeerd."
+		} 
+		else 
 		{
 			def order = JSON.parse(params.order);
 			Bestelling bestelling = new Bestelling(klant: klant)
@@ -37,9 +44,6 @@ class BestellingController {
 			pushService.orderDone(bestelling)
 		}
 		
-		
-		def tegoed = klantService.tegoed(klant)
-		def geblokkeerd = klantService.geblokkeerd(klant, tegoed)
 		def result = [tegoed: tegoed, geblokkeerd: geblokkeerd, message:message]
 		render "${result as JSON}"
 	}
