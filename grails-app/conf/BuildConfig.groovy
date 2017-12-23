@@ -60,17 +60,17 @@ grails.project.dependency.resolution = {
 		// TODO: https://grails.org/plugin/locale-configuration
         // plugins for the build system only
 //        build ":tomcat:7.0.52.1"
-		build ":tomcat:8.0.22"
+		build ":tomcat:8.0.33"
 
         // plugins for the compile step
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
 		
-		compile ":novamail:0.4.1" 
+		compile ":novamail:0.4.2" 
 		compile ":csv:0.3.1"
 		compile ":quartz:1.0.2"
-		compile ':asset-pipeline:2.8.0'
-		compile ":spring-websocket:1.3.0"
+		compile ':asset-pipeline:2.14.1'
+		compile ":spring-websocket:1.3.1"
 		// See the settings starting with grails.plugins.localeConfiguration
 		compile "org.grails.plugins:locale-configuration:1.1.1"
 
