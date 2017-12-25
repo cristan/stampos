@@ -127,8 +127,10 @@ log4j = {
 
 environments {
 	development {
-		grails.mail.overrideAddress="cristan.meijer@gmail.com"
-		//grails.mail.disabled=true
+		// Uncomment this to to send all e-mails to you instead of its original address
+		// (and comment out grails.mail.disabled=true) 
+		// grails.mail.overrideAddress="test@example.com"
+		grails.mail.disabled=true
 		
 		geblokkeerdPeriode = 5000;
 		initieelUitstel = 0;
@@ -137,7 +139,8 @@ environments {
 		admin.passwordhash = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w=='
 	}
 	test {
-		grails.mail.overrideAddress="cristan.meijer@gmail.com"
+		// Uncomment this to to send all e-mails to you instead of its original address
+		// grails.mail.overrideAddress="test@example.com"
 		
 		geblokkeerdPeriode = 5000;
 		initieelUitstel = 0;
@@ -147,7 +150,7 @@ environments {
 	}
 	amazondb = test;
 	production {
-		geblokkeerdPeriode = 172800000;//2 * 24 * 60 * 60 * 1000, ofwel: 2 dagen
+		geblokkeerdPeriode = 172800000;//2 * 24 * 60 * 60 * 1000, aka 2 days
 		initieelUitstel = 0;
 		
 		// Null because you have to manually set the password
