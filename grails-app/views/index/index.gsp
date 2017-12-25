@@ -2,6 +2,9 @@
 <html>
 <head>
 <title>StamPOS <g:meta name="app.version"/></title>
+<!-- View this project on GitHub: https://github.com/cristan/stampos -->
+
+
 <!-- This meta tag also implies that a browserconfig.xml exists (which it does) -->
 <meta name="application-name" content="StamPOS"/>
 <link rel="icon" href="${resource(dir: 'images', file: 'favicon.png')}" type="image/png">
