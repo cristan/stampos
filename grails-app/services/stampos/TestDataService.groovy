@@ -9,13 +9,12 @@ class TestDataService {
 		List<Klant> result = Klant.findAllByZichtbaar(true, [sort:"naam"]);
 		if(!result)
 		{
-			String[] klantNames = ["Daan Berkouwer", "Jeroen Berkouwer", "Anouk Bos", "Erik Bos", "Cyrano Coomans", "Axel de Jong", "Pepijn de Jong", "Roald de Jong",
-				"Mike de Winter", "Sarah Deaney", "Dihanne Dijkman", "Don Diego du Clou", "Lelio Du Clou", "Anouk Faas", "Irene Faas", "Mart Gahler", "Yvonne Gibbon van Arnhem",
-				"Chris Heemskerk", "Erik Heemskerk", "Tim Hoek", "Leonie Kah", "Hein Kluiver", "Hans Kouwenberg", "Maarten Kuijpers", "Erik Kuster", "Pieter Lok", "Cristan Meijer",
-				"Elaine Molenaar", "Eva Mudde", "Jelmer Mudde", "Chris Mul", "Linda Oostrom", "Lisette Ouweneel", "Nikels Post", "Michelle Rietveld", "Renate Slappendel", "Roelof Spijker",
-				"Rutger Sterk", "Danick Tahapary", "Jon Tober", "Mark Tober", "Saskia van Arnhem", "Bart van Dam", "Anna van den Heuvel", "Arthur van der Molen", "Kristina van der Molen",
-				"Jeroen van Heel", "Jeroen van Hees", "Niels van Krimpen", "Paul van Lange", "Roy van Rij", "Niels van Tilburg", "Joost van Zwieten", "Stefan Veenstra", "Daphne Verboom",
-				"Jeroen Verboom", "Vincent Verboom", "Ivo Verhoef", "Menno Verhoef", "Kees Vos", "Arjan Vuik"];
+			String[] klantNames = [
+				"Emma", "Olivia", "Ava", "Sophia", "Isabella", "Mia", "Noah", "Liam", "William", "Mason", "James", 
+				"Benjamin", "Mohamed", "Youssef", "Ahmed", "Mahmoud", "Mustafa", "Yassin", "Shaimaa", "Fatma", "Maha", 
+				"Reem", "Farida", "Aya", "Paula", "Valentina", "Emilia", "Martina", "Catalina", "Elena", "Santiago", "Mateo",
+				"Juan", "Pedro", "Thiago", "Santino", "Zoe", "Daniel", "Alysha", "Miguel", "Alice", "Aya", "Manuel", "Mehdi", 
+				"Mariam", "Gabrielle", "Jayden", "Emily", "Jackson", "Logan", "Lily", "Oliver", "Amelia"];
 	
 	
 			Date uitstelTot = null
