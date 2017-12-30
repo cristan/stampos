@@ -13,7 +13,7 @@
 			<td>${r.product.naam}</td>
 			<td>${r.aantalIngekocht}</td>
 			<td>${r.aantalBesteld}</td>
-			<td>${r.percentage}</td>
+			<td>${raw(r.percentage)}</td>
 		</tr>
 	</g:each>
 			
@@ -21,6 +21,6 @@
 		<td class="productColumn">Totaal</td>
 		<td class="otherColumn">${it.totaalIngekocht}</td>
 		<td class="otherColumn">${it.totaalBesteld}</td>        		
-		<td class="otherColumn">${it.totalPercentage}</td>
+		<td class="otherColumn">${raw(it.totalPercentage)}</td>
 	</tr>
 </table>
