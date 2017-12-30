@@ -120,9 +120,9 @@
 			<br/>
 			<g:link controller="beheer" action="klantoverzicht">Bestellingen en betalingen van klanten</g:link><br/>
 			<g:link url="${createLink(uri: '/deblokkeer')}">Deblokkeer klanten</g:link><br/>
+			<br/>
 			<g:link controller="inkoop" action="registreerInkopen">Registreer inkopen</g:link><br/>
 			<g:link controller="telling" action="registreerTelling">Tel de inhoud van de bar</g:link><br/>
-			<br/>
 			<g:link controller="rendement" action="schatting">Rendement van de bar (schatting nav inkopen)</g:link><br/>
 			<g:link controller="rendement" action="geteld">Rendement van de bar (nav telling)</g:link><br/>
 			<br/>
