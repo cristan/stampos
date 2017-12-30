@@ -30,7 +30,7 @@ class SettingsServiceSpec extends Specification {
 	void "test title sufficient funds default"() {
 		given:	
 		when:
-			messageSource.addMessage("mail.sufficientfunds.title", Locale.default, "Your credit: %s")
+			messageSource.addMessage("mail.sufficientfunds.defaulttitle", Locale.default, "Your credit: %s")
 		then:
 			assertEquals("Your credit: \u20AC2,20", service.getSufficientFundsTitle(2.2))
 	}
@@ -38,7 +38,7 @@ class SettingsServiceSpec extends Specification {
 	void "test title sufficient funds set"() {
 		given:
 		when:
-			messageSource.addMessage("mail.sufficientfunds.title", Locale.default, "Your credit: %s")
+			messageSource.addMessage("mail.sufficientfunds.defaulttitle", Locale.default, "Your credit: %s")
 			service.setSufficientFundsTitle("Due: %s")
 			
 		then:
@@ -48,7 +48,7 @@ class SettingsServiceSpec extends Specification {
 	void "test title insufficient funds default"() {
 		given:
 		when:
-			messageSource.addMessage("mail.insufficientfunds.title", Locale.default, "Your debit: %s")
+			messageSource.addMessage("mail.insufficientfunds.defaulttitle", Locale.default, "Your debit: %s")
 		then:
 			assertEquals("Your debit: \u20AC2,20", service.getInsufficientFundsTitle(2.2))
 	}
@@ -56,7 +56,7 @@ class SettingsServiceSpec extends Specification {
 	void "test title insufficient funds set"() {
 		given:
 		when:
-			messageSource.addMessage("mail.insufficientfunds.title", Locale.default, "Your debit: %s")
+			messageSource.addMessage("mail.insufficientfunds.defaulttitle", Locale.default, "Your debit: %s")
 			service.setInsufficientFundsTitle("To pay: %s")
 			
 		then:

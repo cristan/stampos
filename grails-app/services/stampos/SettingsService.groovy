@@ -322,7 +322,7 @@ class SettingsService {
 	
 	def getSufficientFundsTitleValue()
 	{
-		def defaultMessage = messageSource.getMessage('mail.sufficientfunds.title', null, Locale.default)
+		def defaultMessage = messageSource.getMessage('mail.sufficientfunds.defaulttitle', null, Locale.default)
 		return getSetting(S_SUFFICIENT_FUNDS_TITLE, defaultMessage)
 	}
 	
@@ -338,7 +338,7 @@ class SettingsService {
 	
 	def getInsufficientFundsTitleValue()
 	{
-		def defaultMessage = messageSource.getMessage('mail.insufficientfunds.title', null, Locale.default)
+		def defaultMessage = messageSource.getMessage('mail.insufficientfunds.defaulttitle', null, Locale.default)
 		return getSetting(S_INSUFFICIENT_FUNDS_TITLE, defaultMessage)
 	}
 	
