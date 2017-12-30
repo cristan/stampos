@@ -24,12 +24,12 @@
         <title>Besteld en betaald</title>
     </head>
     <body>
-        <h1>Besteld en betaald</h1>
+        <h1>Besteld</h1>
         
-        <g:if test="${noData}">
-        	<em>Er is niets besteld of betaald in deze periode</em>
+        <g:if test="${nothingOrdered}">
+        	<em>Er is niets besteld in deze periode</em>
         </g:if>
-        <g:if test="${!noData}">
+        <g:if test="${!nothingOrdered}">
         	<table>
 				<tr>
 					<th class="mainColumn">Product</th>
@@ -37,11 +37,11 @@
 					<th class="otherColumn">Omzet</th>
 				</tr>
 			      		
-				<g:each in="${besteld}" var="b">
+				<g:each in="${ordered}" var="o">
 					<tr>
-						<td>${b[0]}</td>
-						<td>${b[1]}</td>
-						<td>${NumberUtils.formatMoney(b[2])}</td>
+						<td>${o[0]}</td>
+						<td>${o[1]}</td>
+						<td>${NumberUtils.formatMoney(o[2])}</td>
 					</tr>
 				</g:each>
 				
@@ -49,6 +49,32 @@
 					<td class="mainColumn">Totaal</td>
 					<td class="otherColumn">${totalAmount}</td>        		
 					<td class="otherColumn">${NumberUtils.formatMoney(totalRevenue)}</td>
+				</tr>
+			</table>
+        </g:if>
+        
+        <h1>Betaald</h1>
+        
+        <g:if test="${nothingPaid}">
+        	<em>Er zijn been betalingen in deze periode</em>
+        </g:if>
+        <g:if test="${!nothingPaid}">
+        	<table>
+				<tr>
+					<th class="mainColumn">Naam</th>
+					<th class="otherColumn">Betaald</th>
+				</tr>
+			      		
+				<g:each in="${paid}" var="p">
+					<tr>
+						<td>${p.klant.naam}</td>
+						<td>${NumberUtils.formatMoney(p.bedrag)}</td>
+					</tr>
+				</g:each>
+				
+				<tr class="totaal">
+					<td class="mainColumn">Totaal</td>        		
+					<td class="otherColumn">${NumberUtils.formatMoney(totalPaid)}</td>
 				</tr>
 			</table>
         </g:if>
