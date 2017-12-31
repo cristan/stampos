@@ -12,7 +12,10 @@ class WeeklyController {
 		Date endDate = params.endDate ? new Date(params.endDate as long) : today
 		Date beginDate = params.beginDate ? new Date(params.beginDate as long) : endDate - 7
 
-		def ordered = BestelRegel.executeQuery("select br.productPrijs.product.naam, sum(br.aantal), sum(br.aantal * br.productPrijs.prijs) from BestelRegel br where br.bestelling.datum > :dateFrom and br.bestelling.datum < :dateTo group by br.productPrijs.product.naam",
+		def ordered = BestelRegel.executeQuery("select br.productPrijs.product.naam, sum(br.aantal), sum(br.aantal * br.productPrijs.prijs) from BestelRegel br "+
+			"where br.bestelling.datum > :dateFrom and br.bestelling.datum < :dateTo "+
+			"group by br.productPrijs.product.naam "+
+			"order by br.productPrijs.product.sortering, br.productPrijs.product.naam",
 				[dateFrom: beginDate, dateTo: endDate])
 		boolean nothingOrdered = ordered.isEmpty()
 		int totalAmount = 0
