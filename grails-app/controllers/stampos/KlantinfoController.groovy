@@ -9,8 +9,6 @@ import grails.converters.JSON
 class KlantinfoController {
 
 	private static final maxItems = 15;
-	static DateFormat bestellingFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm")
-	static DateFormat betalingFormat = new SimpleDateFormat("dd-MM-yyyy")
 	def testDataService
 	def klantInfoService
 	
