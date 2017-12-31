@@ -6,6 +6,7 @@
     </head>
     <body>
         <g:link controller="klantinfo" action="klantInfo" id="all">Bestellingen en betalingen van alle klanten</g:link><br/>
+        <g:link controller="weekly">Bestellingen en betalingen per week</g:link><br/>
         <br/>
         <h1>Bestellingen en betalingen van klanten</h1>
         
