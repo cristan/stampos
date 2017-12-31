@@ -24,6 +24,14 @@
         <title>Besteld en betaald</title>
     </head>
     <body>
+        <div>
+	        <g:link params="[beginDate: previousBeginDate, endDate: previousEndDate]">Vorige week</g:link>
+	        
+	        <span style="position:absolute;left: 50%;transform: translateX(-50%)">${beginDateFormatted} - ${endDateFormatted}</span>
+	        <g:if test="${shouldShowLinkToNextWeek}">
+	        	<g:link params="[beginDate: nextBeginDate, endDate: nextEndDate]" style="float:right">Volgende week</g:link>
+	        </g:if>
+        </div>
         <h1>Besteld</h1>
         
         <g:if test="${nothingOrdered}">
