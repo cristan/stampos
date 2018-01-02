@@ -362,7 +362,7 @@ function confirmOrder()
 			{
 				alert(message);
 			}
-			$("#credit").html(userdata.tegoed.toFixed(2));
+			$("#credit").html(formatter.format(userdata.tegoed));
 			
 			clearOrder();
 			clearTimeout(naOrderKlantWegTimeout);

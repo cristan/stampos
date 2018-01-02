@@ -39,6 +39,8 @@ class BestellingController {
 				BestelRegel br = new BestelRegel(bestelling: bestelling, aantal: aantal, productPrijs: pp);
 				br.save();
 				bestelRegels.add(br)
+				
+				tegoed -= aantal * pp.prijs
 			}
 			bestelling.bestelRegels = bestelRegels
 			pushService.orderDone(bestelling)
