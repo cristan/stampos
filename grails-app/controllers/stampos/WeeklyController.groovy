@@ -72,7 +72,7 @@ class WeeklyController {
 		return getEndOfDay(cal.time)
 	}
 	
-	public Date getEndOfDay(Date date) {
+	private Date getEndOfDay(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -82,7 +82,7 @@ class WeeklyController {
 		return calendar.getTime();
 	}
 	
-	public Date getStartOfDay(Date date) {
+	private Date getStartOfDay(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
