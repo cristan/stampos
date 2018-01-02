@@ -42,7 +42,7 @@
 		<label for="allowRequestsFrom"><g:message code="settings.allow_requests_from"/></label>
 		<g:select name="allowRequestsFrom" from="${['localhost', 'local_network', 'everywhere']}"
 		          valueMessagePrefix="settings.allow_requests_from" value="${allowRequests}"/><br/>
-		<g:submitButton name="submitButton" value="${g.message(code:'save')}"/>
+		<g:submitButton name="submitAllowRequests" value="${g.message(code:'save')}"/>
 	</g:form>
 	<br/>
 	<h1><g:message code="settings.email"/></h1>
@@ -74,7 +74,7 @@
 			<label for="serverurl"><g:message code="settings.email.server.url"/></label><g:textField name="serverurl" value="${serverurl}"/><br/>
 			
 			<br/>
-			<g:submitButton name="submitButton" value="${g.message(code:'save')}" style="clear:both;"/>
+			<g:submitButton name="sutmitSettings" value="${g.message(code:'save')}" style="clear:both;"/>
 		</div>
 	</g:form>
 	<br/>
