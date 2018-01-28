@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 class WeeklyController {
 	
 	static DateFormat dateFormat = new SimpleDateFormat("dd-MM")
-	static DateFormat yearPart = new SimpleDateFormat("-yyyy")
+	static DateFormat yearPart = new SimpleDateFormat("-yy")
 
 	def index() {
 		Date now = new Date()
