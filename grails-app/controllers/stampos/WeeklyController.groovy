@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat
 
 class WeeklyController {
 	
-	static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy")
+	static DateFormat dateFormat = new SimpleDateFormat("dd-MM")
+	static DateFormat yearPart = new SimpleDateFormat("-yyyy")
 
 	def index() {
 		Date now = new Date()
@@ -33,6 +34,20 @@ class WeeklyController {
 			totalPaid += p.bedrag
 		}
 		
+		def differentYears = yearPart.format(beginDate) != yearPart.format(endDate)
+		def notThisYear = yearPart.format(beginDate) != yearPart.format(now)
+		def shouldShowYear = differentYears || notThisYear
+		
+		def beginDateFormatted = dateFormat.format(beginDate)
+		if(shouldShowYear) {
+			beginDateFormatted += yearPart.format(beginDate)
+		}
+		
+		def endDateFormatted = dateFormat.format(endDate)
+		if(shouldShowYear) {
+			endDateFormatted += yearPart.format(endDate)
+		}
+		
 		return [
 			nothingOrdered: nothingOrdered,
 			ordered: ordered,
@@ -41,8 +56,8 @@ class WeeklyController {
 			nothingPaid: nothingPaid, 
 			totalPaid: totalPaid, 
 			paid: paid, 
-			beginDateFormatted: dateFormat.format(beginDate),
-			endDateFormatted: dateFormat.format(endDate),
+			beginDateFormatted: beginDateFormatted,
+			endDateFormatted: endDateFormatted,
 			previousBeginDate: (beginDate - 7).getTime(), 
 			previousEndDate: (endDate - 7).getTime(),
 			nextBeginDate: (beginDate + 7).getTime(), 
