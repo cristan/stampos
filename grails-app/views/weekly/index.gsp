@@ -64,7 +64,7 @@
         <h1>Betaald</h1>
         
         <g:if test="${nothingPaid}">
-        	<em>Er zijn been betalingen in deze periode</em>
+        	<em>Er zijn geen betalingen in deze periode</em>
         </g:if>
         <g:if test="${!nothingPaid}">
         	<table>
