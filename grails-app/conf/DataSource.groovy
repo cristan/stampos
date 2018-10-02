@@ -33,18 +33,6 @@ environments {
 			url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
         }
     }
-    amazondb {
-        dataSource {
-            dbCreate = "update"
-			driverClassName = "org.postgresql.Driver"
-			dialect = "org.hibernate.dialect.PostgreSQLDialect"
-			username = "stampos"
-			password = "h5XhdZVxFKARcNm7"
-			url = "jdbc:postgresql://stampos.c90olqkwa9wi.eu-west-1.rds.amazonaws.com:5432/stampos"
-			
-			dialect = "org.hibernate.dialect.PostgreSQLDialect"
-        }
-    }
 	test {
 		dataSource {
 			dbCreate = "update"
